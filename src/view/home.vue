@@ -22,7 +22,7 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-          <el-submenu v-if="is_in('insured_data')" index="1">
+          <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-s-management"></i>
             <span>参保数据</span>
@@ -32,7 +32,7 @@
             <el-menu-item class="aside_option" v-if="is_in('insured_data_statictic')" index="1-2">统计</el-menu-item>
           </el-menu-item-group>
           </el-submenu>
-          <el-submenu v-if="is_in('settle_data')"  index="2">
+          <el-submenu index="2">
           <template slot="title">
             <i class="el-icon-s-claim"></i>
             <span>结算数据</span>
