@@ -58,15 +58,15 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="乡镇:">
-                <el-select v-model="search_form.town" placeholder="请选择" clearable>
+                <el-select v-model="search_form.town" placeholder="请选择" clearable multiple>
                   <el-option v-for='enumerate_town in enumerate_data_dict.town' :key="enumerate_town" :label="enumerate_town" :value="enumerate_town"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="村:">
+            <!-- <el-form-item label="村:">
                 <el-select v-model="search_form.village" placeholder="请选择" clearable>
                   <el-option v-for='enumerate_village in enumerate_data_dict.village' :key="enumerate_village" :label="enumerate_village" :value="enumerate_village"></el-option>
                 </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
                 <el-button type="primary" @click="search" icon="el-icon-search">搜索</el-button>
             </el-form-item>
@@ -88,73 +88,73 @@
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>总费用（万元）</span>
+            <span>总费用（元）</span>
         </div>
             <span>{{settle_data_statistic.all_expense}}</span>
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>范围内费用（万元）</span>
+            <span>范围内费用（元）</span>
         </div>
             <span>{{settle_data_statistic.inner_expense}}</span>
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>统筹基金支出（万元）</span>
+            <span>统筹基金支出（元）</span>
         </div>
             <span>{{settle_data_statistic.overall_pay}}</span>
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>大额医疗支出（万元）</span>
+            <span>大额医疗支出（元）</span>
         </div>
             <span>{{settle_data_statistic.large_pay}}</span>
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>大病保险支出（万元）</span>
+            <span>大病保险支出（元）</span>
         </div>
             <span>{{settle_data_statistic.big_pay}}</span>
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>医疗救助支出（万元）</span>
+            <span>医疗救助支出（元）</span>
         </div>
             <span>{{settle_data_statistic.rescue_pay}}</span>
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>公务员医疗补助（万元）</span>
+            <span>公务员医疗补助（元）</span>
         </div>
             <span>{{settle_data_statistic.civil_pay}}</span>
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>其他基金支付（万元）</span>
+            <span>其他基金支付（元）</span>
         </div>
             <span>{{settle_data_statistic.other_pay}}</span>
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>基金支付总额（万元）</span>
+            <span>基金支付总额（元）</span>
         </div>
             <span>{{settle_data_statistic.all_pay}}</span>
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>个人现金支付（万元）</span>
+            <span>个人现金支付（元）</span>
         </div>
             <span>{{settle_data_statistic.cash_pay}}</span>
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>个人账户支付（万元）</span>
+            <span>个人账户支付（元）</span>
         </div>
             <span>{{settle_data_statistic.account_pay}}</span>
         </el-card>
         <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-            <span>账户共济支付金额（万元）</span>
+            <span>账户共济支付金额（元）</span>
         </div>
             <span>{{settle_data_statistic.together_pay}}</span>
         </el-card>
@@ -239,10 +239,10 @@
                 if (i < 10) {
                     i = `0${i}`
                 }
-                this.enumerate_data_dict.settle_date.push(`${this.search_form.year}-${i}-01`)
+                this.enumerate_data_dict.settle_date.push(`${this.search_form.year}-${i}`)
             }
-            this.search_form.settle_date_start = `${this.search_form.year}-01-01` 
-            this.search_form.settle_date_end = `${parseInt(this.search_form.year)+1}-01-01`
+            this.search_form.settle_date_start = `${this.search_form.year}-01` 
+            this.search_form.settle_date_end = `${this.search_form.year}-12`
         }, 
         set_default: function() {
             this.search_form.year = this.enumerate_data_dict.year.slice(-1)

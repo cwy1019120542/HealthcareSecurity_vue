@@ -36,15 +36,15 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="乡镇:">
-                <el-select v-model="search_form.town" placeholder="请选择" clearable size="mini">
+                <el-select v-model="search_form.town" placeholder="请选择" clearable size="mini" multiple>
                   <el-option v-for='enumerate_town in enumerate_data_dict.town' :key="enumerate_town" :value="enumerate_town"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="村:">
+            <!-- <el-form-item label="村:">
                 <el-select v-model="search_form.village" placeholder="请选择" clearable size="mini">
                   <el-option v-for='enumerate_village in enumerate_data_dict.village' :key="enumerate_village" :value="enumerate_village"></el-option>
                 </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
                 <el-button type="primary" @click="search(1)" icon="el-icon-search">搜索</el-button>
             </el-form-item>
