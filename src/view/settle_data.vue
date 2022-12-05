@@ -289,7 +289,7 @@
         update_enumerate_data: function() {
             this.enumerate_data_dict.settle_date = []
             for (let i=1;i<=12;i++) {
-                if (i < 50) {
+                if (i < 10) {
                     i = `0${i}`
                 }
                 this.enumerate_data_dict.settle_date.push(`${this.search_form.year}-${i}`)
@@ -304,8 +304,8 @@
         }, 
         get_params: function() {
             const params_dict = {'params': {}}
-            if (this.search_form.pay_date_start && this.search_form.pay_date_end) {
-              params_dict.params['pay_date'] = `${this.search_form.pay_date_start}_${this.search_form.pay_date_end}`
+            if (this.search_form.settle_date_start && this.search_form.settle_date_end) {
+              params_dict.params['settle_date'] = `${this.search_form.settle_date_start}_${this.search_form.settle_date_end}`
             }
               for (let key in this.search_form) {
                 const value = this.search_form[key]
