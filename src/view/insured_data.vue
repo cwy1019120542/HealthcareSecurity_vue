@@ -181,6 +181,8 @@
           this.enumerate_data_dict.village = this.enumerate_data_dict.default_village
           this.search_form.id_number = ''
           this.search_form.name = ''
+          this.search_form.pay_date_start = ''
+          this.search_form.pay_date_end = ''
           this.update_enumerate_data()
         }, 
         search: function(page) {

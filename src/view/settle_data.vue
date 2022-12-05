@@ -300,6 +300,8 @@
             this.enumerate_data_dict.village = []
             this.search_form.name = ''
             this.search_form.id_number = ''
+            this.search_form.settle_date_start = ''
+            this.search_form.settle_date_end = ''
             this.update_enumerate_data()
         }, 
         get_params: function() {
