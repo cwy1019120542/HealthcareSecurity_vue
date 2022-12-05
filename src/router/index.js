@@ -2,9 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from '@/view/home'
 import main from '@/view/main'
-import insured_data_list from '@/view/insured_data_list'
+import insured_data from '@/view/insured_data'
 import login from '@/view/login'
-import settle_data_statistic from '@/view/settle_data_statistic'
+import settle_data from '@/view/settle_data'
 import empty from '@/view/empty'
 import change_password from '@/view/change_password'
 
@@ -22,12 +22,12 @@ export default new Router({
       component: home,
       children: [
         {
-          path: '/insured_data/list',
-          component: insured_data_list
+          path: '/insured_data',
+          component: insured_data
         }, 
         {
-          path: '/settle_data/statistic',
-          component: settle_data_statistic
+          path: '/settle_data',
+          component: settle_data
         },
         {
           path: '/change_password',

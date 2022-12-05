@@ -28,8 +28,7 @@
             <span>参保数据</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item class="aside_option" v-if="is_in('insured_data_list')" index="1-1" @click="router_to('/insured_data/list')" >明细</el-menu-item>
-            <el-menu-item class="aside_option" v-if="is_in('insured_data_statictic')" index="1-2">统计</el-menu-item>
+            <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="1-1" @click="router_to('/insured_data')" >查询</el-menu-item>
           </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">
@@ -38,8 +37,7 @@
             <span>结算数据</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item class="aside_option" v-if="is_in('settle_data_list')" index="2-1">明细</el-menu-item>
-            <el-menu-item class="aside_option" v-if="is_in('settle_data_statistic')" @click="router_to('/settle_data/statistic')" index="2-2">统计</el-menu-item>
+            <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/settle_data')" index="2-１">查询</el-menu-item>
           </el-menu-item-group>
           </el-submenu>
         </el-menu>
