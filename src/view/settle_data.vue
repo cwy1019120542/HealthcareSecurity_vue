@@ -78,11 +78,16 @@
                     <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
+            <el-form-item label="支出不为０:">
+                <el-select v-model="search_form.pay_exists" multiple placeholder="请选择" clearable collapse-tags>
+                  <el-option v-for='enumerate_pay_exists in enumerate_data_dict.pay_exists' :key="enumerate_pay_exists" :label="enumerate_pay_exists" :value="enumerate_pay_exists"></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="list_search(1)" icon="el-icon-search">明细查询</el-button>
             </el-form-item>
             <el-form-item>
-                <el-button type="success" @click="statistic_search()" icon="el-icon-search">统计查询</el-button>
+                <el-button type="success" @click="statistic_search()" icon="el-icon-search">汇总查询</el-button>
             </el-form-item>
             <el-form-item>
                 <el-button type="info" round icon="el-icon-refresh" @click='reset()'>重置</el-button>
@@ -259,6 +264,7 @@
             "town": [], 
             "village": [], 
             'hospital_community': [], 
+            'pay_exists': [], 
             'page': '', 
           }, 
           settle_data_statistic: {}, 

@@ -18,11 +18,6 @@
                   <el-option v-for='enumerate_insured_state in enumerate_data_dict.insured_state' :key="enumerate_insured_state" :value="enumerate_insured_state"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="参保地区:">
-                <el-select v-model="search_form.insured_area" placeholder="请选择" clearable  multiple collapse-tags>
-                  <el-option v-for='enumerate_insured_area in enumerate_data_dict.insured_area' :key="enumerate_insured_area" :value="enumerate_insured_area"></el-option>
-                </el-select>
-            </el-form-item>
             <el-form-item label="人员属性:">
                 <el-select v-model="search_form.attribute" placeholder="请选择" clearable  multiple collapse-tags>
                   <el-option v-for='enumerate_attribute in enumerate_data_dict.attribute' :key="enumerate_attribute" :value="enumerate_attribute"></el-option>
@@ -75,7 +70,6 @@
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
           <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
           <el-table-column label="参保情况" width="125" header-align="center" align="center" prop="insured_state"></el-table-column>
-          <el-table-column label="参保地区" width="125" header-align="center" align="center" prop="insured_area"></el-table-column>
           <el-table-column label="人员属性" width="125" header-align="center" align="center" prop="attribute"></el-table-column>
           <el-table-column label="其他属性" width="150" header-align="center" align="center" prop="second_attribute"></el-table-column>
           <el-table-column label="贫困状态" width="125" header-align="center" align="center" prop="poverty_state"></el-table-column>
@@ -113,7 +107,6 @@
             'name': '', 
             "id_number": '', 
             "insured_state": [], 
-            "insured_area": [], 
             "attribute": [], 
             "second_attribute": [], 
             "poverty_state": [], 
