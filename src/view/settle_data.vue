@@ -92,6 +92,7 @@
             <el-form-item>
                 <el-button type="info" round icon="el-icon-refresh" @click='reset()'>重置</el-button>
             </el-form-item>
+            <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
         </el-form>
         <div v-if='!is_list'>
             <el-card class="box-card" shadow="hover">
@@ -244,6 +245,7 @@
 </style>
     
 <script>
+import fileDownload from 'js-file-download';
  export default {
       data() {
         return {
@@ -265,7 +267,7 @@
             "village": [], 
             'hospital_community': [], 
             'pay_exists': [], 
-            'page': '', 
+            'page': 1, 
           }, 
           settle_data_statistic: {}, 
           settle_data_list: [], 
@@ -362,6 +364,26 @@
                   this.$message({
                     showClose: true, 
                     message: '查询出错', 
+                    type: 'error'
+                })
+              })
+        }, 
+        download: function() {
+            this.loading = true
+            const params_dict = this.get_params()
+            params_dict['responseType'] = 'blob'
+            var download_type = 'list'
+            if (!this.is_list) {
+                download_type = 'statistic'
+            }
+            this.$axios.get(`/user/${this.user_data['id']}/settle_data/${download_type}/download`, params_dict).then((res)=>{
+                this.loading = false
+                fileDownload(res.data, res.headers.file_name);
+              }).catch(error=>{
+                  this.loading = false
+                  this.$message({
+                    showClose: true, 
+                    message: '无法下载，数据量需小于5万',  
                     type: 'error'
                 })
               })

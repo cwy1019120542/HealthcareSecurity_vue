@@ -59,13 +59,56 @@
                   </el-checkbox-group>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="search(1)" icon="el-icon-search">搜索</el-button>
+                <el-button type="primary" @click="list_search(1)" icon="el-icon-search">明细查询</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="success" @click="statistic_search()" icon="el-icon-search">汇总查询</el-button>
             </el-form-item>
             <el-form-item>
                 <el-button type="info" @click="reset()" round icon="el-icon-refresh">重置</el-button>
             </el-form-item>
+            <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
         </el-form>
-        <el-table :data="insured_data_list">
+        <div v-if='!is_list'>
+            <el-card class="box-card" shadow="hover">
+            <div slot="header" class="clearfix">
+                <span>总（人）</span>
+            </div>
+                <span>{{insured_data_statistic.all_count}}</span>
+            </el-card>
+            <el-card class="box-card" shadow="hover">
+            <div slot="header" class="clearfix">
+                <span>参加居民医保（人）</span>
+            </div>
+                <span>{{insured_data_statistic.insured_count}}</span>
+            </el-card>
+            <el-card class="box-card" shadow="hover">
+            <div slot="header" class="clearfix">
+                <span>未参加居民医保（人）</span>
+            </div>
+                <span>{{insured_data_statistic.not_insured_count}}</span>
+            </el-card>
+            <el-card class="box-card" shadow="hover">
+            <div slot="header" class="clearfix">
+                <span>享受参保资助（人）</span>
+            </div>
+                <span>{{insured_data_statistic.perk_count}}</span>
+            </el-card>
+            <el-card class="box-card" shadow="hover">
+            <div slot="header" class="clearfix">
+                <span>自付金额（元）</span>
+            </div>
+                <span>{{insured_data_statistic.own_expense}}</span>
+            </el-card>
+            <el-card class="box-card" shadow="hover">
+            <div slot="header" class="clearfix">
+                <span>资助金额（元）</span>
+            </div>
+                <span>{{insured_data_statistic.perk}}</span>
+            </el-card>
+        </div>
+        <div v-if='is_list'>
+          <el-table :data="insured_data_list">
           <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
           <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
@@ -79,17 +122,24 @@
           <el-table-column label="自付金额" width="100" prop="own_expense" header-align="center" align="center"></el-table-column>
           <el-table-column label="支付日期" width="175" prop="pay_date" header-align="center" align="center"></el-table-column>
         </el-table>
+        </div>
         <el-pagination
           background
           layout="total, prev, pager, next"
           :total='data_count'
           :current-page.sync='search_form.page'
-          @current-change='search(search_form.page)'>
+          @current-change='list_search(search_form.page)'>
         </el-pagination>
     </div>
 </template>
 
 <style scoped>
+.el-card {
+        width: 14%;
+        text-align: center;
+        display: inline-block;
+        margin: 1%;
+    }
 .el-form {
   margin: 1% 0;
 }
@@ -99,6 +149,7 @@
 </style>
 
 <script>
+import fileDownload from 'js-file-download';
  export default {
       data() {
         return {
@@ -114,15 +165,17 @@
             'pay_date_end': '', 
             "town": [], 
             "village": [], 
-            'page': '', 
+            'page': 1, 
             'hospital_community': [], 
           }, 
           data_count: 0, 
           insured_data_list: [], 
+          insured_data_statistic: [], 
           enumerate_data_dict: {}, 
           user_data: {}, 
           loading: false, 
           town_disabled: false, 
+          is_list: true, 
         }
       }, 
       created () {
@@ -148,7 +201,7 @@
                 this.enumerate_data_dict.default_town = []
             }
             this.set_default()
-            this.search(1)
+            this.list_search(1)
         })
         
       }, 
@@ -178,10 +231,8 @@
           this.search_form.pay_date_end = ''
           this.update_enumerate_data()
         }, 
-        search: function(page) {
-            this.loading = true
-            this.search_form.page = page
-            const params_dict = {'params': {}}
+        get_params: function() {
+          const params_dict = {'params': {}}
             if (this.search_form.pay_date_start && this.search_form.pay_date_end) {
               params_dict.params['pay_date'] = `${this.search_form.pay_date_start}_${this.search_form.pay_date_end}`
             }
@@ -199,6 +250,13 @@
                     }
                 }
               }
+          return params_dict
+        }, 
+        list_search: function(page) {
+            this.loading = true
+            this.is_list = true
+            this.search_form.page = page
+            const params_dict = this.get_params()
             this.$axios.get(`/user/${this.user_data['id']}/insured_data/list`, params_dict).then(res=>{
               this.loading = false
               this.insured_data_list = res.data['data'];
@@ -211,6 +269,42 @@
               type: 'error'
             })
           })
+        }, 
+        statistic_search: function() {
+              this.loading = true
+              this.is_list = false
+              const params_dict = this.get_params()
+              this.$axios.get(`/user/${this.user_data['id']}/insured_data/statistic`, params_dict).then((res)=>{
+                this.loading = false
+                this.insured_data_statistic = res.data['data']
+              }).catch(error=>{
+                  this.loading = false
+                  this.$message({
+                    showClose: true, 
+                    message: '查询出错', 
+                    type: 'error'
+                })
+              })
+          }, 
+        download: function() {
+            this.loading = true
+            const params_dict = this.get_params()
+            var download_type = 'list'
+            if (!this.is_list) {
+                download_type = 'statistic'
+            }
+            params_dict['responseType'] = 'blob'
+            this.$axios.get(`/user/${this.user_data['id']}/insured_data/${download_type}/download`, params_dict).then((res)=>{
+                this.loading = false
+                fileDownload(res.data, res.headers.file_name);
+              }).catch(error=>{
+                  this.loading = false
+                  this.$message({
+                    showClose: true, 
+                    message: '无法下载，数据量需小于5万', 
+                    type: 'error'
+                })
+              })
         }, 
         router_to: function(url) {
           this.$router.push(url)
