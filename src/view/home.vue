@@ -72,6 +72,7 @@
     height: 88%;
     float: right;
     margin: 1%;
+    overflow: auto;
   }
   .el-menu--horizontal>.el-submenu .el-submenu__title {
     height: 100%;

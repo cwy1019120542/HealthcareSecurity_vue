@@ -3,7 +3,7 @@
         <el-page-header @back="router_to('/main')" content="结算数据统计"></el-page-header>
         <el-form :inline="true" class="demo-form-inline" :model="search_form">
             <el-form-item label="年份:">
-                <el-select v-model="search_form.year" placeholder="请选择" @change="update_enumerate_data()">
+                <el-select v-model="search_form.year" placeholder="请选择" @change="update_date()">
                     <el-option v-for="enumerate_year in enumerate_data_dict.year" :key="enumerate_year" :value="enumerate_year"></el-option>
                 </el-select>
             </el-form-item>
@@ -38,13 +38,18 @@
                     <el-option v-for="enumerate_cure_type in enumerate_data_dict.cure_type" :key="enumerate_cure_type" :value="enumerate_cure_type"></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item>
+                  <el-checkbox-group v-model="search_form.cure_type_gather" @change="update_cure_type()">
+                    <el-checkbox-button v-for="enumerate_cure_type_gather in enumerate_data_dict.cure_type_gather" :label="enumerate_cure_type_gather" :key="enumerate_cure_type_gather">{{enumerate_cure_type_gather}}</el-checkbox-button>
+                  </el-checkbox-group>
+            </el-form-item>
             <el-form-item label="结算日期开始:">
-                <el-select v-model="search_form.settle_date_start" placeholder="请选择" clearable>
+                <el-select v-model="search_form.date_start" placeholder="请选择" clearable>
                     <el-option v-for="enumerate_settle_date in enumerate_data_dict.settle_date" :key="enumerate_settle_date" :value="enumerate_settle_date"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="结算日期结束:">
-                <el-select v-model="search_form.settle_date_end" placeholder="请选择" clearable>
+                <el-select v-model="search_form.date_end" placeholder="请选择" clearable>
                     <el-option v-for="enumerate_settle_date in enumerate_data_dict.settle_date" :key="enumerate_settle_date" :value="enumerate_settle_date"></el-option>
                 </el-select>
             </el-form-item>
@@ -53,15 +58,6 @@
                   <el-option v-for='enumerate_attribute in enumerate_data_dict.attribute' :key="enumerate_attribute" :label="enumerate_attribute" :value="enumerate_attribute"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="其他属性:">
-                <el-select v-model="search_form.second_attribute" multiple placeholder="请选择" clearable collapse-tags>
-                  <el-option v-for='enumerate_second_attribute in enumerate_data_dict.second_attribute' :key="enumerate_second_attribute" :label="enumerate_second_attribute" :value="enumerate_second_attribute"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="贫困状态:">
-                <el-select v-model="search_form.poverty_state" multiple placeholder="请选择" clearable collapse-tags>
-                  <el-option v-for='enumerate_poverty_state in enumerate_data_dict.poverty_state' :key="enumerate_poverty_state" :label="enumerate_poverty_state" :value="enumerate_poverty_state"></el-option>
-                </el-select>
             </el-form-item>
             <el-form-item label="乡镇:">
                 <el-select v-model="search_form.town" placeholder="请选择" clearable multiple @change="update_village()" collapse-tags>
@@ -99,93 +95,94 @@
             <div slot="header" class="clearfix">
                 <span>人次</span>
             </div>
-                <span>{{settle_data_statistic.time_count}}</span>
+                <span>{{data_statistic.time_count}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>人数</span>
             </div>
-                <span>{{settle_data_statistic.number_count}}</span>
+                <span>{{data_statistic.number_count}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>总费用（元）</span>
             </div>
-                <span>{{settle_data_statistic.all_expense}}</span>
+                <span>{{data_statistic.all_expense}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>范围内费用（元）</span>
             </div>
-                <span>{{settle_data_statistic.inner_expense}}</span>
+                <span>{{data_statistic.inner_expense}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>统筹基金支出（元）</span>
             </div>
-                <span>{{settle_data_statistic.overall_pay}}</span>
+                <span>{{data_statistic.overall_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>大额医疗支出（元）</span>
             </div>
-                <span>{{settle_data_statistic.large_pay}}</span>
+                <span>{{data_statistic.large_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>大病保险支出（元）</span>
             </div>
-                <span>{{settle_data_statistic.big_pay}}</span>
+                <span>{{data_statistic.big_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>医疗救助支出（元）</span>
             </div>
-                <span>{{settle_data_statistic.rescue_pay}}</span>
+                <span>{{data_statistic.rescue_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>公务员医疗补助（元）</span>
             </div>
-                <span>{{settle_data_statistic.civil_pay}}</span>
+                <span>{{data_statistic.civil_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>其他基金支付（元）</span>
             </div>
-                <span>{{settle_data_statistic.other_pay}}</span>
+                <span>{{data_statistic.other_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>基金支付总额（元）</span>
             </div>
-                <span>{{settle_data_statistic.all_pay}}</span>
+                <span>{{data_statistic.all_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>个人现金支付（元）</span>
             </div>
-                <span>{{settle_data_statistic.cash_pay}}</span>
+                <span>{{data_statistic.cash_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>个人账户支付（元）</span>
             </div>
-                <span>{{settle_data_statistic.account_pay}}</span>
+                <span>{{data_statistic.account_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>账户共济支付金额（元）</span>
             </div>
-                <span>{{settle_data_statistic.together_pay}}</span>
+                <span>{{data_statistic.together_pay}}</span>
             </el-card>
         </div>
         <div v-if='is_list'>
-            <el-table :data="settle_data_list">
+            <el-table :data="data_list">
                 <el-table-column label="序号" width="75" prop="number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="姓名" width="150" prop="name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="人员类别" width="50" prop="person_type" header-align="center" align="center"></el-table-column>
+                <el-table-column label="人员属性" width="300" prop="attribute" header-align="center" align="center"></el-table-column>
                 <el-table-column label="支付地点类别" width="125" prop="pay_place" header-align="center" align="center"></el-table-column>
                 <el-table-column label="定点医药机构编号" width="150" prop="hospital_id" header-align="center" align="center"></el-table-column>
                 <el-table-column label="定点医药机构名称" width="500" prop="hospital_name" header-align="center" align="center"></el-table-column>
@@ -212,9 +209,6 @@
                 <el-table-column label="账户共济支付金额" width="100" prop="together_pay" header-align="center" align="center"></el-table-column>
                 <el-table-column label="病种名称" width="350" prop="illness_name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="医疗类别" width="200" prop="cure_type" header-align="center" align="center"></el-table-column>
-                <el-table-column label="人员属性" width="125" prop="attribute" header-align="center" align="center"></el-table-column>
-                <el-table-column label="其他属性" width="150" prop="second_attribute" header-align="center" align="center"></el-table-column>
-                <el-table-column label="贫困状态" width="125" prop="poverty_state" header-align="center" align="center"></el-table-column>
                 <el-table-column label="乡镇" width="75" prop="town" header-align="center" align="center"></el-table-column>
                 <el-table-column label="村" width="125" prop="village" header-align="center" align="center"></el-table-column>
             </el-table>
@@ -245,7 +239,7 @@
 </style>
     
 <script>
-import fileDownload from 'js-file-download';
+import {authentication, update_date, update_town, update_village, reset, list_search, statistic_search, download, update_cure_type} from '../functools';
  export default {
       data() {
         return {
@@ -258,170 +252,60 @@ import fileDownload from 'js-file-download';
             "hospital_level": [], 
             "evidence_type": [], 
             "cure_type": [], 
-            "settle_date_start": '', 
-            "settle_date_end": '', 
+            "date_start": '', 
+            "date_end": '', 
             "attribute": [], 
-            "second_attribute": [], 
-            "poverty_state": [], 
             "town": [], 
             "village": [], 
             'hospital_community': [], 
             'pay_exists': [], 
             'page': 1, 
+            'cure_type_gather': [], 
           }, 
-          settle_data_statistic: {}, 
-          settle_data_list: [], 
+          data_statistic: {}, 
+          data_list: [], 
           enumerate_data_dict: {}, 
           user_data: {}, 
           loading: false, 
-          is_list: false, 
+          is_list: true, 
+          town_disabled: false, 
           data_count: 0, 
+          default_town: [], 
+          default_village: [], 
+          data_type: 'settle_data', 
+          date_type: 'settle_date', 
         }
       }, 
       created () {
-        this.user_data = JSON.parse(localStorage.getItem('user_data'))
-        if (this.user_data['authority'].indexOf('*')==-1 && this.user_data['authority'].indexOf('settle_data')==-1) {
-          this.$router.push('/login')
-        }
-        else {
-            this.$axios.get('/enumerate_data').then((res)=>{
-            const data = res['data']['data'];
-            this.enumerate_data_dict = data
-            this.enumerate_data_dict.town = Object.keys(this.enumerate_data_dict.town_village_dict)
-            this.enumerate_data_dict.village = []
-            this.set_default()
-        })
-        }
+        authentication(this)
       }, 
       methods: {
-        update_enumerate_data: function() {
-            this.enumerate_data_dict.settle_date = []
-            for (let i=1;i<=12;i++) {
-                if (i < 10) {
-                    i = `0${i}`
-                }
-                this.enumerate_data_dict.settle_date.push(`${this.search_form.year}-${i}`)
-            }
-        }, 
-        set_default: function() {
-            this.search_form.year = this.enumerate_data_dict.default_year
-            this.enumerate_data_dict.village = []
-            this.search_form.name = ''
-            this.search_form.id_number = ''
-            this.search_form.settle_date_start = ''
-            this.search_form.settle_date_end = ''
-            this.update_enumerate_data()
-        }, 
-        get_params: function() {
-            const params_dict = {'params': {}}
-            if (this.search_form.settle_date_start && this.search_form.settle_date_end) {
-              params_dict.params['settle_date'] = `${this.search_form.settle_date_start}_${this.search_form.settle_date_end}`
-            }
-              for (let key in this.search_form) {
-                const value = this.search_form[key]
-                if (value instanceof Array) {
-                    if (value.length) {
-                        params_dict.params[key] = value.join('_')
-                    }
-                    
-                } 
-                else {
-                    if (value) {
-                        params_dict.params[key] = value
-                    }
-                }
-              }
-            
-            return params_dict
-        }, 
-        statistic_search: function() {
-              this.loading = true
-              this.is_list = false
-              const params_dict = this.get_params()
-              this.$axios.get(`/user/${this.user_data['id']}/settle_data/statistic`, params_dict).then((res)=>{
-                this.loading = false
-                this.settle_data_statistic = res.data['data']
-              }).catch(error=>{
-                  this.loading = false
-                  this.$message({
-                    showClose: true, 
-                    message: '查询出错', 
-                    type: 'error'
-                })
-              })
-          }, 
         list_search: function(page) {
-            this.loading = true
-            this.is_list = true
-            this.search_form.page = page
-              const params_dict = this.get_params()
-              this.$axios.get(`/user/${this.user_data['id']}/settle_data/list`, params_dict).then((res)=>{
-                this.loading = false
-                this.settle_data_list = res.data['data']
-                this.data_count = res.data['data_count']
-              }).catch(error=>{
-                  this.loading = false
-                  this.$message({
-                    showClose: true, 
-                    message: '查询出错', 
-                    type: 'error'
-                })
-              })
+          list_search(this, page)
+        },
+        statistic_search: function() {
+          statistic_search(this)
         }, 
         download: function() {
-            this.loading = true
-            const params_dict = this.get_params()
-            params_dict['responseType'] = 'blob'
-            var download_type = 'list'
-            if (!this.is_list) {
-                download_type = 'statistic'
-            }
-            this.$axios.get(`/user/${this.user_data['id']}/settle_data/${download_type}/download`, params_dict).then((res)=>{
-                this.loading = false
-                fileDownload(res.data, res.headers.file_name);
-              }).catch(error=>{
-                  this.loading = false
-                  this.$message({
-                    showClose: true, 
-                    message: '无法下载，数据量需小于5万',  
-                    type: 'error'
-                })
-              })
+          download(this)
         }, 
-        reset: function () {
-            for (let key in this.search_form) {
-                this.search_form[key] = []
-            }
-            this.set_default()
+        update_date: function() {
+          update_date(this)
         }, 
         router_to: function(url) {
           this.$router.push(url)
         }, 
         update_town: function() {
-          const hospital_community = this.search_form.hospital_community.toString()
-          if (hospital_community == '市立医院') {
-            this.search_form.town = ['黄柏镇', '槎水镇', '源潭镇', '余井镇', '梅城镇', '官庄镇', '塔畈乡', '龙潭乡']
-          }
-          else if (hospital_community == '中医院') {
-            this.search_form.town = ['水吼镇', '黄铺镇', '王河镇', '油坝乡', '黄泥镇', '五庙乡', '痘姆乡', '天柱山镇', '开发区']
-          }
-          else {
-            this.search_form.town = []
-          }
+          update_town(this)
         }, 
         update_village: function() {
-          if (this.search_form.town.length) {
-            this.enumerate_data_dict.village = []
-            for (let town of this.search_form.town) {
-                for (let village of this.enumerate_data_dict.town_village_dict[town]) {
-                    this.enumerate_data_dict.village.push(village)
-                }
-            }
-          }
-          else {
-            this.enumerate_data_dict.village = this.enumerate_data_dict.default_village
-          }
-          this.search_form.village = []
+          update_village(this)
+        }, 
+        reset: function() {
+          reset(this)
+        }, 
+        update_cure_type: function() {
+            update_cure_type(this)
         }, 
       }
 }
