@@ -33,10 +33,9 @@
                     <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="是否参加公务员医疗补助:">
+            <el-form-item label="参加公务员医疗补助:">
                 <el-select v-model="search_form.is_civil" placeholder="请选择"  clearable>
                   <el-option label="是" value=1></el-option>
-                  <el-option label="否" value=0></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="乡镇:">

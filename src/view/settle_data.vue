@@ -43,6 +43,11 @@
                     <el-checkbox-button v-for="enumerate_cure_type_gather in enumerate_data_dict.cure_type_gather" :label="enumerate_cure_type_gather" :key="enumerate_cure_type_gather">{{enumerate_cure_type_gather}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
+            <el-form-item label="人员属性:">
+                <el-select v-model="search_form.attribute" multiple placeholder="请选择" clearable collapse-tags>
+                  <el-option v-for='enumerate_attribute in enumerate_data_dict.attribute' :key="enumerate_attribute" :label="enumerate_attribute" :value="enumerate_attribute"></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="结算日期开始:">
                 <el-select v-model="search_form.date_start" placeholder="请选择" clearable>
                     <el-option v-for="enumerate_settle_date in enumerate_data_dict.settle_date" :key="enumerate_settle_date" :value="enumerate_settle_date"></el-option>
@@ -51,11 +56,6 @@
             <el-form-item label="结算日期结束:">
                 <el-select v-model="search_form.date_end" placeholder="请选择" clearable>
                     <el-option v-for="enumerate_settle_date in enumerate_data_dict.settle_date" :key="enumerate_settle_date" :value="enumerate_settle_date"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="人员属性:">
-                <el-select v-model="search_form.attribute" multiple placeholder="请选择" clearable collapse-tags>
-                  <el-option v-for='enumerate_attribute in enumerate_data_dict.attribute' :key="enumerate_attribute" :label="enumerate_attribute" :value="enumerate_attribute"></el-option>
                 </el-select>
             </el-form-item>
             </el-form-item>
