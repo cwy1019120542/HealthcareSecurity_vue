@@ -80,7 +80,7 @@
                                 this.loading = false
                                 this.$message({
                                     showClose: true, 
-                                    message: '修改出错', 
+                                    message: error.response.data.message, 
                                     type: 'error'
                                 })
                             })

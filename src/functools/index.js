@@ -76,9 +76,9 @@ function statistic_search(self) {
       self.data_statistic = res.data['data']
     }).catch(error=>{
         self.loading = false
-        self.$message({
+        self.$message({ 
           showClose: true, 
-          message: '查询出错', 
+          message: error.response.data.message, 
           type: 'error'
       })
     })
@@ -97,7 +97,7 @@ function list_search(self, page) {
         self.loading = false
         self.$message({
           showClose: true, 
-          message: '查询出错', 
+          message: error.response.data.message, 
           type: 'error'
       })
     })
@@ -118,7 +118,7 @@ function download(self) {
         self.loading = false
         self.$message({
           showClose: true, 
-          message: '无法下载，数据量需小于5万',  
+          message: "数据量过大，请分段下载",  
           type: 'error'
       })
     })
@@ -134,9 +134,6 @@ function set_default(self) {
     self.search_form.name = ''
     self.search_form.date_start = ''
     self.search_form.date_end = ''
-    if (self.data_type == 'insured_data') {
-        self.search_form.is_civil = ''
-    }
     self.update_date()
 }
 

@@ -18,9 +18,9 @@
                     <el-option v-for="enumerate_person_type in enumerate_data_dict.person_type" :key="enumerate_person_type" :value="enumerate_person_type"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="支付地点类别:">
-                <el-select v-model="search_form.pay_place" multiple placeholder="请选择" clearable collapse-tags>
-                    <el-option v-for="enumerate_pay_place in enumerate_data_dict.pay_place" :key="enumerate_pay_place" :value="enumerate_pay_place"></el-option>
+            <el-form-item label="医药机构地点:">
+                <el-select v-model="search_form.hospital_place" multiple placeholder="请选择" clearable collapse-tags>
+                    <el-option v-for="enumerate_hospital_place in enumerate_data_dict.hospital_place" :key="enumerate_hospital_place" :value="enumerate_hospital_place"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="医院等级:">
@@ -46,6 +46,12 @@
             <el-form-item label="人员属性:">
                 <el-select v-model="search_form.attribute" multiple placeholder="请选择" clearable collapse-tags>
                   <el-option v-for='enumerate_attribute in enumerate_data_dict.attribute' :key="enumerate_attribute" :label="enumerate_attribute" :value="enumerate_attribute"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="中心报销:">
+                <el-select v-model="search_form.is_centre" placeholder="请选择"  clearable>
+                  <el-option label="是" value=1></el-option>
+                  <el-option label="否" value=0></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="结算日期开始:">
@@ -182,11 +188,12 @@
                 <el-table-column label="姓名" width="150" prop="name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="人员类别" width="50" prop="person_type" header-align="center" align="center"></el-table-column>
-                <el-table-column label="人员属性" width="300" prop="attribute" header-align="center" align="center"></el-table-column>
-                <el-table-column label="支付地点类别" width="125" prop="pay_place" header-align="center" align="center"></el-table-column>
+                <el-table-column label="人员属性" width="350" prop="attribute" header-align="center" align="center"></el-table-column>
+                <el-table-column label="医药机构地点类别" width="125" prop="hospital_place" header-align="center" align="center"></el-table-column>
                 <el-table-column label="定点医药机构编号" width="150" prop="hospital_id" header-align="center" align="center"></el-table-column>
                 <el-table-column label="定点医药机构名称" width="500" prop="hospital_name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="医院等级" width="100" prop="hospital_level" header-align="center" align="center"></el-table-column>
+                <el-table-column label="中心报销" width="125" prop="is_centre" header-align="center" align="center"></el-table-column>
                 <el-table-column label="开始日期" width="175" prop="start_date" header-align="center" align="center"></el-table-column>
                 <el-table-column label="结束日期" width="175" prop="end_date" header-align="center" align="center"></el-table-column>
                 <el-table-column label="结算日期" width="175" prop="settle_date" header-align="center" align="center"></el-table-column>
@@ -248,7 +255,8 @@ import {authentication, update_date, update_town, update_village, reset, list_se
             'name': '', 
             'id_number': '', 
             "person_type": [], 
-            "pay_place": [], 
+            "hospital_place": [], 
+            "is_centre": [], 
             "hospital_level": [], 
             "evidence_type": [], 
             "cure_type": [], 

@@ -39,7 +39,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="乡镇:">
-                <el-select v-model="search_form.town" placeholder="请选择" :disabled='town_disabled' clearable  multiple collapse-tags @change="update_village()">
+                <el-select v-model="search_form.town" placeholder="请选择" :disabled='town_disabled' :clearable='!town_disabled' :multiple='!town_disabled' :collapse-tags='!town_disabled' @change="update_village()">
                   <el-option v-for='enumerate_town in enumerate_data_dict.town' :key="enumerate_town" :value="enumerate_town"></el-option>
                 </el-select>
             </el-form-item>
@@ -108,7 +108,7 @@
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
           <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
           <el-table-column label="参保情况" width="125" header-align="center" align="center" prop="insured_state"></el-table-column>
-          <el-table-column label="人员属性" width="300" header-align="center" align="center" prop="attribute"></el-table-column>
+          <el-table-column label="人员属性" width="350" header-align="center" align="center" prop="attribute"></el-table-column>
           <el-table-column label="乡镇" width="75" prop="town" header-align="center" align="center"></el-table-column>
           <el-table-column label="村" width="125" prop="village" header-align="center" align="center"></el-table-column>
           <el-table-column label="手机号" width="125" header-align="center" align="center" prop="phone_number"></el-table-column>

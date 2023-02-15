@@ -63,10 +63,11 @@ export default{
                 localStorage.setItem('user_data', JSON.stringify(res.data.data))
                 this.$router.push('/main')
             }).catch(error=>{
+                console.log(error)
                 this.loading = false
                 this.$message({
                     showClose: true, 
-                    message: '登录出错', 
+                    message: error.response.data.message, 
                     type: 'error'
                 })
             })
