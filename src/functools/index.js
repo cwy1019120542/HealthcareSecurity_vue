@@ -1,7 +1,13 @@
 import fileDownload from 'js-file-download';
 
+var status_dict = {
+    400: '请求失败，请确认参数后重试', 
+    401: '身份认证失败，请重新登录',
+    413: '数据量过大，请分段下载', 
+}
+
 var update_date = function(self) {
-    if (self.data_type == 'settle_data') {
+    if (self.date_type == 'settle_date') {
         self.enumerate_data_dict.settle_date = []
         for (let i=1;i<=12;i++) {
             if (i < 10) {
@@ -28,19 +34,27 @@ var update_date = function(self) {
     
 }
 
+var deal_error = function(self, error) {
+    self.loading = false
+    self.$message({ 
+      showClose: true, 
+      message: status_dict[error.response.status], 
+      type: 'error'
+  })
+}
+
 
 function clean_params(params_dict, key, value) {
     if (value instanceof Array) {
-            if (value.length) {
+        if (value.length) {
                 params_dict.params[key] = value.join('_')
             }
-            
         } 
-        else {
-            if (value) {
-                params_dict.params[key] = value
-            }
+    else {
+        if (value) {
+            params_dict.params[key] = value
         }
+    }
     return params_dict
 }
 function get_params(self) {
@@ -48,18 +62,20 @@ function get_params(self) {
     if (self.search_form.date_start && self.search_form.date_end) {
       params_dict.params[self.date_type] = `${self.search_form.date_start}_${self.search_form.date_end}`
     }
-    const reverse_attribute_dict = {}
-    for (let attribute of self.search_form.attribute) {
-        const reverse_attribute = self.enumerate_data_dict.reverse_attribute_dict[attribute]
-        if (reverse_attribute in reverse_attribute_dict) {
-            reverse_attribute_dict[reverse_attribute].push(attribute)
+    if ('attribute' in self.search_form) {
+        const reverse_attribute_dict = {}
+        for (let attribute of self.search_form.attribute) {
+            const reverse_attribute = self.enumerate_data_dict.reverse_attribute_dict[attribute]
+            if (reverse_attribute in reverse_attribute_dict) {
+                reverse_attribute_dict[reverse_attribute].push(attribute)
+            }
+            else {
+                reverse_attribute_dict[reverse_attribute] = [attribute]
+            }
         }
-        else {
-            reverse_attribute_dict[reverse_attribute] = [attribute]
+        for (let reverse_attribute in reverse_attribute_dict) {
+            params_dict = clean_params(params_dict, reverse_attribute, reverse_attribute_dict[reverse_attribute])
         }
-    }
-    for (let reverse_attribute in reverse_attribute_dict) {
-        params_dict = clean_params(params_dict, reverse_attribute, reverse_attribute_dict[reverse_attribute])
     }
     for (let key in self.search_form) {
         params_dict = clean_params(params_dict, key, self.search_form[key])
@@ -67,71 +83,37 @@ function get_params(self) {
     return params_dict
 }
 
-function statistic_search(self) {
+function search(self, router) {
     self.loading = true
-    self.is_list = false
     const params_dict = get_params(self)
-    self.$axios.get(`/user/${self.user_data['id']}/${self.data_type}/statistic`, params_dict).then((res)=>{
+    self.$axios.get(`/user/${self.user_data['id']}/${router}`, params_dict).then((res)=>{
       self.loading = false
-      self.data_statistic = res.data['data']
+      self.data = res.data
     }).catch(error=>{
-        self.loading = false
-        self.$message({ 
-          showClose: true, 
-          message: error.response.data.message, 
-          type: 'error'
-      })
+        deal_error(self, error)
     })
 }
 
-function list_search(self, page) {
-  self.loading = true
-  self.is_list = true
-  self.search_form.page = page
-    const params_dict = get_params(self)
-    self.$axios.get(`/user/${self.user_data['id']}/${self.data_type}/list`, params_dict).then((res)=>{
-      self.loading = false
-      self.data_list = res.data['data']
-      self.data_count = res.data['data_count']
-    }).catch(error=>{
-        self.loading = false
-        self.$message({
-          showClose: true, 
-          message: error.response.data.message, 
-          type: 'error'
-      })
-    })
-}
-
-function download(self) {
+var download = function(self, router) {
   self.loading = true
   const params_dict = get_params(self)
   params_dict['responseType'] = 'blob'
-  var download_type = 'list'
-  if (!self.is_list) {
-      download_type = 'statistic'
-  }
-  self.$axios.get(`/user/${self.user_data['id']}/${self.data_type}/${download_type}/download`, params_dict).then((res)=>{
+  self.$axios.get(`/user/${self.user_data['id']}/${router}/download`, params_dict).then((res)=>{
       self.loading = false
       fileDownload(res.data, res.headers.file_name)
     }).catch(error=>{
-        self.loading = false
-        self.$message({
-          showClose: true, 
-          message: "数据量过大，请分段下载",  
-          type: 'error'
-      })
+        deal_error(self, error)
     })
 }
 
 
 
 function set_default(self) {
+    if ('town' in self.search_form) {
+        self.search_form.town = self.default_town
+        self.enumerate_data_dict.village = self.default_village
+    }
     self.search_form.year = self.enumerate_data_dict.default_year
-    self.search_form.town = self.default_town
-    self.enumerate_data_dict.village = self.default_village
-    self.search_form.id_number = ''
-    self.search_form.name = ''
     self.search_form.date_start = ''
     self.search_form.date_end = ''
     self.update_date()
@@ -140,29 +122,33 @@ function set_default(self) {
 
 var authentication = function(self) {
     self.user_data = JSON.parse(localStorage.getItem('user_data'))
-    if (self.user_data['authority'].indexOf('*')==-1 && self.user_data['authority'].indexOf(self.data_type)==-1) {
+    if (self.user_data['authority'].indexOf('*')==-1 && self.user_data['authority'].indexOf(self.authority)==-1) {
         self.$router.push('/login')
     }
     else {
         self.$axios.get('/enumerate_data').then((res)=>{
         const data = res['data']['data'];
         self.enumerate_data_dict = data
-        if (self.user_data.town) {
-            self.search_form.town = [self.user_data.town]
-            self.enumerate_data_dict.town = [self.user_data.town]
-            self.enumerate_data_dict.village = self.enumerate_data_dict.town_village_dict[self.user_data.town]
-            self.town_disabled = true
-            self.default_town = [self.user_data.town]
-            self.default_village = self.enumerate_data_dict.village
+        if ('town' in self.search_form) {
+            if (self.user_data.town) {
+                self.search_form.town = [self.user_data.town]
+                self.enumerate_data_dict.town = [self.user_data.town]
+                self.enumerate_data_dict.village = self.enumerate_data_dict.town_village_dict[self.user_data.town]
+                self.town_disabled = true
+                self.default_town = [self.user_data.town]
+                self.default_village = self.enumerate_data_dict.village
+                }
+        }
+        if ('attribute' in self.search_form) {
+            self.enumerate_data_dict.attribute = []
+            self.enumerate_data_dict.reverse_attribute_dict = {}
+            for (let key in self.enumerate_data_dict.attribute_dict) {
+                const value_list = self.enumerate_data_dict.attribute_dict[key]
+                for (let value of value_list) {
+                    self.enumerate_data_dict.attribute.push(value)
+                    self.enumerate_data_dict.reverse_attribute_dict[value] = key
+                 }
             }
-        self.enumerate_data_dict.attribute = []
-        self.enumerate_data_dict.reverse_attribute_dict = {}
-        for (let key in self.enumerate_data_dict.attribute_dict) {
-            const value_list = self.enumerate_data_dict.attribute_dict[key]
-            for (let value of value_list) {
-                self.enumerate_data_dict.attribute.push(value)
-                self.enumerate_data_dict.reverse_attribute_dict[value] = key
-             }
         }
         set_default(self)
         // list_search(self, 1)
@@ -204,4 +190,11 @@ var update_cure_type = function(self) {
     }
   }
 
-export {authentication, update_date, update_town, update_village, reset, list_search, statistic_search, download, update_cure_type}
+var update_attribute = function(self) {
+    self.search_form.attribute = []
+    for (let attribute_gather of self.search_form.attribute_gather) {
+        self.search_form.attribute = self.search_form.attribute.concat(self.enumerate_data_dict.attribute_gather_dict[attribute_gather])
+    }
+  }
+
+export {authentication, update_date, update_town, update_village, reset, download, update_cure_type, deal_error, search, update_attribute}

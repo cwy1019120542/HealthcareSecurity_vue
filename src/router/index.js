@@ -7,6 +7,8 @@ import login from '@/view/login'
 import settle_data from '@/view/settle_data'
 import empty from '@/view/empty'
 import change_password from '@/view/change_password'
+import insured_rate from '@/view/insured_rate'
+import special_insured_rate from '@/view/special_insured_rate'
 
 Vue.use(Router)
 
@@ -41,6 +43,14 @@ export default new Router({
           path: '/main', 
           component: main
         }, 
+        {
+          path: '/insured_rate', 
+          component: insured_rate
+        }, 
+        {
+          path: '/special_insured_rate', 
+          component: special_insured_rate
+        },
       ]
     }, 
     {

@@ -29,6 +29,8 @@
           </template>
           <el-menu-item-group>
             <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="1-1" @click="router_to('/insured_data')" >查询</el-menu-item>
+            <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="1-2" @click="router_to('/insured_rate')" >本地居民参保进度</el-menu-item>
+            <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="1-3" @click="router_to('/special_insured_rate')" >特殊人群参保进度</el-menu-item>
           </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">

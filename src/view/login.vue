@@ -45,6 +45,7 @@
 </style>
 
 <script>
+import {deal_error} from '../functools';
 export default{
     data() {
         return {
@@ -63,13 +64,7 @@ export default{
                 localStorage.setItem('user_data', JSON.stringify(res.data.data))
                 this.$router.push('/main')
             }).catch(error=>{
-                console.log(error)
-                this.loading = false
-                this.$message({
-                    showClose: true, 
-                    message: error.response.data.message, 
-                    type: 'error'
-                })
+                deal_error(this, error)
             })
         }
     }

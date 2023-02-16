@@ -43,16 +43,21 @@
                     <el-checkbox-button v-for="enumerate_cure_type_gather in enumerate_data_dict.cure_type_gather" :label="enumerate_cure_type_gather" :key="enumerate_cure_type_gather">{{enumerate_cure_type_gather}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="人员属性:">
-                <el-select v-model="search_form.attribute" multiple placeholder="请选择" clearable collapse-tags>
-                  <el-option v-for='enumerate_attribute in enumerate_data_dict.attribute' :key="enumerate_attribute" :label="enumerate_attribute" :value="enumerate_attribute"></el-option>
-                </el-select>
-            </el-form-item>
             <el-form-item label="中心报销:">
                 <el-select v-model="search_form.is_centre" placeholder="请选择"  clearable>
                   <el-option label="是" value=1></el-option>
                   <el-option label="否" value=0></el-option>
                 </el-select>
+            </el-form-item>
+            <el-form-item label="人员属性:">
+                <el-select v-model="search_form.attribute" multiple placeholder="请选择" clearable collapse-tags>
+                  <el-option v-for='enumerate_attribute in enumerate_data_dict.attribute' :key="enumerate_attribute" :label="enumerate_attribute" :value="enumerate_attribute"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                  <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
+                    <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
+                  </el-checkbox-group>
             </el-form-item>
             <el-form-item label="结算日期开始:">
                 <el-select v-model="search_form.date_start" placeholder="请选择" clearable>
@@ -64,6 +69,10 @@
                     <el-option v-for="enumerate_settle_date in enumerate_data_dict.settle_date" :key="enumerate_settle_date" :value="enumerate_settle_date"></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="医共体:">
+                  <el-checkbox-group v-model="search_form.hospital_community" @change="update_town()">
+                    <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
+                  </el-checkbox-group>
             </el-form-item>
             <el-form-item label="乡镇:">
                 <el-select v-model="search_form.town" placeholder="请选择" clearable multiple @change="update_village()" collapse-tags>
@@ -74,11 +83,6 @@
                 <el-select v-model="search_form.village" placeholder="请选择" clearable multiple collapse-tags>
                   <el-option v-for='enumerate_village in enumerate_data_dict.village' :key="enumerate_village" :label="enumerate_village" :value="enumerate_village"></el-option>
                 </el-select>
-            </el-form-item>
-            <el-form-item label="医共体:">
-                  <el-checkbox-group v-model="search_form.hospital_community" @change="update_town()">
-                    <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
-                  </el-checkbox-group>
             </el-form-item>
             <el-form-item label="支出不为０:">
                 <el-select v-model="search_form.pay_exists" multiple placeholder="请选择" clearable collapse-tags>
@@ -101,89 +105,89 @@
             <div slot="header" class="clearfix">
                 <span>人次</span>
             </div>
-                <span>{{data_statistic.time_count}}</span>
+                <span>{{data.data.time_count}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>人数</span>
             </div>
-                <span>{{data_statistic.number_count}}</span>
+                <span>{{data.data.number_count}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>总费用（元）</span>
             </div>
-                <span>{{data_statistic.all_expense}}</span>
+                <span>{{data.data.all_expense}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>范围内费用（元）</span>
             </div>
-                <span>{{data_statistic.inner_expense}}</span>
+                <span>{{data.data.inner_expense}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>统筹基金支出（元）</span>
             </div>
-                <span>{{data_statistic.overall_pay}}</span>
+                <span>{{data.data.overall_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>大额医疗支出（元）</span>
             </div>
-                <span>{{data_statistic.large_pay}}</span>
+                <span>{{data.data.large_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>大病保险支出（元）</span>
             </div>
-                <span>{{data_statistic.big_pay}}</span>
+                <span>{{data.data.big_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>医疗救助支出（元）</span>
             </div>
-                <span>{{data_statistic.rescue_pay}}</span>
+                <span>{{data.data.rescue_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>公务员医疗补助（元）</span>
             </div>
-                <span>{{data_statistic.civil_pay}}</span>
+                <span>{{data.data.civil_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>其他基金支付（元）</span>
             </div>
-                <span>{{data_statistic.other_pay}}</span>
+                <span>{{data.data.other_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>基金支付总额（元）</span>
             </div>
-                <span>{{data_statistic.all_pay}}</span>
+                <span>{{data.data.all_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>个人现金支付（元）</span>
             </div>
-                <span>{{data_statistic.cash_pay}}</span>
+                <span>{{data.data.cash_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>个人账户支付（元）</span>
             </div>
-                <span>{{data_statistic.account_pay}}</span>
+                <span>{{data.data.account_pay}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>账户共济支付金额（元）</span>
             </div>
-                <span>{{data_statistic.together_pay}}</span>
+                <span>{{data.data.together_pay}}</span>
             </el-card>
         </div>
         <div v-if='is_list'>
-            <el-table :data="data_list">
+            <el-table :data="data.data">
                 <el-table-column label="序号" width="75" prop="number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="姓名" width="150" prop="name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
@@ -222,7 +226,7 @@
             <el-pagination
             background
             layout="total, prev, pager, next"
-            :total='data_count'
+            :total='data.data_count'
             :current-page.sync='search_form.page'
             @current-change='list_search(search_form.page)'>
             </el-pagination>
@@ -246,14 +250,14 @@
 </style>
     
 <script>
-import {authentication, update_date, update_town, update_village, reset, list_search, statistic_search, download, update_cure_type} from '../functools';
+import {authentication, update_date, update_town, update_village, reset, search, download, update_attribute} from '../functools';
  export default {
       data() {
         return {
           search_form: {
             "year": [], 
-            'name': '', 
-            'id_number': '', 
+            'name': [], 
+            'id_number': [], 
             "person_type": [], 
             "hospital_place": [], 
             "is_centre": [], 
@@ -269,18 +273,17 @@ import {authentication, update_date, update_town, update_village, reset, list_se
             'pay_exists': [], 
             'page': 1, 
             'cure_type_gather': [], 
+            'attribute_gather': [],
           }, 
-          data_statistic: {}, 
-          data_list: [], 
+          data: {}, 
           enumerate_data_dict: {}, 
           user_data: {}, 
           loading: false, 
           is_list: true, 
           town_disabled: false, 
-          data_count: 0, 
           default_town: [], 
           default_village: [], 
-          data_type: 'settle_data', 
+          authority: 'settle_data', 
           date_type: 'settle_date', 
         }
       }, 
@@ -289,14 +292,21 @@ import {authentication, update_date, update_town, update_village, reset, list_se
       }, 
       methods: {
         list_search: function(page) {
-          list_search(this, page)
+          this.is_list = true
+          this.search_form.page = page
+          search(this, 'settle_data/list')
         },
         statistic_search: function() {
-          statistic_search(this)
+          this.is_list = false
+          search(this, 'settle_data/statistic')
         }, 
         download: function() {
-          download(this)
-        }, 
+          var router = 'settle_data/list'
+          if (!is_list) {
+            router = 'insured_data/statistic'
+          }
+          download(this, router)
+        },  
         update_date: function() {
           update_date(this)
         }, 
@@ -314,6 +324,9 @@ import {authentication, update_date, update_town, update_village, reset, list_se
         }, 
         update_cure_type: function() {
             update_cure_type(this)
+        }, 
+        update_attribute: function() {
+          update_attribute(this)
         }, 
       }
 }

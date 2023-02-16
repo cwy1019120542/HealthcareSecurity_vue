@@ -27,6 +27,7 @@
 </style>
 
 <script>
+import {deal_error} from '../functools';
     export default {
         data() {
             return {
@@ -77,12 +78,7 @@
                                 })
                                 this.$router.push('/login')
                             }).catch(error=>{
-                                this.loading = false
-                                this.$message({
-                                    showClose: true, 
-                                    message: error.response.data.message, 
-                                    type: 'error'
-                                })
+                                deal_error(this, error)
                             })
                         }
                     }

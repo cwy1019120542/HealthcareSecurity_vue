@@ -18,10 +18,20 @@
                   <el-option v-for='enumerate_insured_state in enumerate_data_dict.insured_state' :key="enumerate_insured_state" :value="enumerate_insured_state"></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="参加公务员医疗补助:">
+                <el-select v-model="search_form.is_civil" placeholder="请选择"  clearable>
+                  <el-option label="是" value=1></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="人员属性:">
                 <el-select v-model="search_form.attribute" placeholder="请选择" clearable  multiple collapse-tags>
                   <el-option v-for='enumerate_attribute in enumerate_data_dict.attribute' :key="enumerate_attribute" :value="enumerate_attribute"></el-option>
                 </el-select>
+            </el-form-item>
+            <el-form-item>
+                  <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
+                    <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
+                  </el-checkbox-group>
             </el-form-item>
             <el-form-item label="支付日期开始:">
                 <el-select v-model="search_form.date_start" placeholder="请选择"  clearable>
@@ -33,10 +43,10 @@
                     <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="参加公务员医疗补助:">
-                <el-select v-model="search_form.is_civil" placeholder="请选择"  clearable>
-                  <el-option label="是" value=1></el-option>
-                </el-select>
+            <el-form-item label="医共体:" v-if='!town_disabled'>
+                  <el-checkbox-group v-model="search_form.hospital_community" size="medium" @change="update_town()">
+                    <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
+                  </el-checkbox-group>
             </el-form-item>
             <el-form-item label="乡镇:">
                 <el-select v-model="search_form.town" placeholder="请选择" :disabled='town_disabled' :clearable='!town_disabled' :multiple='!town_disabled' :collapse-tags='!town_disabled' @change="update_village()">
@@ -47,11 +57,6 @@
                 <el-select v-model="search_form.village" placeholder="请选择" clearable  multiple collapse-tags>
                   <el-option v-for='enumerate_village in enumerate_data_dict.village' :key="enumerate_village" :value="enumerate_village"></el-option>
                 </el-select>
-            </el-form-item>
-            <el-form-item label="医共体:" v-if='!town_disabled'>
-                  <el-checkbox-group v-model="search_form.hospital_community" size="medium" @change="update_town()">
-                    <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
-                  </el-checkbox-group>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="list_search(1)" icon="el-icon-search">明细查询</el-button>
@@ -69,41 +74,41 @@
             <div slot="header" class="clearfix">
                 <span>总（人）</span>
             </div>
-                <span>{{data_statistic.all_count}}</span>
+                <span>{{data.data.all_count}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>参加居民医保（人）</span>
             </div>
-                <span>{{data_statistic.insured_count}}</span>
+                <span>{{data.data.insured_count}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>未参加居民医保（人）</span>
             </div>
-                <span>{{data_statistic.not_insured_count}}</span>
+                <span>{{data.data.not_insured_count}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>享受参保资助（人）</span>
             </div>
-                <span>{{data_statistic.perk_count}}</span>
+                <span>{{data.data.perk_count}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>自付金额（元）</span>
             </div>
-                <span>{{data_statistic.own_expense}}</span>
+                <span>{{data.data.own_expense}}</span>
             </el-card>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>资助金额（元）</span>
             </div>
-                <span>{{data_statistic.perk}}</span>
+                <span>{{data.data.perk}}</span>
             </el-card>
         </div>
         <div v-if='is_list'>
-          <el-table :data="data_list">
+          <el-table :data="data.data">
           <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
           <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
@@ -121,7 +126,7 @@
         <el-pagination
           background
           layout="total, prev, pager, next"
-          :total='data_count'
+          :total='data.data_count'
           :current-page.sync='search_form.page'
           @current-change='list_search(search_form.page)'>
         </el-pagination>
@@ -144,14 +149,14 @@
 </style>
 
 <script>
-import {authentication, update_date, update_town, update_village, reset, list_search, statistic_search, download} from '../functools';
+import {authentication, update_date, update_town, update_village, reset, search, download, update_attribute} from '../functools';
  export default {
       data() {
         return {
           search_form: {
             "year": '', 
-            'name': '', 
-            "id_number": '', 
+            'name': [], 
+            "id_number": [], 
             "insured_state": [], 
             "attribute": [], 
             'date_start': '', 
@@ -161,10 +166,9 @@ import {authentication, update_date, update_town, update_village, reset, list_se
             "is_civil": [], 
             'page': 1, 
             'hospital_community': [], 
+            'attribute_gather': [], 
           }, 
-          data_count: 0, 
-          data_list: [], 
-          data_statistic: [], 
+          data: {}, 
           enumerate_data_dict: {}, 
           user_data: {}, 
           loading: false, 
@@ -172,7 +176,7 @@ import {authentication, update_date, update_town, update_village, reset, list_se
           is_list: true, 
           default_town: [], 
           default_village: [], 
-          data_type: 'insured_data', 
+          authority: 'insured_data', 
           date_type: 'pay_date', 
         }
       }, 
@@ -181,13 +185,20 @@ import {authentication, update_date, update_town, update_village, reset, list_se
       }, 
       methods: {
         list_search: function(page) {
-          list_search(this, page)
+          this.is_list = true
+          this.search_form.page = page
+          search(this, 'insured_data/list')
         },
         statistic_search: function() {
-          statistic_search(this)
+          this.is_list = false
+          search(this, 'insured_data/statistic')
         }, 
         download: function() {
-          download(this)
+          var router = 'insured_data/list'
+          if (!this.is_list) {
+            router = 'insured_data/statistic'
+          }
+          download(this, router)
         }, 
         update_date: function() {
           update_date(this)
@@ -203,6 +214,9 @@ import {authentication, update_date, update_town, update_village, reset, list_se
         }, 
         reset: function() {
           reset(this)
+        }, 
+        update_attribute: function() {
+          update_attribute(this)
         }, 
       }
     }
