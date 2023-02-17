@@ -302,7 +302,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
         }, 
         download: function() {
           var router = 'settle_data/list'
-          if (!is_list) {
+          if (!this.is_list) {
             router = 'insured_data/statistic'
           }
           download(this, router)
