@@ -250,7 +250,7 @@
 </style>
     
 <script>
-import {authentication, update_date, update_town, update_village, reset, search, download, update_attribute} from '../functools';
+import {authentication, update_date, update_town, update_village, reset, search, download, update_attribute, update_cure_type} from '../functools';
  export default {
       data() {
         return {
