@@ -12,11 +12,6 @@
                   <el-option v-for='enumerate_attribute in enumerate_data_dict.attribute' :key="enumerate_attribute" :value="enumerate_attribute"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item>
-                  <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
-                    <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
-                  </el-checkbox-group>
-            </el-form-item>
             <el-form-item label="支付日期开始:">
                 <el-select v-model="search_form.date_start" placeholder="请选择"  clearable>
                     <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
@@ -27,8 +22,16 @@
                     <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="人员属性快速筛选:">
+                  <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
+                    <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
+                  </el-checkbox-group>
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="search()" icon="el-icon-search">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="warning" @click="download()" icon="el-icon-download">下载未参保人员名单</el-button>
             </el-form-item>
             <el-form-item>
                 <el-button type="info" @click="reset()" round icon="el-icon-refresh">重置</el-button>
@@ -68,7 +71,7 @@
 </style>
 
 <script>
-import {authentication, update_date, search, reset, update_attribute} from '../functools';
+import {authentication, update_date, search, reset, update_attribute, download} from '../functools';
  export default {
       data() {
         return {
@@ -77,7 +80,9 @@ import {authentication, update_date, search, reset, update_attribute} from '../f
             'date_start': '', 
             'date_end': '', 
             'attribute': [], 
-            'attribute_gather': [], 
+            'attribute_gather': [],
+            'town': '',  
+            'insured_state': '其他', 
           }, 
           default_search_form: {}, 
           data: [], 
@@ -90,15 +95,20 @@ import {authentication, update_date, search, reset, update_attribute} from '../f
       }, 
       created () {
         authentication(this)
+        this.default_search_form.attribute_gather = ['应保尽保人群']
+        this.default_search_form.attribute = ['农村特困供养', '城市特困供养', '农村低保', '城市低保', '监测户', '稳定脱贫人口', '致贫返贫人口', '孤儿', '事实无人抚养儿童', '肇事肇祸精神病人']
+        reset(this)
       }, 
       methods: {
         search: function() {
-          console.log(this.search_form)
           search(this, 'special_insured_rate')
         },
         update_date: function() {
           update_date(this)
         }, 
+        download: function() {
+          download(this, 'insured_data/list')
+        },  
         router_to: function(url) {
           this.$router.push(url)
         }, 
