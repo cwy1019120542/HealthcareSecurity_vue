@@ -62,6 +62,7 @@ import {authentication, update_date, search, reset} from '../functools';
             'date_start': '', 
             'date_end': '', 
           }, 
+          default_search_form: {}, 
           data: [], 
           enumerate_data_dict: {}, 
           user_data: {}, 

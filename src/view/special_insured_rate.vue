@@ -79,6 +79,7 @@ import {authentication, update_date, search, reset, update_attribute} from '../f
             'attribute': [], 
             'attribute_gather': [], 
           }, 
+          default_search_form: {}, 
           data: [], 
           enumerate_data_dict: {}, 
           user_data: {}, 

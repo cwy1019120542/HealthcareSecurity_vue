@@ -47,7 +47,7 @@ var deal_error = function(self, error) {
 function clean_params(params_dict, key, value) {
     if (value instanceof Array) {
         if (value.length) {
-                params_dict.params[key] = value.join('_')
+                params_dict.params[key] = value.join('|')
             }
         } 
     else {
@@ -60,7 +60,7 @@ function clean_params(params_dict, key, value) {
 function get_params(self) {
     var params_dict = {'params': {}}
     if (self.search_form.date_start && self.search_form.date_end) {
-      params_dict.params[self.date_type] = `${self.search_form.date_start}_${self.search_form.date_end}`
+      params_dict.params[self.date_type] = `${self.search_form.date_start}|${self.search_form.date_end}`
     }
     if ('attribute' in self.search_form) {
         const reverse_attribute_dict = {}
@@ -107,36 +107,25 @@ var download = function(self, router) {
 }
 
 
-
-function set_default(self) {
-    if ('town' in self.search_form) {
-        self.search_form.town = self.default_town
-        self.enumerate_data_dict.village = self.default_village
-    }
-    self.search_form.year = self.enumerate_data_dict.default_year
-    self.search_form.date_start = ''
-    self.search_form.date_end = ''
-    self.update_date()
-}
-
-
 var authentication = function(self) {
     self.user_data = JSON.parse(localStorage.getItem('user_data'))
     if (self.user_data['authority'].indexOf('*')==-1 && self.user_data['authority'].indexOf(self.authority)==-1) {
         self.$router.push('/login')
     }
     else {
+        for (let key in self.search_form) {
+            self.default_search_form[key] = self.search_form[key]
+        }
         self.$axios.get('/enumerate_data').then((res)=>{
         const data = res['data']['data'];
         self.enumerate_data_dict = data
+        self.default_search_form.year = self.enumerate_data_dict.default_year
         if ('town' in self.search_form) {
             if (self.user_data.town) {
-                self.search_form.town = [self.user_data.town]
+                self.default_search_form.town = [self.user_data.town]
                 self.enumerate_data_dict.town = [self.user_data.town]
                 self.enumerate_data_dict.village = self.enumerate_data_dict.town_village_dict[self.user_data.town]
                 self.town_disabled = true
-                self.default_town = [self.user_data.town]
-                self.default_village = self.enumerate_data_dict.village
                 }
         }
         if ('attribute' in self.search_form) {
@@ -150,8 +139,7 @@ var authentication = function(self) {
                  }
             }
         }
-        set_default(self)
-        // list_search(self, 1)
+        reset(self)
         })
     }
 }
@@ -177,10 +165,10 @@ var update_village = function(self) {
   }
 
 var reset = function(self) {
-    for (let key in self.search_form) {
-          self.search_form[key] = []
+    for (let key in self.default_search_form) {
+          self.search_form[key] = self.default_search_form[key]
         }
-    set_default(self)
+    self.update_date(self)
 }
 
 var update_cure_type = function(self) {
