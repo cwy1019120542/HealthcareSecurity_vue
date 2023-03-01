@@ -315,14 +315,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
           search(this, 'settle_data/merge', 'merge')
         }, 
         download: function() {
-          var router = 'settle_data/list'
-          if (!this.is_list) {
-            router = 'settle_data/statistic'
-          }
-          if (this.is_merge) {
-              router = 'settle_data/merge'
-          }
-          download(this, router)
+          download(this, `settle_data/${this.show_type}`)
         },  
         update_date: function() {
           update_date(this)

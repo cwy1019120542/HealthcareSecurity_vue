@@ -194,11 +194,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
           search(this, 'insured_data/statistic', 'statistic')
         }, 
         download: function() {
-          var router = 'insured_data/list'
-          if (!this.is_list) {
-            router = 'insured_data/statistic'
-          }
-          download(this, router)
+          download(this, `insured_data/${this.show_type}`)
         }, 
         update_date: function() {
           update_date(this)
