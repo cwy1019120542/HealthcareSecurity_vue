@@ -59,14 +59,12 @@
                     <el-option v-for="enumerate_settle_date in enumerate_data_dict.settle_date" :key="enumerate_settle_date" :value="enumerate_settle_date"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="医药机构地点:" style="width: 22%">
+            <el-form-item label="医疗机构名称:" style="width: 22%">
+                <el-input placeholder="请输入" v-model="search_form.hospital_name" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="医药机构地点:">
                 <el-select v-model="search_form.hospital_place" multiple placeholder="请选择" clearable collapse-tags>
                     <el-option v-for="enumerate_hospital_place in enumerate_data_dict.hospital_place" :key="enumerate_hospital_place" :value="enumerate_hospital_place"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="就诊凭证类型:">
-                <el-select v-model="search_form.evidence_type" multiple placeholder="请选择" clearable collapse-tags>
-                    <el-option v-for="enumerate_evidence_type in enumerate_data_dict.evidence_type" :key="enumerate_evidence_type" :value="enumerate_evidence_type"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="医疗类别快速筛选:" style="width: 35%">
@@ -112,7 +110,7 @@
             </el-form-item>
             <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
         </el-form>
-        <div v-if='!is_list'>
+        <div v-if='show_type=="statistic"'>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>人次</span>
@@ -198,23 +196,23 @@
                 <span>{{data.data.together_pay}}</span>
             </el-card>
         </div>
-        <div v-if='is_list'>
+        <div v-if='show_type=="list"||show_type=="merge"'>
             <el-table :data="data.data">
                 <el-table-column label="序号" width="75" prop="number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="姓名" width="150" prop="name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
-                <el-table-column label="笔数" width="75" prop="data_count" header-align="center" align="center" v-if="is_merge"></el-table-column>
-                <el-table-column label="人员类别" width="50" prop="person_type" header-align="center" align="center" v-if="!is_merge"></el-table-column>
+                <el-table-column label="笔数" width="75" prop="data_count" header-align="center" align="center" v-if="show_type=='merge'"></el-table-column>
+                <el-table-column label="人员类别" width="50" prop="person_type" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="人员属性" width="350" prop="attribute" header-align="center" align="center"></el-table-column>
-                <el-table-column label="医药机构地点类别" width="125" prop="hospital_place" header-align="center" align="center" v-if="!is_merge"></el-table-column>
-                <el-table-column label="定点医药机构编号" width="150" prop="hospital_id" header-align="center" align="center" v-if="!is_merge"></el-table-column>
-                <el-table-column label="定点医药机构名称" width="500" prop="hospital_name" header-align="center" align="center" v-if="!is_merge"></el-table-column>
-                <el-table-column label="医院等级" width="100" prop="hospital_level" header-align="center" align="center" v-if="!is_merge"></el-table-column>
-                <el-table-column label="中心报销" width="125" prop="is_centre" header-align="center" align="center" v-if="!is_merge"></el-table-column>
-                <el-table-column label="开始日期" width="175" prop="start_date" header-align="center" align="center" v-if="!is_merge"></el-table-column>
-                <el-table-column label="结束日期" width="175" prop="end_date" header-align="center" align="center" v-if="!is_merge"></el-table-column>
-                <el-table-column label="结算日期" width="175" prop="settle_date" header-align="center" align="center" v-if="!is_merge"></el-table-column>
-                <el-table-column label="就诊凭证类型" width="125" prop="evidence_type" header-align="center" align="center" v-if="!is_merge"></el-table-column>
+                <el-table-column label="医药机构地点类别" width="125" prop="hospital_place" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="定点医药机构编号" width="150" prop="hospital_id" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="定点医药机构名称" width="500" prop="hospital_name" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="医院等级" width="100" prop="hospital_level" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="中心报销" width="125" prop="is_centre" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="开始日期" width="175" prop="start_date" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="结束日期" width="175" prop="end_date" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="结算日期" width="175" prop="settle_date" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="就诊凭证类型" width="125" prop="evidence_type" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="总费用" width="100" prop="all_expense" header-align="center" align="center"></el-table-column>
                 <el-table-column label="全自费金额" width="100" prop="self_expense" header-align="center" align="center"></el-table-column>
                 <el-table-column label="超限价自费费用" width="100" prop="over_expense" header-align="center" align="center"></el-table-column>
@@ -231,8 +229,8 @@
                 <el-table-column label="个人现金支付" width="100" prop="cash_pay" header-align="center" align="center"></el-table-column>
                 <el-table-column label="个人账户支付" width="100" prop="account_pay" header-align="center" align="center"></el-table-column>
                 <el-table-column label="账户共济支付金额" width="100" prop="together_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="病种名称" width="350" prop="illness_name" header-align="center" align="center" v-if="!is_merge"></el-table-column>
-                <el-table-column label="医疗类别" width="200" prop="cure_type" header-align="center" align="center" v-if="!is_merge"></el-table-column>
+                <el-table-column label="病种名称" width="350" prop="illness_name" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="医疗类别" width="200" prop="cure_type" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
                 <el-table-column label="村" width="125" prop="village" header-align="center" align="center"></el-table-column>
                 <el-table-column label="手机号" width="200" header-align="center" align="center" prop="phone_number"></el-table-column>
@@ -290,15 +288,14 @@ import {authentication, update_date, update_town, update_village, reset, search,
             'page': 0, 
             'cure_type_gather': [], 
             'attribute_gather': [],
+            'hospital_name': '', 
           }, 
           default_search_form: {}, 
           data: {}, 
           enumerate_data_dict: {}, 
           user_data: {}, 
           loading: false, 
-          is_list: true, 
-          is_merge: false, 
-          town_disabled: false, 
+          show_type: 'list', 
           authority: 'settle_data', 
           date_type: 'settle_date', 
         }
@@ -308,19 +305,14 @@ import {authentication, update_date, update_town, update_village, reset, search,
       }, 
       methods: {
         list_search: function(page) {
-          this.is_list = true
-          this.is_merge = false
           this.search_form.page = page
-          search(this, 'settle_data/list')
+          search(this, 'settle_data/list', 'list')
         },
         statistic_search: function() {
-          this.is_list = false
-          search(this, 'settle_data/statistic')
+          search(this, 'settle_data/statistic', 'statistic')
         }, 
         merge_search: function() {
-          this.is_list = true
-          this.is_merge = true
-          search(this, 'settle_data/merge')
+          search(this, 'settle_data/merge', 'merge')
         }, 
         download: function() {
           var router = 'settle_data/list'

@@ -69,7 +69,7 @@
             </el-form-item>
             <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
         </el-form>
-        <div v-if='!is_list'>
+        <div v-if='show_type=="statistic"'>
             <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <span>总（人）</span>
@@ -107,7 +107,7 @@
                 <span>{{data.data.perk}}</span>
             </el-card>
         </div>
-        <div v-if='is_list'>
+        <div v-if='show_type=="list"'>
           <el-table :data="data.data">
           <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
@@ -122,7 +122,6 @@
           <el-table-column label="备注" width="300" prop="remark" header-align="center" align="center"></el-table-column>
           <el-table-column label="手机号" width="200" header-align="center" align="center" prop="phone_number"></el-table-column>
         </el-table>
-        </div>
         <el-pagination
           background
           layout="total, prev, pager, next"
@@ -130,6 +129,7 @@
           :current-page.sync='search_form.page'
           @current-change='list_search(search_form.page)'>
         </el-pagination>
+        </div>
     </div>
 </template>
 
@@ -174,7 +174,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
           user_data: {}, 
           loading: false, 
           town_disabled: false, 
-          is_list: true, 
+          show_type: 'list', 
           authority: 'insured_data', 
           date_type: 'pay_date', 
         }
@@ -183,14 +183,15 @@ import {authentication, update_date, update_town, update_village, reset, search,
         authentication(this)
       }, 
       methods: {
+        set_list: function(self, is_true) {
+          self.is_list = is_true
+        }, 
         list_search: function(page) {
-          this.is_list = true
           this.search_form.page = page
-          search(this, 'insured_data/list')
+          search(this, 'insured_data/list', 'list')
         },
         statistic_search: function() {
-          this.is_list = false
-          search(this, 'insured_data/statistic')
+          search(this, 'insured_data/statistic', 'statistic')
         }, 
         download: function() {
           var router = 'insured_data/list'

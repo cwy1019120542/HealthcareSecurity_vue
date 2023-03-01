@@ -83,12 +83,15 @@ function get_params(self) {
     return params_dict
 }
 
-function search(self, router) {
+function search(self, router, show_type=null) {
     self.loading = true
     const params_dict = get_params(self)
     self.$axios.get(`/user/${self.user_data['id']}/${router}`, params_dict).then((res)=>{
       self.loading = false
       self.data = res.data
+      if ('show_type' in self) {
+        self.show_type = show_type
+      }
     }).catch(error=>{
         deal_error(self, error)
     })

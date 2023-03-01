@@ -40,19 +40,20 @@
         <div>
           <el-table :data="data.data" border>
           <el-table-column label="序号" width="80" prop="number" header-align="center" align="center"></el-table-column>
-          <el-table-column label="乡镇" width="120" prop="town" header-align="center" align="center"></el-table-column>
-          <el-table-column label="任务数" width="120" prop="target" header-align="center" align="center"></el-table-column>
-          <el-table-column label="本地居民" width="120" prop="本地居民" header-align="center" align="center"></el-table-column>
-          <el-table-column label="本地职工" width="120" prop="本地职工" header-align="center" align="center"></el-table-column>
-          <el-table-column label="异地居民" width="120" prop="异地居民" header-align="center" align="center"></el-table-column>
-          <el-table-column label="异地职工" width="120" prop="异地职工" header-align="center" align="center"></el-table-column>
-          <el-table-column label="参军" width="120" prop="参军" header-align="center" align="center"></el-table-column>
-          <el-table-column label="服刑" width="120" prop="服刑" header-align="center" align="center"></el-table-column>
-          <el-table-column label="死亡" width="120" prop="死亡" header-align="center" align="center"></el-table-column>
-          <el-table-column label="失联" width="120" prop="失联" header-align="center" align="center"></el-table-column>
-          <el-table-column label="其他原因" width="120" prop="其他" header-align="center" align="center"></el-table-column>
-          <el-table-column label="完成数" width="120" header-align="center" align="center" prop="data_count"></el-table-column>
-          <el-table-column label="完成率" width="130" header-align="center" align="center" prop="percent"></el-table-column>
+          <el-table-column label="乡镇" width="110" prop="town" header-align="center" align="center"></el-table-column>
+          <el-table-column label="任务数" width="110" prop="target" header-align="center" align="center"></el-table-column>
+          <el-table-column label="本地居民" width="110" prop="本地居民" header-align="center" align="center"></el-table-column>
+          <el-table-column label="本地职工" width="110" prop="本地职工" header-align="center" align="center"></el-table-column>
+          <el-table-column label="异地居民" width="110" prop="异地居民" header-align="center" align="center"></el-table-column>
+          <el-table-column label="异地职工" width="110" prop="异地职工" header-align="center" align="center"></el-table-column>
+          <el-table-column label="参军" width="110" prop="参军" header-align="center" align="center"></el-table-column>
+          <el-table-column label="服刑" width="110" prop="服刑" header-align="center" align="center"></el-table-column>
+          <el-table-column label="死亡" width="110" prop="死亡" header-align="center" align="center"></el-table-column>
+          <el-table-column label="失联" width="110" prop="失联" header-align="center" align="center"></el-table-column>
+          <el-table-column label="自愿放弃" width="110" prop="自愿放弃" header-align="center" align="center"></el-table-column>
+          <el-table-column label="其他原因" width="110" prop="其他" header-align="center" align="center"></el-table-column>
+          <el-table-column label="完成数" width="110" header-align="center" align="center" prop="data_count"></el-table-column>
+          <el-table-column label="完成率" width="123" header-align="center" align="center" prop="percent"></el-table-column>
         </el-table>
         </div>
     </div>
