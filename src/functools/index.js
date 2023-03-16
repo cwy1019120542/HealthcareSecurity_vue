@@ -159,7 +159,11 @@ var update_village = function(self) {
     if (self.search_form.town.length) {
       self.enumerate_data_dict.village = []
       for (let town of self.search_form.town) {
-        self.enumerate_data_dict.village = self.enumerate_data_dict.village.concat(self.enumerate_data_dict.town_village_dict[town])
+          for (let village of self.enumerate_data_dict.town_village_dict[town]) {
+              if (!self.enumerate_data_dict.village.includes(village)) {
+                self.enumerate_data_dict.village.push(village)
+              }
+          }
       }
     }
     else {

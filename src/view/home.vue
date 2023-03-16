@@ -125,7 +125,6 @@ export default{
     else {
       this.user_data = user_data
     }
-    this.$router.push('/main')
   }, 
   methods: {
     is_in: function(value) {
