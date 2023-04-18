@@ -38,12 +38,20 @@
                   <el-option v-for='enumerate_insured_state in enumerate_data_dict.insured_state' :key="enumerate_insured_state" :value="enumerate_insured_state"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="支付日期开始:">
+            <el-form-item label="共济账户支付:">
+                <el-select v-model="search_form.is_account_pay" placeholder="请选择"  clearable>
+                  <el-option label="是" value=1></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="个人自付:">
+                <el-input placeholder="请输入" v-model="search_form.own_expense" clearable><template slot="append">元</template></el-input>
+            </el-form-item>
+            <el-form-item label="支付日期开始:" style="width: 23%">
                 <el-select v-model="search_form.date_start" placeholder="请选择"  clearable>
                     <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="支付日期结束:">
+            <el-form-item label="支付日期结束:" style="width: 23%">
                 <el-select v-model="search_form.date_end" placeholder="请选择"  clearable>
                     <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
                 </el-select>
@@ -118,7 +126,8 @@
           <el-table-column label="村" width="125" prop="village" header-align="center" align="center"></el-table-column>
           <el-table-column label="自付金额" width="100" prop="own_expense" header-align="center" align="center"></el-table-column>
           <el-table-column label="支付日期" width="175" prop="pay_date" header-align="center" align="center"></el-table-column>
-          <el-table-column label="是否参加公务员医疗补助" width="175" prop="is_civil" header-align="center" align="center"></el-table-column>
+          <el-table-column label="参加公务员医疗补助" width="175" prop="is_civil" header-align="center" align="center"></el-table-column>
+          <el-table-column label="共济账户支付" width="150" prop="is_account_pay" header-align="center" align="center"></el-table-column>
           <el-table-column label="备注" width="300" prop="remark" header-align="center" align="center"></el-table-column>
           <el-table-column label="手机号" width="200" header-align="center" align="center" prop="phone_number"></el-table-column>
         </el-table>
@@ -156,7 +165,8 @@ import {authentication, update_date, update_town, update_village, reset, search,
           search_form: {
             "year": '', 
             'name': '', 
-            "id_number": '', 
+            "id_number": '',
+            'own_expense': '',  
             "insured_state": [], 
             "attribute": [], 
             'date_start': '', 
@@ -164,6 +174,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
             "town": [], 
             "village": [], 
             "is_civil": '', 
+            "is_account_pay": '', 
             'page': 0, 
             'hospital_community': [], 
             'attribute_gather': [], 

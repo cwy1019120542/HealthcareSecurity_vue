@@ -208,7 +208,6 @@
                 <el-table-column label="定点医药机构编号" width="150" prop="hospital_id" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="定点医药机构名称" width="500" prop="hospital_name" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="医院等级" width="100" prop="hospital_level" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
-                <el-table-column label="中心报销" width="125" prop="is_centre" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="开始日期" width="175" prop="start_date" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="结束日期" width="175" prop="end_date" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="结算日期" width="175" prop="settle_date" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
@@ -231,6 +230,9 @@
                 <el-table-column label="账户共济支付金额" width="100" prop="together_pay" header-align="center" align="center"></el-table-column>
                 <el-table-column label="病种名称" width="350" prop="illness_name" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="医疗类别" width="200" prop="cure_type" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="统筹基金支付比例" width="125" prop="overall_percent" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="中心报销" width="125" prop="is_centre" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="经办人员" width="125" prop="operator" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
                 <el-table-column label="村" width="125" prop="village" header-align="center" align="center"></el-table-column>
                 <el-table-column label="手机号" width="200" header-align="center" align="center" prop="phone_number"></el-table-column>
