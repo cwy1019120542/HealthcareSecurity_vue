@@ -1,6 +1,6 @@
 <template>
     <div v-loading="loading">
-        <el-page-header @back="router_to('/main')" content="结算数据统计"></el-page-header>
+        <el-page-header @back="router_to('/main')" content="结算数据查询"></el-page-header>
         <el-form :inline="true" class="demo-form-inline" :model="search_form">
             <el-form-item label="年份:">
                 <el-select v-model="search_form.year" placeholder="请选择" @change="update_date()">
@@ -8,10 +8,10 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="姓名:">
-                <el-input placeholder="请输入" v-model="search_form.name" clearable></el-input>
+                <el-input placeholder="请输入" v-model="search_form.name" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
             <el-form-item label="身份证号:">
-                <el-input placeholder="请输入" v-model="search_form.id_number" clearable></el-input>
+                <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
             <el-form-item label="人员类别:">
                 <el-select v-model="search_form.person_type" multiple placeholder="请选择" clearable collapse-tags>
@@ -60,7 +60,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="医疗机构名称:" style="width: 22%">
-                <el-input placeholder="请输入" v-model="search_form.hospital_name" clearable></el-input>
+                <el-input placeholder="请输入" v-model="search_form.hospital_name" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
             <el-form-item label="医药机构地点:">
                 <el-select v-model="search_form.hospital_place" multiple placeholder="请选择" clearable collapse-tags>
@@ -94,7 +94,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item style="width: 11%">
-                <el-input placeholder="请输入内容" v-model="search_form.pay_type_value" clearable><template slot="append">元</template></el-input>
+                <el-input placeholder="请输入内容" v-model="search_form.pay_type_value" clearable @keyup.enter.native="list_search(1)"><template slot="append">元</template></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="list_search(1)" icon="el-icon-search">明细查询</el-button>
@@ -108,7 +108,9 @@
             <el-form-item>
                 <el-button type="info" round icon="el-icon-refresh" @click='reset()'>重置</el-button>
             </el-form-item>
-            <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
+            <el-form-item>
+                <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
+            </el-form-item>
         </el-form>
         <div v-if='show_type=="statistic"'>
             <el-card class="box-card" shadow="hover">
@@ -303,7 +305,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
         }
       }, 
       created () {
-        authentication(this)
+        authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|hospital_level|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict', false, ['town', 'attribute'])
       }, 
       methods: {
         list_search: function(page) {

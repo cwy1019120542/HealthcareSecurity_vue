@@ -9,6 +9,8 @@ import empty from '@/view/empty'
 import change_password from '@/view/change_password'
 import insured_rate from '@/view/insured_rate'
 import special_insured_rate from '@/view/special_insured_rate'
+import staff from '@/view/staff'
+import check_data from '@/view/check_data'
 
 Vue.use(Router)
 
@@ -50,6 +52,15 @@ export default new Router({
         {
           path: '/special_insured_rate', 
           component: special_insured_rate
+        },
+        {
+          path: '/staff', 
+          component: staff, 
+        },
+        {
+          path: '/check_data', 
+          component: check_data, 
+          name: 'check_data', 
         },
       ]
     }, 

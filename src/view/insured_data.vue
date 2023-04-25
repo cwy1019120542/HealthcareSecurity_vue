@@ -1,6 +1,6 @@
 <template>
     <div v-loading="loading">
-      <el-page-header @back="router_to('/main')" content="参保数据明细"></el-page-header>
+      <el-page-header @back="router_to('/main')" content="参保数据查询"></el-page-header>
         <el-form :inline="true" :model="search_form">
             <el-form-item label="年份:">
                 <el-select v-model="search_form.year" placeholder="请选择"  @change="update_date()">
@@ -8,10 +8,10 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="姓名:">
-                <el-input placeholder="请输入" v-model="search_form.name" clearable></el-input>
+                <el-input placeholder="请输入" v-model="search_form.name" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
             <el-form-item label="身份证号:" class='id_number_form'>
-                <el-input placeholder="请输入" v-model="search_form.id_number" clearable></el-input>
+                <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
             <el-form-item label="参加公务员医疗补助:">
                 <el-select v-model="search_form.is_civil" placeholder="请选择"  clearable>
@@ -44,7 +44,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="个人自付:">
-                <el-input placeholder="请输入" v-model="search_form.own_expense" clearable><template slot="append">元</template></el-input>
+                <el-input placeholder="请输入" v-model="search_form.own_expense" clearable @keyup.enter.native="list_search(1)"><template slot="append">元</template></el-input>
             </el-form-item>
             <el-form-item label="支付日期开始:" style="width: 23%">
                 <el-select v-model="search_form.date_start" placeholder="请选择"  clearable>
@@ -75,7 +75,9 @@
             <el-form-item>
                 <el-button type="info" @click="reset()" round icon="el-icon-refresh">重置</el-button>
             </el-form-item>
-            <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
+            <el-form-item>
+              <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
+            </el-form-item>
         </el-form>
         <div v-if='show_type=="statistic"'>
             <el-card class="box-card" shadow="hover">
@@ -191,12 +193,9 @@ import {authentication, update_date, update_town, update_village, reset, search,
         }
       }, 
       created () {
-        authentication(this)
+        authentication(this, 'attribute_dict|insured_state|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict', false, ['town', 'attribute'])
       }, 
       methods: {
-        set_list: function(self, is_true) {
-          self.is_list = is_true
-        }, 
         list_search: function(page) {
           this.search_form.page = page
           search(this, 'insured_data/list', 'list')

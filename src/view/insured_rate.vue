@@ -9,12 +9,12 @@
             </el-form-item>
             <el-form-item label="支付日期开始:">
                 <el-select v-model="search_form.date_start" placeholder="请选择"  clearable>
-                    <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
+                    <el-option v-for="enumerate_pay_date in enumerate_data_dict.search_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="支付日期结束:">
                 <el-select v-model="search_form.date_end" placeholder="请选择"  clearable>
-                    <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
+                    <el-option v-for="enumerate_pay_date in enumerate_data_dict.search_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
@@ -68,11 +68,11 @@ import {authentication, update_date, search, reset} from '../functools';
           user_data: {}, 
           loading: false, 
           authority: 'insured_data', 
-          date_type: 'pay_date'
+          date_type: 'pay_date', 
         }
       }, 
       created () {
-        authentication(this)
+        authentication(this, 'default_year|year')
       }, 
       methods: {
         search: function() {

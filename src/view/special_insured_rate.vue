@@ -91,11 +91,11 @@ import {authentication, update_date, search, reset, update_attribute, download} 
           user_data: {}, 
           loading: false, 
           authority: 'insured_data', 
-          date_type: 'pay_date'
+          date_type: 'pay_date', 
         }
       }, 
       created () {
-        authentication(this)
+        authentication(this, 'attribute_dict|attribute_gather|default_year|year', false, ['attribute'])
         this.default_search_form.attribute_gather = ['应保尽保人群']
         this.default_search_form.attribute = ['农村特困供养', '城市特困供养', '农村低保', '城市低保', '监测户', '稳定脱贫人口', '致贫返贫人口', '孤儿', '事实无人抚养儿童', '肇事肇祸精神病人']
         reset(this)

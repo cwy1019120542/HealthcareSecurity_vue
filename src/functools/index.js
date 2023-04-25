@@ -7,28 +7,29 @@ var status_dict = {
 }
 
 var update_date = function(self) {
-    if (self.date_type == 'settle_date') {
-        self.enumerate_data_dict.settle_date = []
+    var date_type_list = ['check_date', 'pay_date']
+    if (date_type_list.includes(self.date_type)) {
+        self.enumerate_data_dict[self.date_type] = []
         for (let i=1;i<=12;i++) {
             if (i < 10) {
                 i = `0${i}`
             }
-        self.enumerate_data_dict.settle_date.push(`${self.search_form.year}-${i}`)
+        self.enumerate_data_dict[self.date_type].push(`${self.search_form.year}-${i}`)
         }
     }
     else {
-        self.enumerate_data_dict.pay_date = []
+        self.enumerate_data_dict[self.date_type] = []
         for (let i=1;i<=12;i++) {
             if (i < 10) {
                 i = `0${i}`
             }
-            self.enumerate_data_dict.pay_date.push(`${parseInt(self.search_form.year)-1}-${i}`)
+            self.enumerate_data_dict[self.date_type].push(`${parseInt(self.search_form.year)-1}-${i}`)
         }
         for (let i=1;i<=12;i++) {
             if (i < 10) {
                 i = `0${i}`
             }
-            self.enumerate_data_dict.pay_date.push(`${self.search_form.year}-${i}`)
+            self.enumerate_data_dict[self.date_type].push(`${self.search_form.year}-${i}`)
         }
     }
     
@@ -109,20 +110,8 @@ var download = function(self, router) {
     })
 }
 
-
-var authentication = function(self) {
-    self.user_data = JSON.parse(localStorage.getItem('user_data'))
-    if (self.user_data['authority'].indexOf('*')==-1 && self.user_data['authority'].indexOf(self.authority)==-1) {
-        self.$router.push('/login')
-    }
-    else {
-        for (let key in self.search_form) {
-            self.default_search_form[key] = self.search_form[key]
-        }
-        self.$axios.get('/enumerate_data').then((res)=>{
-        const data = res['data']['data'];
-        self.enumerate_data_dict = data
-        self.default_search_form.year = self.enumerate_data_dict.default_year
+var clean_enumerate_func_dict = {
+    'town': function(self) {
         if ('town' in self.search_form) {
             if (self.user_data.town) {
                 self.default_search_form.town = [self.user_data.town]
@@ -130,7 +119,12 @@ var authentication = function(self) {
                 self.enumerate_data_dict.village = self.enumerate_data_dict.town_village_dict[self.user_data.town]
                 self.town_disabled = true
                 }
+            else {
+                self.enumerate_data_dict.village = []
+            }
         }
+    }, 
+    'attribute': function(self) {
         if ('attribute' in self.search_form) {
             self.enumerate_data_dict.attribute = []
             self.enumerate_data_dict.reverse_attribute_dict = {}
@@ -142,7 +136,31 @@ var authentication = function(self) {
                  }
             }
         }
-        reset(self)
+    }, 
+    'check': function(self) {
+        self.enumerate_data_dict.check_type = []
+        self.enumerate_data_dict.check_source = []
+    }, 
+}
+
+
+var authentication = function(self, enumerate_field, is_search=false, enumerate_func_list=[]) {
+    self.user_data = JSON.parse(localStorage.getItem('user_data'))
+    if (self.user_data['authority'].indexOf('*')==-1 && self.user_data['authority'].indexOf(self.authority)==-1) {
+        self.$router.push('/login')
+    }
+    else {
+        for (let key in self.search_form) {
+            self.default_search_form[key] = self.search_form[key]
+        }
+        self.$axios.get('/enumerate_data', {'params': {'enumerate_field': enumerate_field}}).then((res)=>{
+        const data = res['data']['data'];
+        self.enumerate_data_dict = data
+        self.default_search_form.year = self.enumerate_data_dict.default_year
+        for (let enumerate_func of enumerate_func_list) {
+            clean_enumerate_func_dict[enumerate_func](self)
+        }
+        reset(self, is_search)
         })
     }
 }
@@ -171,11 +189,16 @@ var update_village = function(self) {
     }
   }
 
-var reset = function(self) {
+var reset = function(self, is_search=false) {
     for (let key in self.default_search_form) {
           self.search_form[key] = self.default_search_form[key]
         }
-    self.update_date(self)
+    if ('date_type' in self) {
+        self.update_date(self)
+    }
+    if (is_search) {
+        self.list_search(1)
+    }
 }
 
 var update_cure_type = function(self) {
@@ -192,4 +215,8 @@ var update_attribute = function(self) {
     }
   }
 
-export {authentication, update_date, update_town, update_village, reset, download, update_cure_type, deal_error, search, update_attribute}
+var alert = function(self, content, title) {
+    self.$alert(content, title, {confirmButtonText: '确定'})
+}
+
+export {authentication, update_date, update_town, update_village, reset, download, update_cure_type, deal_error, search, update_attribute, alert}

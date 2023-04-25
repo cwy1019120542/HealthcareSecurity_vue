@@ -42,6 +42,15 @@
             <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/settle_data')" index="2-１">查询</el-menu-item>
           </el-menu-item-group>
           </el-submenu>
+          <el-submenu index="3">
+          <template slot="title">
+            <i class="el-icon-s-order"></i>
+            <span>考核数据</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item class="aside_option" v-if="is_in('check_data')" @click="router_to('/staff')" index="3-１">查询</el-menu-item>
+          </el-menu-item-group>
+          </el-submenu>
         </el-menu>
     </div>
     <div class="container">
