@@ -108,7 +108,7 @@ import {authentication, update_date, search, reset, update_attribute, download} 
           update_date(this)
         }, 
         download: function() {
-          download(this, 'insured_data/list')
+          download(this, 'insured_data/list/download')
         },  
         router_to: function(url) {
           this.$router.push(url)

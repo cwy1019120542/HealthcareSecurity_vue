@@ -4,10 +4,11 @@ var status_dict = {
     400: '请求失败，请确认参数后重试', 
     401: '身份认证失败，请重新登录',
     413: '数据量过大，请分段下载', 
+    404: '请求失败，请确认参数后重试', 
 }
 
 var update_date = function(self) {
-    var date_type_list = ['check_date', 'pay_date']
+    var date_type_list = ['check_date', 'settle_date']
     if (date_type_list.includes(self.date_type)) {
         self.enumerate_data_dict[self.date_type] = []
         for (let i=1;i<=12;i++) {
@@ -98,13 +99,41 @@ function search(self, router, show_type=null) {
     })
 }
 
-var download = function(self, router) {
+var add = function(self, router) {
+    self.loading = true
+    self.$axios.post(`/user/${self.user_data['id']}/${router}`, self.$qs.stringify(self.add_form)).then((res)=>{
+      self.loading = false
+      self.$message({ 
+        showClose: true, 
+        message: '添加成功', 
+        type: 'success'
+    })
+    self.is_dialog = false
+    self.list_search(1)
+    }
+    ).catch(error=>{
+        deal_error(self, error)
+    })
+}
+
+var download = function(self, router, attachment_id=null) {
   self.loading = true
-  const params_dict = get_params(self)
+  var params_dict = {}
+  if (!attachment_id) {
+    params_dict = get_params(self)
+  }
+  else {
+    params_dict = {'params': {'attachment_id': attachment_id}}
+  }
   params_dict['responseType'] = 'blob'
-  self.$axios.get(`/user/${self.user_data['id']}/${router}/download`, params_dict).then((res)=>{
+  self.$axios.get(`/user/${self.user_data['id']}/${router}`, params_dict).then((res)=>{
       self.loading = false
       fileDownload(res.data, res.headers.file_name)
+      self.$message({ 
+        showClose: true, 
+        message: '下载成功', 
+        type: 'success'
+    })
     }).catch(error=>{
         deal_error(self, error)
     })
@@ -140,18 +169,28 @@ var clean_enumerate_func_dict = {
     'check': function(self) {
         self.enumerate_data_dict.check_type = []
         self.enumerate_data_dict.check_source = []
+        self.enumerate_data_dict.search_operate_type = self.enumerate_data_dict.operate_type
+        if (self.search_form.operate_type) {
+            self.enumerate_data_dict.search_check_type = Object.keys(self.enumerate_data_dict.check_dict[self.search_form.operate_type])
+        }
+        else {
+            self.enumerate_data_dict.search_check_type = []
+        }
+        self.enumerate_data_dict.search_check_source = []
     }, 
 }
 
 
-var authentication = function(self, enumerate_field, is_search=false, enumerate_func_list=[]) {
+var authentication = function(self, enumerate_field, is_search=false, enumerate_func_list=[], default_form_list=['search_form']) {
     self.user_data = JSON.parse(localStorage.getItem('user_data'))
     if (self.user_data['authority'].indexOf('*')==-1 && self.user_data['authority'].indexOf(self.authority)==-1) {
         self.$router.push('/login')
     }
     else {
-        for (let key in self.search_form) {
-            self.default_search_form[key] = self.search_form[key]
+        for (let form_name of default_form_list) {
+            for (let key in self[form_name]) {
+                self[`default_${form_name}`][key] = self[form_name][key]
+            }
         }
         self.$axios.get('/enumerate_data', {'params': {'enumerate_field': enumerate_field}}).then((res)=>{
         const data = res['data']['data'];
@@ -189,9 +228,9 @@ var update_village = function(self) {
     }
   }
 
-var reset = function(self, is_search=false) {
-    for (let key in self.default_search_form) {
-          self.search_form[key] = self.default_search_form[key]
+var reset = function(self, is_search=false, form_name='search_form') {
+    for (let key in self[`default_${form_name}`]) {
+          self[form_name][key] = self[`default_${form_name}`][key]
         }
     if ('date_type' in self) {
         self.update_date(self)
@@ -219,4 +258,4 @@ var alert = function(self, content, title) {
     self.$alert(content, title, {confirmButtonText: '确定'})
 }
 
-export {authentication, update_date, update_town, update_village, reset, download, update_cure_type, deal_error, search, update_attribute, alert}
+export {authentication, update_date, update_town, update_village, reset, download, update_cure_type, deal_error, search, update_attribute, alert, add}

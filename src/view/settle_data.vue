@@ -319,7 +319,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
           search(this, 'settle_data/merge', 'merge')
         }, 
         download: function() {
-          download(this, `settle_data/${this.show_type}`)
+          download(this, `settle_data/${this.show_type}/download`)
         },  
         update_date: function() {
           update_date(this)

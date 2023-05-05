@@ -204,7 +204,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
           search(this, 'insured_data/statistic', 'statistic')
         }, 
         download: function() {
-          download(this, `insured_data/${this.show_type}`)
+          download(this, `insured_data/${this.show_type}/download`)
         }, 
         update_date: function() {
           update_date(this)

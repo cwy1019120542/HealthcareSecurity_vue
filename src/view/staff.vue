@@ -51,12 +51,12 @@
           </el-table-column>
           <el-table-column label="得分" width="100" header-align="center" align="center">
             <template slot-scope="scope">
-                   <el-link type="success" :disabled='scope.row.get_point==0' :icon="{'el-icon-zoom-in': scope.row.get_point!=0}" @click="router_to('/check_data', {'id_number': scope.row.id_number, 'name': scope.row.name, 'operate_type': '加分'})">{{scope.row.get_point}}</el-link>
+                   <el-link type="success" :disabled='scope.row.get_point==0' icon='el-icon-zoom-in' @click="router_to('/check_data', {'id_number': scope.row.id_number, 'name': scope.row.name, 'operate_type': '加分'})">{{scope.row.get_point}}</el-link>
             </template>  
             </el-table-column>
           <el-table-column label="扣分" width="100" header-align="center" align="center">
             <template slot-scope="scope">
-                   <el-link type="danger" :disabled='scope.row.lost_point==0' :icon="{'el-icon-zoom-out': scope.row.lost_point!=0}" @click="router_to('/check_data', {'id_number': scope.row.id_number, 'name': scope.row.name, 'operate_type': '扣分'})">{{scope.row.lost_point}}</el-link>
+                   <el-link type="danger" :disabled='scope.row.lost_point==0' icon='el-icon-zoom-out' @click="router_to('/check_data', {'id_number': scope.row.id_number, 'name': scope.row.name, 'operate_type': '扣分'})">{{scope.row.lost_point}}</el-link>
             </template>  
             </el-table-column>
           <el-table-column label="事项数" width="100" prop="data_count" header-align="center" align="center"></el-table-column>
@@ -65,7 +65,7 @@
           <el-table-column label="岗位" width="100" prop="position" header-align="center" align="center"></el-table-column>
           <el-table-column label="学历" width="100" prop="education" header-align="center" align="center"></el-table-column>
         　<el-table-column label="手机号" width="200" prop="phone_number" header-align="center" align="center"></el-table-column>
-        　<el-table-column label="调入时间" width="200" prop="enter_date" header-align="center" align="center"></el-table-column>
+        　<el-table-column label="调入时间" width="100" prop="enter_date" header-align="center" align="center"></el-table-column>
         </el-table>
         <el-pagination
           background
