@@ -37,7 +37,6 @@
             <el-form-item>
                 <el-button type="info" @click="reset()" round icon="el-icon-refresh">重置</el-button>
             </el-form-item>
-            <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
         </el-form>
         <div>
           <el-table :data="data.data">
