@@ -37,6 +37,9 @@
             <el-form-item>
                 <el-button type="info" @click="reset()" round icon="el-icon-refresh">重置</el-button>
             </el-form-item>
+            <el-form-item>
+              <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
+            </el-form-item>
         </el-form>
         <div>
           <el-table :data="data.data">
@@ -48,7 +51,7 @@
                    <el-link type="primary" icon="el-icon-view" @click="router_to('/check_data', {'id_number': scope.row.id_number, 'name': scope.row.name})">{{scope.row.point}}</el-link>
             </template>         
           </el-table-column>
-          <el-table-column label="得分" width="100" header-align="center" align="center">
+          <el-table-column label="加分" width="100" header-align="center" align="center">
             <template slot-scope="scope">
                    <el-link type="success" :disabled='scope.row.get_point==0' icon='el-icon-zoom-in' @click="router_to('/check_data', {'id_number': scope.row.id_number, 'name': scope.row.name, 'operate_type': '加分'})">{{scope.row.get_point}}</el-link>
             </template>  
@@ -124,7 +127,7 @@ import {authentication, reset, search, download} from '../functools';
           search(this, 'staff/list')
         },
         download: function() {
-          download(this, 'staff/list')
+          download(this, 'staff/list/download')
         }, 
         router_to: function(path, query={}) {
           this.$router.push({

@@ -39,6 +39,9 @@
                 <el-button type="info" @click="reset()" round icon="el-icon-refresh">重置</el-button>
             </el-form-item>
             <el-form-item>
+              <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
+            </el-form-item>
+            <el-form-item>
                 <el-button type="danger" icon="el-icon-plus" @click="update_add_form()">新增考核事项</el-button>
             </el-form-item>
         </el-form>
@@ -226,7 +229,7 @@ import {authentication, reset, search, download, update_date, alert, deal_error,
               this.search_form.operate_type = this.$route.query.operate_type
           }
         authentication(this, 'default_year|year|operate_type|check_dict', true, ['check'], ['search_form', 'add_form'])
-        this.action = `${this.$axios.defaults.baseURL}/user/${this.user_data['id']}/attachment`
+        this.action = `${this.$axios.defaults.baseURL}/user/${this.user_data['id']}/check_attachment`
       }, 
       methods: {
         list_search: function(page) {
@@ -234,7 +237,7 @@ import {authentication, reset, search, download, update_date, alert, deal_error,
           search(this, 'check_data/list')
         },
         download: function() {
-          download(this, 'check_data/list')
+          download(this, 'check_data/list/download')
         }, 
         router_to: function(url) {
           this.$router.push(url)
@@ -313,7 +316,7 @@ import {authentication, reset, search, download, update_date, alert, deal_error,
           })
         }, 
         download_attachment: function(attachment_id) {
-          download(this, 'attachment', attachment_id)
+          download(this, 'check_attachment', attachment_id)
         }, 
     }, 
  }
