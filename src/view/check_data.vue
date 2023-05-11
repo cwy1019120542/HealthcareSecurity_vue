@@ -251,7 +251,7 @@ import {authentication, reset, search, download, update_date, alert, deal_error,
           reset(this, false, 'add_form')
           this.enumerate_data_dict.check_type = []
           this.enumerate_data_dict.check_source = []
-          this.$$refs.upload.clearFiles()
+          this.$refs.upload.clearFiles()
           this.update_add_form()
         }, 
         update_date: function() {
@@ -297,6 +297,11 @@ import {authentication, reset, search, download, update_date, alert, deal_error,
         }, 
         upload_success: function(response, file, fileList) {
             this.add_form.attachment_id = response.data['attachment_id']
+            this.$message({ 
+            showClose: true, 
+            message: '附件上传成功', 
+            type: 'success'
+        })
         }, 
         upload_error: function(err, file, fileList) {
           this.$message({ 
