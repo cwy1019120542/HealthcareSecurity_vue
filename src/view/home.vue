@@ -139,7 +139,9 @@ export default{
         this.$notify({
           title: data.title,
           message: data.content,
-          duration: 0
+          duration: 0, 
+          type: 'warning', 
+          offset: 80, 
         });
       }
     }).catch(error=>{
