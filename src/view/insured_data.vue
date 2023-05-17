@@ -130,7 +130,7 @@
           <el-table-column label="支付日期" width="175" prop="pay_date" header-align="center" align="center"></el-table-column>
           <el-table-column label="参加公务员医疗补助" width="175" prop="is_civil" header-align="center" align="center"></el-table-column>
           <el-table-column label="共济账户支付" width="150" prop="is_account_pay" header-align="center" align="center"></el-table-column>
-          <el-table-column label="备注" width="300" prop="remark" header-align="center" align="center"></el-table-column>
+          <el-table-column label="备注" width="350" prop="remark" header-align="center" align="center"></el-table-column>
           <el-table-column label="手机号" width="200" header-align="center" align="center" prop="phone_number"></el-table-column>
         </el-table>
         <el-pagination

@@ -204,7 +204,7 @@
                 <el-table-column label="姓名" width="150" prop="name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="笔数" width="75" prop="data_count" header-align="center" align="center" v-if="show_type=='merge'"></el-table-column>
-                <el-table-column label="人员类别" width="50" prop="person_type" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="人员类别" width="100" prop="person_type" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="人员属性" width="350" prop="attribute" header-align="center" align="center"></el-table-column>
                 <el-table-column label="医药机构地点类别" width="125" prop="hospital_place" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="定点医药机构编号" width="150" prop="hospital_id" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
@@ -237,6 +237,7 @@
                 <el-table-column label="经办人员" width="125" prop="operator" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
                 <el-table-column label="村" width="125" prop="village" header-align="center" align="center"></el-table-column>
+                <el-table-column label="备注" width="350" prop="remark" header-align="center" align="center"></el-table-column>
                 <el-table-column label="手机号" width="200" header-align="center" align="center" prop="phone_number"></el-table-column>
             </el-table>
             <el-pagination

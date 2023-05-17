@@ -40,20 +40,22 @@
         <div>
           <el-table :data="data.data" border>
           <el-table-column label="序号" width="80" prop="number" header-align="center" align="center"></el-table-column>
-          <el-table-column label="乡镇" width="110" prop="town" header-align="center" align="center"></el-table-column>
-          <el-table-column label="任务数" width="110" prop="target" header-align="center" align="center"></el-table-column>
-          <el-table-column label="本地居民" width="110" prop="本地居民" header-align="center" align="center"></el-table-column>
-          <el-table-column label="本地职工" width="110" prop="本地职工" header-align="center" align="center"></el-table-column>
-          <el-table-column label="异地居民" width="110" prop="异地居民" header-align="center" align="center"></el-table-column>
-          <el-table-column label="异地职工" width="110" prop="异地职工" header-align="center" align="center"></el-table-column>
-          <el-table-column label="参军" width="110" prop="参军" header-align="center" align="center"></el-table-column>
-          <el-table-column label="服刑" width="110" prop="服刑" header-align="center" align="center"></el-table-column>
-          <el-table-column label="死亡" width="110" prop="死亡" header-align="center" align="center"></el-table-column>
-          <el-table-column label="失联" width="110" prop="失联" header-align="center" align="center"></el-table-column>
-          <el-table-column label="自愿放弃" width="110" prop="自愿放弃" header-align="center" align="center"></el-table-column>
-          <el-table-column label="其他原因" width="110" prop="其他" header-align="center" align="center"></el-table-column>
-          <el-table-column label="完成数" width="110" header-align="center" align="center" prop="data_count"></el-table-column>
-          <el-table-column label="完成率" width="123" header-align="center" align="center" prop="percent"></el-table-column>
+          <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
+          <el-table-column label="任务数" width="100" prop="target" header-align="center" align="center"></el-table-column>
+          <el-table-column label="本地居民" width="100" prop="本地居民" header-align="center" align="center"></el-table-column>
+          <el-table-column label="本地职工(在职)" width="120" prop="本地职工(在职)" header-align="center" align="center"></el-table-column>
+          <el-table-column label="本地职工(退休)" width="120" prop="本地职工(退休)" header-align="center" align="center"></el-table-column>
+          <el-table-column label="异地居民" width="100" prop="异地居民" header-align="center" align="center"></el-table-column>
+          <el-table-column label="异地职工" width="100" prop="异地职工" header-align="center" align="center"></el-table-column>
+          <el-table-column label="参军" width="90" prop="参军" header-align="center" align="center"></el-table-column>
+          <el-table-column label="服刑" width="90" prop="服刑" header-align="center" align="center"></el-table-column>
+          <el-table-column label="死亡" width="90" prop="死亡" header-align="center" align="center"></el-table-column>
+          <el-table-column label="失联" width="90" prop="失联" header-align="center" align="center"></el-table-column>
+          <el-table-column label="动态新增" width="90" prop="动态新增" header-align="center" align="center"></el-table-column>
+          <el-table-column label="自愿放弃" width="90" prop="自愿放弃" header-align="center" align="center"></el-table-column>
+          <el-table-column label="其他原因" width="90" prop="其他" header-align="center" align="center"></el-table-column>
+          <el-table-column label="完成数" width="90" header-align="center" align="center" prop="data_count"></el-table-column>
+          <el-table-column label="完成率" width="90" header-align="center" align="center" prop="percent"></el-table-column>
         </el-table>
         </div>
     </div>
