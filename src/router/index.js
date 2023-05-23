@@ -11,6 +11,7 @@ import insured_rate from '@/view/insured_rate'
 import special_insured_rate from '@/view/special_insured_rate'
 import staff from '@/view/staff'
 import check_data from '@/view/check_data'
+import civil_pay from '@/view/civil_pay'
 
 Vue.use(Router)
 
@@ -61,6 +62,11 @@ export default new Router({
           path: '/check_data', 
           component: check_data, 
           name: 'check_data', 
+        },
+        {
+          path: '/civil_pay', 
+          component: civil_pay, 
+          name: 'civil_pay', 
         },
       ]
     }, 

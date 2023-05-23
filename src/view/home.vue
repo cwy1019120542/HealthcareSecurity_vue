@@ -51,6 +51,15 @@
             <el-menu-item class="aside_option" v-if="is_in('check_data')" @click="router_to('/staff')" index="3-１">查询</el-menu-item>
           </el-menu-item-group>
           </el-submenu>
+          <el-submenu index="4">
+          <template slot="title">
+            <i class="el-icon-s-data"></i>
+            <span>支出测算</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/civil_pay')" index="4-１">公务员医疗补助</el-menu-item>
+          </el-menu-item-group>
+          </el-submenu>
         </el-menu>
     </div>
     <div class="container">

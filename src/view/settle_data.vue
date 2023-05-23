@@ -206,7 +206,7 @@
                 <el-table-column label="笔数" width="75" prop="data_count" header-align="center" align="center" v-if="show_type=='merge'"></el-table-column>
                 <el-table-column label="人员类别" width="100" prop="person_type" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="人员属性" width="350" prop="attribute" header-align="center" align="center"></el-table-column>
-                <el-table-column label="医药机构地点类别" width="125" prop="hospital_place" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="医药机构地点类别" width="150" prop="hospital_place" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="定点医药机构编号" width="150" prop="hospital_id" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="定点医药机构名称" width="500" prop="hospital_name" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="医院等级" width="100" prop="hospital_level" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
@@ -216,23 +216,23 @@
                 <el-table-column label="就诊凭证类型" width="125" prop="evidence_type" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="总费用" width="100" prop="all_expense" header-align="center" align="center"></el-table-column>
                 <el-table-column label="全自费金额" width="100" prop="self_expense" header-align="center" align="center"></el-table-column>
-                <el-table-column label="超限价自费费用" width="100" prop="over_expense" header-align="center" align="center"></el-table-column>
-                <el-table-column label="先行自付金额" width="100" prop="first_expense" header-align="center" align="center"></el-table-column>
+                <el-table-column label="超限价自费费用" width="150" prop="over_expense" header-align="center" align="center"></el-table-column>
+                <el-table-column label="先行自付金额" width="150" prop="first_expense" header-align="center" align="center"></el-table-column>
                 <el-table-column label="范围内费用" width="100" prop="inner_expense" header-align="center" align="center"></el-table-column>
                 <el-table-column label="起付线" width="100" prop="start_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="统筹基金支出" width="100" prop="overall_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="大额医疗支出金额" width="100" prop="large_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="大病保险支出" width="100" prop="big_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="医疗救助支出" width="100" prop="rescue_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="公务员医疗补助" width="100" prop="civil_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="其他基金支付" width="100" prop="other_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="基金支付总额" width="100" prop="all_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="个人现金支付" width="100" prop="cash_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="个人账户支付" width="100" prop="account_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="账户共济支付金额" width="100" prop="together_pay" header-align="center" align="center"></el-table-column>
+                <el-table-column label="统筹基金支出" width="150" prop="overall_pay" header-align="center" align="center"></el-table-column>
+                <el-table-column label="大额医疗支出金额" width="150" prop="large_pay" header-align="center" align="center"></el-table-column>
+                <el-table-column label="大病保险支出" width="150" prop="big_pay" header-align="center" align="center"></el-table-column>
+                <el-table-column label="医疗救助支出" width="150" prop="rescue_pay" header-align="center" align="center"></el-table-column>
+                <el-table-column label="公务员医疗补助" width="150" prop="civil_pay" header-align="center" align="center"></el-table-column>
+                <el-table-column label="其他基金支付" width="150" prop="other_pay" header-align="center" align="center"></el-table-column>
+                <el-table-column label="基金支付总额" width="150" prop="all_pay" header-align="center" align="center"></el-table-column>
+                <el-table-column label="个人现金支付" width="150" prop="cash_pay" header-align="center" align="center"></el-table-column>
+                <el-table-column label="个人账户支付" width="150" prop="account_pay" header-align="center" align="center"></el-table-column>
+                <el-table-column label="账户共济支付金额" width="150" prop="together_pay" header-align="center" align="center"></el-table-column>
                 <el-table-column label="病种名称" width="350" prop="illness_name" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="医疗类别" width="200" prop="cure_type" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
-                <el-table-column label="统筹基金支付比例" width="125" prop="overall_percent" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="统筹基金支付比例" width="150" prop="overall_percent" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="中心报销" width="125" prop="is_centre" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="经办人员" width="125" prop="operator" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
@@ -306,7 +306,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
         }
       }, 
       created () {
-        authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|hospital_level|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict', false, ['town', 'attribute'])
+        authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|hospital_level|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict|cure_type_dict', false, ['town', 'attribute'])
       }, 
       methods: {
         list_search: function(page) {
