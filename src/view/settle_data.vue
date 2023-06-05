@@ -91,22 +91,22 @@
                   <el-option value="否"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="医疗类别快速筛选:" style="width: 35%">
+            <el-form-item label="医疗类别快速筛选:" style="width: 30%">
                   <el-checkbox-group v-model="search_form.cure_type_gather" @change="update_cure_type()">
                     <el-checkbox-button v-for="enumerate_cure_type_gather in enumerate_data_dict.cure_type_gather" :label="enumerate_cure_type_gather" :key="enumerate_cure_type_gather">{{enumerate_cure_type_gather}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="人员属性快速筛选:" style="width: 29%">
+            <el-form-item label="人员属性快速筛选:" style="width: 30%">
                   <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
                     <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="医共体:">
+            <el-form-item label="医共体:" style="width: 30%">
                   <el-checkbox-group v-model="search_form.hospital_community" @change="update_town()">
                     <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="拨付金额筛选:">
+            <el-form-item label="金额筛选:">
                 <el-select v-model="search_form.pay_type" placeholder="请选择" clearable>
                     <el-option v-for='enumerate_pay_type_label in enumerate_data_dict.pay_type_label' :key="enumerate_pay_type_label" :label="enumerate_pay_type_label" :value="enumerate_data_dict.pay_type_dict[enumerate_pay_type_label]"></el-option>
                 </el-select>
@@ -253,7 +253,8 @@
                 <el-table-column label="个人现金支付" width="150" prop="cash_pay" header-align="center" align="center"></el-table-column>
                 <el-table-column label="个人账户支付" width="150" prop="account_pay" header-align="center" align="center"></el-table-column>
                 <el-table-column label="账户共济支付金额" width="150" prop="together_pay" header-align="center" align="center"></el-table-column>
-                <el-table-column label="病种名称" width="350" prop="illness_name" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="病种编号" width="125" prop="illness_number" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="病种名称" width="350" prop="illness_name" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>                
                 <el-table-column label="医疗类别" width="200" prop="cure_type" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="统筹基金支付比例" width="150" prop="overall_percent" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="中心报销" width="125" prop="is_centre" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>

@@ -37,7 +37,7 @@
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
                <el-table-column label="公务员医疗补助起付线" width="175" prop="start_civil_pay" header-align="center" align="center"></el-table-column>
                <el-table-column label="公务员医疗补助范围内分段额度" width="250" prop="start_inner_pay" header-align="center" align="center"></el-table-column>
-               <el-table-column label="公务员医疗补助拨付类型" width="200" prop="civil_pay_type" header-align="center" align="center"></el-table-column>
+               <el-table-column label="公务员医疗补助拨付类型" width="500" prop="civil_pay_type" header-align="center" align="center"></el-table-column>
                 <el-table-column label="公务员医疗补助范围内拨付" width="200" prop="civil_inner_pay" header-align="center" align="center"></el-table-column>
                 <el-table-column label="公务员医疗补助范围外拨付" width="200" prop="civil_out_pay" header-align="center" align="center"></el-table-column>
                  <el-table-column label="公务员医疗补助总拨付" width="175" prop="civil_all_pay" header-align="center" align="center"></el-table-column>
