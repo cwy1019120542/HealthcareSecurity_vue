@@ -15,7 +15,7 @@
             </el-form-item>
             <el-form-item label="参加公务员医疗补助:">
                 <el-select v-model="search_form.is_civil" placeholder="请选择"  clearable>
-                  <el-option label="是" value=1></el-option>
+                  <el-option value="是"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="人员属性:">
@@ -40,7 +40,7 @@
             </el-form-item>
             <el-form-item label="共济账户支付:">
                 <el-select v-model="search_form.is_account_pay" placeholder="请选择"  clearable>
-                  <el-option label="是" value=1></el-option>
+                  <el-option value="是"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="个人自付:">

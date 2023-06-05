@@ -45,16 +45,16 @@
             </el-form-item>
             <el-form-item label="中心报销:">
                 <el-select v-model="search_form.is_centre" placeholder="请选择"  clearable>
-                  <el-option label="是" value=1></el-option>
-                  <el-option label="否" value=0></el-option>
+                  <el-option value="是"></el-option>
+                  <el-option value="否"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="结算日期开始:" style="width: 22%">
+            <el-form-item label="开始日期:" style="width: 22%">
                 <el-select v-model="search_form.date_start" placeholder="请选择" clearable>
                     <el-option v-for="enumerate_settle_date in enumerate_data_dict.settle_date" :key="enumerate_settle_date" :value="enumerate_settle_date"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="结算日期结束:" style="width: 22%">
+            <el-form-item label="结束日期:" style="width: 22%">
                 <el-select v-model="search_form.date_end" placeholder="请选择" clearable>
                     <el-option v-for="enumerate_settle_date in enumerate_data_dict.settle_date" :key="enumerate_settle_date" :value="enumerate_settle_date"></el-option>
                 </el-select>
@@ -65,6 +65,30 @@
             <el-form-item label="医药机构地点:">
                 <el-select v-model="search_form.hospital_place" multiple placeholder="请选择" clearable collapse-tags>
                     <el-option v-for="enumerate_hospital_place in enumerate_data_dict.hospital_place" :key="enumerate_hospital_place" :value="enumerate_hospital_place"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="是否冲销:" style="width: 22%">
+                <el-select v-model="search_form.is_refund" placeholder="请选择"  clearable>
+                  <el-option value="是"></el-option>
+                  <el-option value="否"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="是否有效:" style="width: 22%">
+                <el-select v-model="search_form.is_valid" placeholder="请选择"  clearable>
+                  <el-option value="是"></el-option>
+                  <el-option value="否"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="是否使用账户:" style="width: 22%">
+                <el-select v-model="search_form.is_use_account" placeholder="请选择"  clearable>
+                  <el-option value="是"></el-option>
+                  <el-option value="否"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="是否中途结算:" style="width: 22%">
+                <el-select v-model="search_form.is_mid_settle" placeholder="请选择"  clearable>
+                  <el-option value="是"></el-option>
+                  <el-option value="否"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="医疗类别快速筛选:" style="width: 35%">
@@ -82,7 +106,6 @@
                     <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
-            
             <el-form-item label="拨付金额筛选:">
                 <el-select v-model="search_form.pay_type" placeholder="请选择" clearable>
                     <el-option v-for='enumerate_pay_type_label in enumerate_data_dict.pay_type_label' :key="enumerate_pay_type_label" :label="enumerate_pay_type_label" :value="enumerate_data_dict.pay_type_dict[enumerate_pay_type_label]"></el-option>
@@ -239,6 +262,10 @@
                 <el-table-column label="村" width="125" prop="village" header-align="center" align="center"></el-table-column>
                 <el-table-column label="备注" width="350" prop="remark" header-align="center" align="center"></el-table-column>
                 <el-table-column label="手机号" width="200" header-align="center" align="center" prop="phone_number"></el-table-column>
+                <el-table-column label="是否使用账户" width="125" prop="is_use_account" header-align="center" align="center"></el-table-column>
+                <el-table-column label="是否中途结算" width="125" prop="is_mid_settle" header-align="center" align="center"></el-table-column>
+                <el-table-column label="是否有效" width="100" prop="is_valid" header-align="center" align="center"></el-table-column>
+                <el-table-column label="是否冲销" width="100" prop="is_refund" header-align="center" align="center"></el-table-column>
             </el-table>
             <el-pagination
             background
@@ -294,6 +321,10 @@ import {authentication, update_date, update_town, update_village, reset, search,
             'cure_type_gather': [], 
             'attribute_gather': [],
             'hospital_name': '', 
+            'is_refund': '否', 
+            'is_valid': '是', 
+            'is_use_account': '', 
+            'is_mid_settle': '', 
           }, 
           default_search_form: {}, 
           data: {}, 
