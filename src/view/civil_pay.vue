@@ -1,6 +1,6 @@
 <template>
     <div v-loading="loading">
-      <el-page-header @back="router_to('/main')" content="公务员医疗补助核算"></el-page-header>
+      <el-page-header @back="router_to('/main')" content="公务员医疗补助测算"></el-page-header>
         <el-form :inline="true" :model="search_form" ref="search_form" :rules="rules">
             <el-form-item label="年份:">
                 <el-select v-model="search_form.year" placeholder="请选择"  @change="update_date()">

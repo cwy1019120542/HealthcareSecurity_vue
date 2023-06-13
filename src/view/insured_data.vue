@@ -46,6 +46,9 @@
             <el-form-item label="个人自付:">
                 <el-input placeholder="请输入" v-model="search_form.own_expense" clearable @keyup.enter.native="list_search(1)"><template slot="append">元</template></el-input>
             </el-form-item>
+            <el-form-item label="户号:" style="width: 20%">
+                <el-input placeholder="请输入" v-model="search_form.family_number" clearable @keyup.enter.native="list_search(1)"></el-input>
+            </el-form-item>
             <el-form-item label="支付日期开始:" style="width: 23%">
                 <el-select v-model="search_form.date_start" placeholder="请选择"  clearable>
                     <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
@@ -122,6 +125,7 @@
           <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
           <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
+          <el-table-column label="户号" width="200" prop="family_number" header-align="center" align="center"></el-table-column>
           <el-table-column label="参保情况" width="125" header-align="center" align="center" prop="insured_state"></el-table-column>
           <el-table-column label="人员属性" width="350" header-align="center" align="center" prop="attribute"></el-table-column>
           <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
@@ -180,6 +184,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
             'page': 0, 
             'hospital_community': [], 
             'attribute_gather': [], 
+            'family_number': '', 
           }, 
           default_search_form: {}, 
           data: {}, 
