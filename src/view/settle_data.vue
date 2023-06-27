@@ -59,8 +59,8 @@
                     <el-option v-for="enumerate_settle_date in enumerate_data_dict.settle_date" :key="enumerate_settle_date" :value="enumerate_settle_date"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="医疗机构名称:" style="width: 22%">
-                <el-input placeholder="请输入" v-model="search_form.hospital_name" clearable @keyup.enter.native="list_search(1)"></el-input>
+            <el-form-item label="医疗机构编码:" style="width: 22%">
+                <el-input placeholder="请输入" v-model="search_form.hospital_id" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
             <el-form-item label="医药机构地点:">
                 <el-select v-model="search_form.hospital_place" multiple placeholder="请选择" clearable collapse-tags>
@@ -73,10 +73,9 @@
                   <el-option value="否"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="是否有效:" style="width: 22%">
-                <el-select v-model="search_form.is_valid" placeholder="请选择"  clearable>
-                  <el-option value="是"></el-option>
-                  <el-option value="否"></el-option>
+            <el-form-item label="跨年冲销:" style="width: 22%">
+                <el-select v-model="search_form.overyear_refund" placeholder="请选择" clearable>
+                    <el-option v-for="enumerate_overyear_refund in enumerate_data_dict.overyear_refund" :key="enumerate_overyear_refund" :value="enumerate_overyear_refund"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="是否使用账户:" style="width: 22%">
@@ -321,9 +320,9 @@ import {authentication, update_date, update_town, update_village, reset, search,
             'page': 0, 
             'cure_type_gather': [], 
             'attribute_gather': [],
-            'hospital_name': '', 
+            'hospital_id': '', 
             'is_refund': '否', 
-            'is_valid': '是', 
+            'overyear_refund': '', 
             'is_use_account': '', 
             'is_mid_settle': '', 
           }, 
@@ -338,7 +337,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
         }
       }, 
       created () {
-        authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|hospital_level|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict|cure_type_dict', false, ['town', 'attribute'])
+        authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|hospital_level|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict|cure_type_dict|overyear_refund', false, ['town', 'attribute'])
       }, 
       methods: {
         list_search: function(page) {
