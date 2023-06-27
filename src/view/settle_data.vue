@@ -266,6 +266,7 @@
                 <el-table-column label="是否中途结算" width="125" prop="is_mid_settle" header-align="center" align="center"></el-table-column>
                 <el-table-column label="是否有效" width="100" prop="is_valid" header-align="center" align="center"></el-table-column>
                 <el-table-column label="是否冲销" width="100" prop="is_refund" header-align="center" align="center"></el-table-column>
+                <el-table-column label="跨年冲销" width="100" prop="overyear_refund" header-align="center" align="center"></el-table-column>
             </el-table>
             <el-pagination
             background
