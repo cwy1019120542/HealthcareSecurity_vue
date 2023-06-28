@@ -73,7 +73,7 @@
                   <el-option value="否"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="跨年冲销:" style="width: 22%">
+            <el-form-item label="跨年冲销:" style="width: 22%" @change="update_refund()">
                 <el-select v-model="search_form.overyear_refund" placeholder="请选择" clearable>
                     <el-option v-for="enumerate_overyear_refund in enumerate_data_dict.overyear_refund" :key="enumerate_overyear_refund" :value="enumerate_overyear_refund"></el-option>
                 </el-select>
@@ -374,6 +374,14 @@ import {authentication, update_date, update_town, update_village, reset, search,
         }, 
         update_attribute: function() {
           update_attribute(this)
+        }, 
+        update_refund: function() {
+            if (this.overyear_refund) {
+                this.is_refund = '是'
+            }
+            else {
+                this.is_refund = '否'
+            }
         }, 
       }
 }
