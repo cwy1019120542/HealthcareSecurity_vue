@@ -8,10 +8,10 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="姓名:">
-                <el-input placeholder="请输入" v-model="search_form.name" clearable @keyup.enter.native="list_search(1)"></el-input>
+                <el-input placeholder="请输入" v-model="search_form.name" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="身份证号:">
-                <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="list_search(1)"></el-input>
+                <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="人员类别:">
                 <el-select v-model="search_form.person_type" multiple placeholder="请选择" clearable collapse-tags>
@@ -60,7 +60,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="医疗机构编码:" style="width: 22%">
-                <el-input placeholder="请输入" v-model="search_form.hospital_id" clearable @keyup.enter.native="list_search(1)"></el-input>
+                <el-input placeholder="请输入" v-model="search_form.hospital_id" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="医药机构地点:">
                 <el-select v-model="search_form.hospital_place" multiple placeholder="请选择" clearable collapse-tags>
@@ -116,16 +116,16 @@
                 </el-select>
             </el-form-item>
             <el-form-item style="width: 11%">
-                <el-input placeholder="请输入内容" v-model="search_form.pay_type_value" clearable @keyup.enter.native="list_search(1)"><template slot="append">元</template></el-input>
+                <el-input placeholder="请输入内容" v-model="search_form.pay_type_value" clearable @keyup.enter.native="search('list', 1)"><template slot="append">元</template></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="list_search(1)" icon="el-icon-search">明细查询</el-button>
+                <el-button type="primary" @click="search('list', 1)" icon="el-icon-search">明细查询</el-button>
             </el-form-item>
             <el-form-item>
-                <el-button type="success" @click="statistic_search()" icon="el-icon-search">统计查询</el-button>
+                <el-button type="success" @click="search('statistic')" icon="el-icon-search">统计查询</el-button>
             </el-form-item>
             <el-form-item>
-                <el-button type="danger" @click="merge_search()" icon="el-icon-search">人员账目合并查询</el-button>
+                <el-button type="danger" @click="search('merge')" icon="el-icon-search">人员账目合并查询</el-button>
             </el-form-item>
             <el-form-item>
                 <el-button type="info" round icon="el-icon-refresh" @click='reset()'>重置</el-button>
@@ -221,7 +221,7 @@
             </el-card>
         </div>
         <div v-if='show_type=="list"||show_type=="merge"'>
-            <el-table :data="data.data">
+            <el-table :data="data.data" stripe>
                 <el-table-column label="序号" width="75" prop="number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="姓名" width="150" prop="name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
@@ -273,7 +273,7 @@
             layout="total, prev, pager, next"
             :total='data.data_count'
             :current-page.sync='search_form.page'
-            @current-change='list_search(search_form.page)'>
+            @current-change="search('list', search_form.page)">
             </el-pagination>
         </div>
     </div>
@@ -342,15 +342,9 @@ import {authentication, update_date, update_town, update_village, reset, search,
         authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|hospital_level|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict|cure_type_dict|overyear_refund', false, ['town', 'attribute'])
       }, 
       methods: {
-        list_search: function(page) {
+        search: function(show_type, page=0) {
           this.search_form.page = page
-          search(this, 'settle_data/list', 'list')
-        },
-        statistic_search: function() {
-          search(this, 'settle_data/statistic', 'statistic')
-        }, 
-        merge_search: function() {
-          search(this, 'settle_data/merge', 'merge')
+          search(this, `settle_data/${show_type}`, show_type)
         }, 
         download: function() {
           download(this, `settle_data/${this.show_type}/download`)

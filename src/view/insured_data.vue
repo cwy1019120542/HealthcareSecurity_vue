@@ -44,6 +44,13 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="个人自付:">
+            </el-form-item>
+            <el-form-item style="width: 7%">
+                <el-select v-model="search_form.pay_type_operator" placeholder="请选择" clearable>
+                    <el-option v-for='enumerate_pay_type_operator_label in enumerate_data_dict.pay_type_operator_label' :key="enumerate_pay_type_operator_label" :label="enumerate_pay_type_operator_label" :value="enumerate_data_dict.pay_type_operator_dict[enumerate_pay_type_operator_label]"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item style="width: 11%">
                 <el-input placeholder="请输入" v-model="search_form.own_expense" clearable @keyup.enter.native="list_search(1)"><template slot="append">元</template></el-input>
             </el-form-item>
             <el-form-item label="户号:" style="width: 20%">
@@ -121,7 +128,7 @@
             </el-card>
         </div>
         <div v-if='show_type=="list"'>
-          <el-table :data="data.data">
+          <el-table :data="data.data" stripe>
           <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
           <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
@@ -185,6 +192,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
             'hospital_community': [], 
             'attribute_gather': [], 
             'family_number': '', 
+            'pay_type_operator': '', 
           }, 
           default_search_form: {}, 
           data: {}, 
@@ -198,7 +206,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
         }
       }, 
       created () {
-        authentication(this, 'attribute_dict|insured_state|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict', false, ['town', 'attribute'])
+        authentication(this, 'attribute_dict|insured_state|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|pay_type_operator_dict|pay_type_operator_label', false, ['town', 'attribute'])
       }, 
       methods: {
         list_search: function(page) {

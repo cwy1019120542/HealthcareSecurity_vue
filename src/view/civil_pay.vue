@@ -10,12 +10,12 @@
             <el-form-item label="身份证号:" class='id_number_form' prop="id_number">
                 <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
-            <el-form-item label="支付日期开始:">
+            <el-form-item label="开始日期:">
                 <el-select v-model="search_form.date_start" placeholder="请选择"  clearable>
                     <el-option v-for="enumerate_pay_date in enumerate_data_dict.settle_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="支付日期结束:">
+            <el-form-item label="结束日期:">
                 <el-select v-model="search_form.date_end" placeholder="请选择"  clearable>
                     <el-option v-for="enumerate_pay_date in enumerate_data_dict.settle_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
                 </el-select>
@@ -31,7 +31,7 @@
             </el-form-item>
         </el-form>
         <div>
-          <el-table :data="data.data" border>
+          <el-table :data="data.data" border stripe>
               <el-table-column label="序号" width="75" prop="number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="姓名" width="150" prop="name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
@@ -95,6 +95,9 @@ import {authentication, update_date, search, reset, download} from '../functools
             "id_number": '',
             'date_start': '', 
             'date_end': '', 
+            'is_valid': '是', 
+            'is_refund': '否', 
+            'cure_type': ['普通住院', '外伤住院', '无他方责任意外伤害住院', '分疗程间断住院治疗', '单病种住院', '床日费用住院', '转外诊治住院', '急诊转住院', '自主就医住院', '门诊特病', '门诊慢病'], 
           }, 
           default_search_form: {}, 
           data: [], 

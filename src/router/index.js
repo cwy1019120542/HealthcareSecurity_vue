@@ -12,6 +12,7 @@ import special_insured_rate from '@/view/special_insured_rate'
 import staff from '@/view/staff'
 import check_data from '@/view/check_data'
 import civil_pay from '@/view/civil_pay'
+import open_data from '@/view/open_data'
 
 Vue.use(Router)
 
@@ -67,6 +68,11 @@ export default new Router({
           path: '/civil_pay', 
           component: civil_pay, 
           name: 'civil_pay', 
+        },
+        {
+          path: '/open_data', 
+          component: open_data, 
+          name: 'open_data', 
         },
       ]
     }, 

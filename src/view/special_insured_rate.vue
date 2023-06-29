@@ -28,7 +28,7 @@
             </el-form-item>
         </el-form>
         <div>
-          <el-table :data="data.data" border>
+          <el-table :data="data.data" border stripe>
           <el-table-column label="序号" width="80" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
           <el-table-column label="任务数" width="100" prop="target" header-align="center" align="center"></el-table-column>

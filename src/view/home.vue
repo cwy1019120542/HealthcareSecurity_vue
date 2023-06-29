@@ -60,6 +60,15 @@
             <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/civil_pay')" index="4-１">公务员医疗补助</el-menu-item>
           </el-menu-item-group>
           </el-submenu>
+          <el-submenu index="5">
+          <template slot="title">
+            <i class="el-icon-download"></i>
+            <span>数据导出</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item class="aside_option" v-if="is_in('open_data')" @click="router_to('/open_data')" index="5-１">政务公开数据</el-menu-item>
+          </el-menu-item-group>
+          </el-submenu>
         </el-menu>
     </div>
     <div class="container">

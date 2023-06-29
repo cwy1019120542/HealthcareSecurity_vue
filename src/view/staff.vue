@@ -42,7 +42,7 @@
             </el-form-item>
         </el-form>
         <div>
-          <el-table :data="data.data">
+          <el-table :data="data.data" stripe>
           <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
           <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
