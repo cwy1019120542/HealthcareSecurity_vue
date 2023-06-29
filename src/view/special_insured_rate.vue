@@ -70,8 +70,8 @@ import {authentication, search, reset, update_attribute, download} from '../func
         return {
           search_form: {
             "year": '', 
-            'attribute': ['应保尽保人群'], 
-            'attribute_gather': ['农村特困供养', '城市特困供养', '农村低保', '城市低保', '监测户', '稳定脱贫人口', '致贫返贫人口', '孤儿', '事实无人抚养儿童', '肇事肇祸精神病人'],
+            'attribute': ['农村特困供养', '城市特困供养', '农村低保', '城市低保', '监测户', '稳定脱贫人口', '致贫返贫人口', '孤儿', '事实无人抚养儿童', '肇事肇祸精神病人'], 
+            'attribute_gather': ['应保尽保人群'],
             'town': '',  
             'insured_state': '其他', 
           }, 
