@@ -66,7 +66,7 @@
             <span>数据导出</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item class="aside_option" v-if="is_in('open_data')" @click="router_to('/open_data')" index="5-１">政务公开数据</el-menu-item>
+            <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/open_data')" index="5-１">政务公开数据</el-menu-item>
           </el-menu-item-group>
           </el-submenu>
         </el-menu>
