@@ -196,6 +196,7 @@ import {authentication, reset, search, download, update_date, alert, deal_error,
           is_dialog: false, 
           label_width: '5%', 
           action: '', 
+          clean_request_field_list: [], 
           rules: {
             year: [
             { required: true, message: '请选择年份', trigger: 'blur' },

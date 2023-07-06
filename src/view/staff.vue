@@ -116,6 +116,7 @@ import {authentication, reset, search, download} from '../functools';
           user_data: {}, 
           loading: false, 
           authority: 'check_data', 
+          clean_request_field_list: [], 
         }
       }, 
       created () {
