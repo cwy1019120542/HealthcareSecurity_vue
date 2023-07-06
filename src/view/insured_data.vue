@@ -203,6 +203,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
           show_type: 'list', 
           authority: 'insured_data', 
           date_type: 'pay_date', 
+          clean_request_field_list: ['attribute', 'combine_date'], 
         }
       }, 
       created () {

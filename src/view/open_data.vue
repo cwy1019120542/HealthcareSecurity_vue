@@ -64,6 +64,7 @@ import {authentication, update_date, reset, download} from '../functools';
           loading: false, 
           authority: 'settle_data', 
           date_type: 'settle_date', 
+          clean_request_field_list: ['combine_date'], 
         }
       }, 
       created () {

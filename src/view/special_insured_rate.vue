@@ -81,6 +81,7 @@ import {authentication, search, reset, update_attribute, download} from '../func
           user_data: {}, 
           loading: false, 
           authority: 'insured_data', 
+          clean_request_field_list: ['attribute'], 
         }
       }, 
       created () {

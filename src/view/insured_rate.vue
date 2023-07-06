@@ -69,6 +69,7 @@ import {authentication, update_date, search, reset} from '../functools';
           loading: false, 
           authority: 'insured_data', 
           date_type: 'pay_date', 
+          clean_request_field_list: ['combine_date'], 
         }
       }, 
       created () {

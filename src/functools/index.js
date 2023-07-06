@@ -59,36 +59,68 @@ function clean_params(params_dict, key, value) {
     }
     return params_dict
 }
+
+var clean_request_field_dict = {
+    'attribute': function(self, params_dict) {
+        if ('attribute' in params_dict.params) {
+            const reverse_attribute_dict = {}
+            for (let attribute of self.search_form.attribute) {
+                const reverse_attribute = self.enumerate_data_dict.reverse_attribute_dict[attribute]
+                if (reverse_attribute in reverse_attribute_dict) {
+                    reverse_attribute_dict[reverse_attribute].push(attribute)
+                }
+                else {
+                    reverse_attribute_dict[reverse_attribute] = [attribute]
+                }
+            }
+            for (let reverse_attribute in reverse_attribute_dict) {
+                params_dict = clean_params(params_dict, reverse_attribute, reverse_attribute_dict[reverse_attribute])
+            }
+            delete params_dict.params.attribute
+        }
+        return params_dict
+    }, 
+    'combine_date': function(self, params_dict) {
+        if (self.search_form.date_start && self.search_form.date_end) {
+            params_dict.params[self.date_type] = `${self.search_form.date_start}|${self.search_form.date_end}`
+        }
+        delete params_dict.params.date_start
+        delete params_dict.params.date_end
+        return params_dict
+    }, 
+    'local_hospital': function(self, params_dict) {
+        if (self.search_form.local_hospital_id.length) {
+            const params_hospital_id_list = []
+            for (let hospital_id_list of self.search_form.local_hospital_id) {
+                for (let hospital_id of hospital_id_list) {
+                    if (!params_hospital_id_list.includes(hospital_id)) {
+                        params_hospital_id_list.push(hospital_id)
+                    }
+                }
+            }
+            params_dict.params.hospital_id = params_hospital_id_list.join('|')
+        }
+        delete params_dict.params.local_hospital_id
+        return params_dict
+    }, 
+}
+
+
+
 function get_params(self) {
     var params_dict = {'params': {}}
-    if (self.search_form.date_start && self.search_form.date_end) {
-      params_dict.params[self.date_type] = `${self.search_form.date_start}|${self.search_form.date_end}`
-    }
-    if ('attribute' in self.search_form) {
-        const reverse_attribute_dict = {}
-        for (let attribute of self.search_form.attribute) {
-            const reverse_attribute = self.enumerate_data_dict.reverse_attribute_dict[attribute]
-            if (reverse_attribute in reverse_attribute_dict) {
-                reverse_attribute_dict[reverse_attribute].push(attribute)
-            }
-            else {
-                reverse_attribute_dict[reverse_attribute] = [attribute]
-            }
-        }
-        for (let reverse_attribute in reverse_attribute_dict) {
-            params_dict = clean_params(params_dict, reverse_attribute, reverse_attribute_dict[reverse_attribute])
-        }
-    }
     for (let key in self.search_form) {
         params_dict = clean_params(params_dict, key, self.search_form[key])
+    }
+    for (let field of self.clean_request_field_list) {
+        params_dict = clean_request_field_dict[field](self, params_dict)
     }
     return params_dict
 }
 
 function search(self, router, show_type=null) {
     self.loading = true
-    const params_dict = get_params(self)
-    self.$axios.get(`/user/${self.user_data['id']}/${router}`, params_dict).then((res)=>{
+    self.$axios.get(`/user/${self.user_data['id']}/${router}`, get_params(self)).then((res)=>{
       self.loading = false
       self.data = res.data
       if ('show_type' in self) {
@@ -178,6 +210,19 @@ var clean_enumerate_func_dict = {
         }
         self.enumerate_data_dict.search_check_source = []
     }, 
+    'local_hospital': function(self) {
+        for (let hospital in self.enumerate_data_dict.local_hospital_dict) {
+            const children_hospital_list = self.enumerate_data_dict.local_hospital_dict[hospital]
+            const hospital_dict = {value: self.enumerate_data_dict.hospital_name_id_dict[hospital], label: hospital}
+            if (children_hospital_list.length) {
+                hospital_dict['children'] = []
+                for (let children_hospital of children_hospital_list) {
+                    hospital_dict['children'].push({value: self.enumerate_data_dict.hospital_name_id_dict[children_hospital], label: children_hospital})
+                }
+            }
+            self.local_hospital_list.push(hospital_dict)
+        }
+    }
 }
 
 
@@ -234,6 +279,9 @@ var reset = function(self, is_search=false, form_name='search_form') {
         }
     if ('date_type' in self) {
         self.update_date(self)
+    }
+    if ('village' in self[form_name]) {
+        self.enumerate_data_dict.village = []
     }
     if (is_search) {
         self.list_search(1)

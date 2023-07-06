@@ -106,6 +106,7 @@ import {authentication, update_date, search, reset, download} from '../functools
           loading: false, 
           authority: 'settle_data', 
           date_type: 'settle_date', 
+          clean_request_field_list: ['combine_date'], 
           rules: {
             id_number: [
             { required: true, message: '请输入身份证号', trigger: 'blur' },

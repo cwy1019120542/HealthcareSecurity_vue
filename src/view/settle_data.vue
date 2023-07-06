@@ -60,7 +60,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="医疗机构编码:" style="width: 22%">
-                <el-input placeholder="请输入" v-model="search_form.hospital_id" clearable @keyup.enter.native="search('list', 1)"></el-input>
+                <el-input placeholder="请输入" v-model="search_form.hospital_id" clearable @keyup.enter.native="search('list', 1)"  @change="update_local_hospital_id()"></el-input>
             </el-form-item>
             <el-form-item label="医药机构地点:">
                 <el-select v-model="search_form.hospital_place" multiple placeholder="请选择" clearable collapse-tags>
@@ -78,29 +78,26 @@
                     <el-option v-for="enumerate_overyear_refund in enumerate_data_dict.overyear_refund" :key="enumerate_overyear_refund" :value="enumerate_overyear_refund"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="是否使用账户:" style="width: 22%">
-                <el-select v-model="search_form.is_use_account" placeholder="请选择"  clearable>
-                  <el-option value="是"></el-option>
-                  <el-option value="否"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="是否中途结算:" style="width: 22%">
-                <el-select v-model="search_form.is_mid_settle" placeholder="请选择"  clearable>
-                  <el-option value="是"></el-option>
-                  <el-option value="否"></el-option>
-                </el-select>
+            <el-form-item label="本地医疗机构:" style="width: 22%">
+                <el-cascader
+                 v-model="search_form.local_hospital_id"
+                :options="local_hospital_list"
+                :props="props"
+                collapse-tags
+                 @change="update_hospital_id()"
+                clearable></el-cascader>
             </el-form-item>
             <el-form-item label="医疗类别快速筛选:" style="width: 30%">
                   <el-checkbox-group v-model="search_form.cure_type_gather" @change="update_cure_type()">
                     <el-checkbox-button v-for="enumerate_cure_type_gather in enumerate_data_dict.cure_type_gather" :label="enumerate_cure_type_gather" :key="enumerate_cure_type_gather">{{enumerate_cure_type_gather}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="人员属性快速筛选:" style="width: 30%">
+            <el-form-item label="人员属性快速筛选:" style="width: 33%">
                   <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
                     <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="医共体:" style="width: 30%">
+            <el-form-item label="医共体:" style="width: 21%">
                   <el-checkbox-group v-model="search_form.hospital_community" @change="update_town()">
                     <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
                   </el-checkbox-group>
@@ -321,7 +318,8 @@ import {authentication, update_date, update_town, update_village, reset, search,
             'page': 0, 
             'cure_type_gather': [], 
             'attribute_gather': [],
-            'hospital_id': '', 
+            'hospital_id': '',
+            'local_hospital_id': [],  
             'is_refund': '否', 
             'overyear_refund': '', 
             'is_use_account': '', 
@@ -332,16 +330,25 @@ import {authentication, update_date, update_town, update_village, reset, search,
           data: {}, 
           enumerate_data_dict: {}, 
           user_data: {}, 
+          props: { multiple: true },
+          local_hospital_list: [], 
           loading: false, 
           show_type: 'list', 
           authority: 'settle_data', 
           date_type: 'settle_date', 
+          clean_request_field_list: ['attribute', 'local_hospital', 'combine_date'], 
         }
       }, 
       created () {
-        authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|hospital_level|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict|cure_type_dict|overyear_refund', false, ['town', 'attribute'])
+        authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|hospital_level|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict|cure_type_dict|overyear_refund|hospital_name_id_dict|local_hospital_dict', false, ['town', 'attribute', 'local_hospital'])
       }, 
       methods: {
+        update_hospital_id: function(){
+            this.search_form.hospital_id = ''
+        }, 
+        update_local_hospital_id: function() {
+            this.search_form.local_hospital_id = []
+        }, 
         search: function(show_type, page=0) {
           this.search_form.page = page
           search(this, `settle_data/${show_type}`, show_type)
