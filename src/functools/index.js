@@ -7,35 +7,6 @@ var status_dict = {
     404: '请求失败，请确认参数后重试', 
 }
 
-var update_date = function(self) {
-    var date_type_list = ['check_date', 'settle_date']
-    if (date_type_list.includes(self.date_type)) {
-        self.enumerate_data_dict[self.date_type] = []
-        for (let i=1;i<=12;i++) {
-            if (i < 10) {
-                i = `0${i}`
-            }
-        self.enumerate_data_dict[self.date_type].push(`${self.search_form.year}-${i}`)
-        }
-    }
-    else {
-        self.enumerate_data_dict[self.date_type] = []
-        for (let i=1;i<=12;i++) {
-            if (i < 10) {
-                i = `0${i}`
-            }
-            self.enumerate_data_dict[self.date_type].push(`${parseInt(self.search_form.year)-1}-${i}`)
-        }
-        for (let i=1;i<=12;i++) {
-            if (i < 10) {
-                i = `0${i}`
-            }
-            self.enumerate_data_dict[self.date_type].push(`${self.search_form.year}-${i}`)
-        }
-    }
-    
-}
-
 var deal_error = function(self, error) {
     self.loading = false
     self.$message({ 
@@ -78,14 +49,6 @@ var clean_request_field_dict = {
             }
             delete params_dict.params.attribute
         }
-        return params_dict
-    }, 
-    'combine_date': function(self, params_dict) {
-        if (self.search_form.date_start && self.search_form.date_end) {
-            params_dict.params[self.date_type] = `${self.search_form.date_start}|${self.search_form.date_end}`
-        }
-        delete params_dict.params.date_start
-        delete params_dict.params.date_end
         return params_dict
     }, 
     'local_hospital': function(self, params_dict) {
@@ -277,9 +240,6 @@ var reset = function(self, is_search=false, form_name='search_form') {
     for (let key in self[`default_${form_name}`]) {
           self[form_name][key] = self[`default_${form_name}`][key]
         }
-    if ('date_type' in self) {
-        self.update_date(self)
-    }
     if ('village' in self[form_name]) {
         self.enumerate_data_dict.village = []
     }
@@ -306,4 +266,4 @@ var alert = function(self, content, title) {
     self.$alert(content, title, {confirmButtonText: '确定'})
 }
 
-export {authentication, update_date, update_town, update_village, reset, download, update_cure_type, deal_error, search, update_attribute, alert, add}
+export {authentication, update_town, update_village, reset, download, update_cure_type, deal_error, search, update_attribute, alert, add}

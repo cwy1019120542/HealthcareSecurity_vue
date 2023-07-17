@@ -3,19 +3,18 @@
       <el-page-header @back="router_to('/staff')" :content="header_content"></el-page-header>
         <el-form :inline="true" :model="search_form" class='serach_form'>
             <el-form-item label="年份:">
-                <el-select v-model="search_form.year" placeholder="请选择" @change="update_date()">
+                <el-select v-model="search_form.year" placeholder="请选择">
                   <el-option v-for='enumerate_year in enumerate_data_dict.year' :key="enumerate_year" :value="enumerate_year"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="考核日期开始:">
-                <el-select v-model="search_form.date_start" placeholder="请选择" clearable>
-                    <el-option v-for="enumerate_check_date in enumerate_data_dict.check_date" :key="enumerate_check_date" :value="enumerate_check_date"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="考核日期结束:">
-                <el-select v-model="search_form.date_end" placeholder="请选择" clearable>
-                    <el-option v-for="enumerate_check_date in enumerate_data_dict.check_date" :key="enumerate_check_date" :value="enumerate_check_date"></el-option>
-                </el-select>
+            <el-form-item label="考核日期:">
+                <el-date-picker
+                  v-model="search_form.check_date"
+                  type="daterange"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  value-format="yyyy-MM-dd">
+              </el-date-picker>
             </el-form-item>
             <el-form-item label="奖惩类型:">
                 <el-select v-model="search_form.operate_type" placeholder="请选择"  @change="update_search_check_type()" clearable>
@@ -107,7 +106,7 @@
             </el-form-item>
              <el-form-item label="考核日期:" label-width='10%' prop="check_date">
                 <el-col>
-                <el-date-picker type="date" placeholder="选择日期" v-model="add_form.check_date"></el-date-picker>
+                <el-date-picker type="date" placeholder="选择日期" v-model="add_form.check_date" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-col>
             </el-form-item>
             <el-form-item label="备注:" label-width='10%'>
@@ -158,7 +157,7 @@
 </style>
 
 <script>
-import {authentication, reset, search, download, update_date, alert, deal_error, add} from '../functools';
+import {authentication, reset, search, download, alert, deal_error, add} from '../functools';
  export default {
       data() {
         return {
@@ -168,8 +167,7 @@ import {authentication, reset, search, download, update_date, alert, deal_error,
             'operate_type': '',  
             "check_type": '', 
             'check_source': '', 
-            "date_start": '', 
-            "date_end": '', 
+            "check_date": [], 
             'page': 0, 
           }, 
           add_form: {
@@ -191,7 +189,6 @@ import {authentication, reset, search, download, update_date, alert, deal_error,
           user_data: {}, 
           loading: false, 
           authority: 'check_data', 
-          date_type: 'check_date', 
           header_content: '考核数据查询', 
           is_dialog: false, 
           label_width: '5%', 
@@ -254,9 +251,6 @@ import {authentication, reset, search, download, update_date, alert, deal_error,
           this.enumerate_data_dict.check_source = []
           this.$refs.upload.clearFiles()
           this.update_add_form()
-        }, 
-        update_date: function() {
-          update_date(this)
         }, 
         alert: function(content, title) {
             alert(this, content, title)

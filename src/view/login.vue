@@ -11,7 +11,7 @@
                 <el-form-item label="密码:">
                     <el-input placeholder="请输入密码" v-model="login_form.password" prefix-icon="el-icon-s-check" show-password @keyup.enter.native="login"></el-input>
                 </el-form-item>
-                <el-form-item class='center button'>
+                <el-form-item class='center'>
                     <el-button type="primary" @click="login" plain icon="el-icon-s-promotion">登陆</el-button>
                 </el-form-item>
             </el-form>

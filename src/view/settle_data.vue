@@ -3,7 +3,7 @@
         <el-page-header @back="router_to('/main')" content="结算数据查询"></el-page-header>
         <el-form :inline="true" class="demo-form-inline" :model="search_form">
             <el-form-item label="年份:">
-                <el-select v-model="search_form.year" placeholder="请选择" @change="update_date()">
+                <el-select v-model="search_form.year" placeholder="请选择">
                     <el-option v-for="enumerate_year in enumerate_data_dict.year" :key="enumerate_year" :value="enumerate_year"></el-option>
                 </el-select>
             </el-form-item>
@@ -49,23 +49,13 @@
                   <el-option value="否"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="开始日期:" style="width: 22%">
-                <el-select v-model="search_form.date_start" placeholder="请选择" clearable>
-                    <el-option v-for="enumerate_settle_date in enumerate_data_dict.settle_date" :key="enumerate_settle_date" :value="enumerate_settle_date"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="结束日期:" style="width: 22%">
-                <el-select v-model="search_form.date_end" placeholder="请选择" clearable>
-                    <el-option v-for="enumerate_settle_date in enumerate_data_dict.settle_date" :key="enumerate_settle_date" :value="enumerate_settle_date"></el-option>
+            <el-form-item label="医药机构地点:" style="width: 22%">
+                <el-select v-model="search_form.hospital_place" multiple placeholder="请选择" clearable collapse-tags>
+                    <el-option v-for="enumerate_hospital_place in enumerate_data_dict.hospital_place" :key="enumerate_hospital_place" :value="enumerate_hospital_place"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="医疗机构编码:" style="width: 22%">
                 <el-input placeholder="请输入" v-model="search_form.hospital_id" clearable @keyup.enter.native="search('list', 1)"  @change="update_local_hospital_id()"></el-input>
-            </el-form-item>
-            <el-form-item label="医药机构地点:">
-                <el-select v-model="search_form.hospital_place" multiple placeholder="请选择" clearable collapse-tags>
-                    <el-option v-for="enumerate_hospital_place in enumerate_data_dict.hospital_place" :key="enumerate_hospital_place" :value="enumerate_hospital_place"></el-option>
-                </el-select>
             </el-form-item>
             <el-form-item label="是否冲销:" style="width: 22%">
                 <el-select v-model="search_form.is_refund" placeholder="请选择"  clearable>
@@ -87,20 +77,14 @@
                  @change="update_hospital_id()"
                 clearable></el-cascader>
             </el-form-item>
-            <el-form-item label="医疗类别快速筛选:" style="width: 30%">
-                  <el-checkbox-group v-model="search_form.cure_type_gather" @change="update_cure_type()">
-                    <el-checkbox-button v-for="enumerate_cure_type_gather in enumerate_data_dict.cure_type_gather" :label="enumerate_cure_type_gather" :key="enumerate_cure_type_gather">{{enumerate_cure_type_gather}}</el-checkbox-button>
-                  </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="人员属性快速筛选:" style="width: 33%">
-                  <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
-                    <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
-                  </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="医共体:" style="width: 21%">
-                  <el-checkbox-group v-model="search_form.hospital_community" @change="update_town()">
-                    <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
-                  </el-checkbox-group>
+            <el-form-item label="结算日期:" style="width: 28%">
+                <el-date-picker
+                  v-model="search_form.settle_date"
+                  type="daterange"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  value-format="yyyy-MM-dd">
+              </el-date-picker>
             </el-form-item>
             <el-form-item label="金额筛选:">
                 <el-select v-model="search_form.pay_type" placeholder="请选择" clearable>
@@ -114,6 +98,21 @@
             </el-form-item>
             <el-form-item style="width: 11%">
                 <el-input placeholder="请输入内容" v-model="search_form.pay_type_value" clearable @keyup.enter.native="search('list', 1)"><template slot="append">元</template></el-input>
+            </el-form-item>
+            <el-form-item label="医疗类别快速筛选:" style="width: 33%">
+                  <el-checkbox-group v-model="search_form.cure_type_gather" @change="update_cure_type()">
+                    <el-checkbox-button v-for="enumerate_cure_type_gather in enumerate_data_dict.cure_type_gather" :label="enumerate_cure_type_gather" :key="enumerate_cure_type_gather">{{enumerate_cure_type_gather}}</el-checkbox-button>
+                  </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="人员属性快速筛选:" style="width: 33%">
+                  <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
+                    <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
+                  </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="医共体:" style="width: 28%">
+                  <el-checkbox-group v-model="search_form.hospital_community" @change="update_town()">
+                    <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
+                  </el-checkbox-group>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="search('list', 1)" icon="el-icon-search">明细查询</el-button>
@@ -292,7 +291,7 @@
 </style>
     
 <script>
-import {authentication, update_date, update_town, update_village, reset, search, download, update_attribute, update_cure_type} from '../functools';
+import {authentication, update_town, update_village, reset, search, download, update_attribute, update_cure_type} from '../functools';
  export default {
       data() {
         return {
@@ -306,8 +305,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
             "hospital_level": [], 
             "evidence_type": [], 
             "cure_type": [], 
-            "date_start": '', 
-            "date_end": '', 
+            "settle_date": [], 
             "attribute": [], 
             "town": [], 
             "village": [], 
@@ -335,8 +333,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
           loading: false, 
           show_type: 'list', 
           authority: 'settle_data', 
-          date_type: 'settle_date', 
-          clean_request_field_list: ['attribute', 'local_hospital', 'combine_date'], 
+          clean_request_field_list: ['attribute', 'local_hospital'], 
         }
       }, 
       created () {
@@ -356,9 +353,6 @@ import {authentication, update_date, update_town, update_village, reset, search,
         download: function() {
           download(this, `settle_data/${this.show_type}/download`)
         },  
-        update_date: function() {
-          update_date(this)
-        }, 
         router_to: function(url) {
           this.$router.push(url)
         }, 

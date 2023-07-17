@@ -3,22 +3,21 @@
       <el-page-header @back="router_to('/main')" content="公务员医疗补助测算"></el-page-header>
         <el-form :inline="true" :model="search_form" ref="search_form" :rules="rules">
             <el-form-item label="年份:">
-                <el-select v-model="search_form.year" placeholder="请选择"  @change="update_date()">
+                <el-select v-model="search_form.year" placeholder="请选择">
                   <el-option v-for='enumerate_year in enumerate_data_dict.year' :key="enumerate_year" :value="enumerate_year"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="身份证号:" class='id_number_form' prop="id_number">
                 <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
-            <el-form-item label="开始日期:">
-                <el-select v-model="search_form.date_start" placeholder="请选择"  clearable>
-                    <el-option v-for="enumerate_pay_date in enumerate_data_dict.settle_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="结束日期:">
-                <el-select v-model="search_form.date_end" placeholder="请选择"  clearable>
-                    <el-option v-for="enumerate_pay_date in enumerate_data_dict.settle_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
-                </el-select>
+           <el-form-item label="结算日期:">
+                <el-date-picker
+                  v-model="search_form.settle_date"
+                  type="daterange"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  value-format="yyyy-MM-dd">
+              </el-date-picker>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="search()" icon="el-icon-search">查询</el-button>
@@ -86,15 +85,14 @@
 </style>
 
 <script>
-import {authentication, update_date, search, reset, download} from '../functools';
+import {authentication, search, reset, download} from '../functools';
  export default {
       data() {
         return {
           search_form: {
             "year": '', 
             "id_number": '',
-            'date_start': '', 
-            'date_end': '', 
+            'settle_date': [], 
             'is_valid': '是', 
             'is_refund': '否', 
             'cure_type': ['普通住院', '外伤住院', '无他方责任意外伤害住院', '分疗程间断住院治疗', '单病种住院', '床日费用住院', '转外诊治住院', '急诊转住院', '自主就医住院', '门诊特病', '门诊慢病'], 
@@ -105,8 +103,7 @@ import {authentication, update_date, search, reset, download} from '../functools
           user_data: {}, 
           loading: false, 
           authority: 'settle_data', 
-          date_type: 'settle_date', 
-          clean_request_field_list: ['combine_date'], 
+          clean_request_field_list: [], 
           rules: {
             id_number: [
             { required: true, message: '请输入身份证号', trigger: 'blur' },
@@ -127,9 +124,6 @@ import {authentication, update_date, search, reset, download} from '../functools
             }
           })
         },
-        update_date: function() {
-          update_date(this)
-        }, 
         download: function() {
         this.$refs['search_form'].validate((valid) => {
             if (valid) {

@@ -3,7 +3,7 @@
       <el-page-header @back="router_to('/main')" content="参保数据查询"></el-page-header>
         <el-form :inline="true" :model="search_form">
             <el-form-item label="年份:">
-                <el-select v-model="search_form.year" placeholder="请选择"  @change="update_date()">
+                <el-select v-model="search_form.year" placeholder="请选择">
                   <el-option v-for='enumerate_year in enumerate_data_dict.year' :key="enumerate_year" :value="enumerate_year"></el-option>
                 </el-select>
             </el-form-item>
@@ -53,18 +53,26 @@
             <el-form-item style="width: 11%">
                 <el-input placeholder="请输入" v-model="search_form.own_expense" clearable @keyup.enter.native="list_search(1)"><template slot="append">元</template></el-input>
             </el-form-item>
-            <el-form-item label="户号:" style="width: 20%">
+            <el-form-item label="户号:">
                 <el-input placeholder="请输入" v-model="search_form.family_number" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
-            <el-form-item label="支付日期开始:" style="width: 23%">
-                <el-select v-model="search_form.date_start" placeholder="请选择"  clearable>
-                    <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
-                </el-select>
+            <el-form-item label="缴费日期:">
+                <el-date-picker
+                  v-model="search_form.pay_date"
+                  type="daterange"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  value-format="yyyy-MM-dd">
+              </el-date-picker>
             </el-form-item>
-            <el-form-item label="支付日期结束:" style="width: 23%">
-                <el-select v-model="search_form.date_end" placeholder="请选择"  clearable>
-                    <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
-                </el-select>
+            <el-form-item label="出生日期:">
+              <el-date-picker
+                    v-model="search_form.birthday"
+                    type="daterange"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    value-format="yyyy-MM-dd">
+                </el-date-picker>
             </el-form-item>
             <el-form-item label="人员属性快速筛选:" style="width: 29%">
                   <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
@@ -171,7 +179,7 @@
 </style>
 
 <script>
-import {authentication, update_date, update_town, update_village, reset, search, download, update_attribute} from '../functools';
+import {authentication, update_town, update_village, reset, search, download, update_attribute} from '../functools';
  export default {
       data() {
         return {
@@ -182,8 +190,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
             'own_expense': '',  
             "insured_state": [], 
             "attribute": [], 
-            'date_start': '', 
-            'date_end': '', 
+            'pay_date': [], 
             "town": [], 
             "village": [], 
             "is_civil": '', 
@@ -193,6 +200,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
             'attribute_gather': [], 
             'family_number': '', 
             'pay_type_operator': '', 
+            'birthday': [], 
           }, 
           default_search_form: {}, 
           data: {}, 
@@ -202,8 +210,7 @@ import {authentication, update_date, update_town, update_village, reset, search,
           town_disabled: false, 
           show_type: 'list', 
           authority: 'insured_data', 
-          date_type: 'pay_date', 
-          clean_request_field_list: ['attribute', 'combine_date'], 
+          clean_request_field_list: ['attribute'], 
         }
       }, 
       created () {
@@ -219,9 +226,6 @@ import {authentication, update_date, update_town, update_village, reset, search,
         }, 
         download: function() {
           download(this, `insured_data/${this.show_type}/download`)
-        }, 
-        update_date: function() {
-          update_date(this)
         }, 
         router_to: function(url) {
           this.$router.push(url)

@@ -3,19 +3,18 @@
       <el-page-header @back="router_to('/main')" content="本地居民参保进度"></el-page-header>
         <el-form :inline="true" :model="search_form">
             <el-form-item label="年份:">
-                <el-select v-model="search_form.year" placeholder="请选择"  @change="update_date()">
+                <el-select v-model="search_form.year" placeholder="请选择">
                   <el-option v-for='enumerate_year in enumerate_data_dict.year' :key="enumerate_year" :value="enumerate_year"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="支付日期开始:">
-                <el-select v-model="search_form.date_start" placeholder="请选择"  clearable>
-                    <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="支付日期结束:">
-                <el-select v-model="search_form.date_end" placeholder="请选择"  clearable>
-                    <el-option v-for="enumerate_pay_date in enumerate_data_dict.pay_date" :key="enumerate_pay_date" :value="enumerate_pay_date"></el-option>
-                </el-select>
+            <el-form-item label="缴费日期:">
+                <el-date-picker
+                  v-model="search_form.pay_date"
+                  type="daterange"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  value-format="yyyy-MM-dd">
+              </el-date-picker>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="search()" icon="el-icon-search">查询</el-button>
@@ -53,14 +52,13 @@
 </style>
 
 <script>
-import {authentication, update_date, search, reset} from '../functools';
+import {authentication, search, reset} from '../functools';
  export default {
       data() {
         return {
           search_form: {
             "year": '', 
-            'date_start': '', 
-            'date_end': '', 
+            'pay_date': [], 
           }, 
           default_search_form: {}, 
           data: [], 
@@ -68,8 +66,7 @@ import {authentication, update_date, search, reset} from '../functools';
           user_data: {}, 
           loading: false, 
           authority: 'insured_data', 
-          date_type: 'pay_date', 
-          clean_request_field_list: ['combine_date'], 
+          clean_request_field_list: [], 
         }
       }, 
       created () {
@@ -79,9 +76,6 @@ import {authentication, update_date, search, reset} from '../functools';
         search: function() {
           search(this, 'insured_rate')
         },
-        update_date: function() {
-          update_date(this)
-        }, 
         router_to: function(url) {
           this.$router.push(url)
         }, 
