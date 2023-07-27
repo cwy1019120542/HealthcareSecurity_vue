@@ -8,10 +8,10 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="姓名:">
-                <el-input placeholder="请输入" v-model="search_form.name" clearable @keyup.enter.native="list_search(1)"></el-input>
+                <el-input placeholder="请输入" v-model="search_form.name" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="身份证号:" class='id_number_form'>
-                <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="list_search(1)"></el-input>
+                <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="参保情况:">
                 <el-select v-model="search_form.insured_state" placeholder="请选择" clearable  multiple collapse-tags>
@@ -39,7 +39,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="家庭户号:">
-                <el-input placeholder="请输入" v-model="search_form.family_number" clearable @keyup.enter.native="list_search(1)"></el-input>
+                <el-input placeholder="请输入" v-model="search_form.family_number" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="个人自付:" style="margin-right: 0">
             </el-form-item>
@@ -49,7 +49,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-input placeholder="请输入" v-model="search_form.own_expense" clearable @keyup.enter.native="list_search(1)"><template slot="append">元</template></el-input>
+                <el-input placeholder="请输入" v-model="search_form.own_expense" clearable @keyup.enter.native="search('list', 1)"><template slot="append">元</template></el-input>
             </el-form-item>
             <el-form-item label="缴费日期:">
                 <el-date-picker
@@ -93,10 +93,10 @@
           </el-collapse>
           <div class="button">
             <el-form-item>
-                <el-button type="primary" @click="list_search(1)" icon="el-icon-search">明细查询</el-button>
+                <el-button type="primary" @click="search('list', 1)" icon="el-icon-search">明细查询</el-button>
             </el-form-item>
             <el-form-item>
-                <el-button type="success" @click="statistic_search()" icon="el-icon-search">统计查询</el-button>
+                <el-button type="success" @click="search('statistic')" icon="el-icon-search">统计查询</el-button>
             </el-form-item>
             <el-form-item>
                 <el-button type="info" @click="reset()" round icon="el-icon-refresh">重置</el-button>
@@ -147,10 +147,10 @@
         </div>
         <div v-if='show_type=="list"' class="table">
           <el-table :data="data.data" stripe border height="100%" style="width: 100%">
-          <el-table-column label="序号" width="100" prop="number" header-align="center" align="center" fixed></el-table-column>
-          <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center" fixed></el-table-column>
-          <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center" fixed></el-table-column>
-          <el-table-column label="户号" width="200" prop="family_number" header-align="center" align="center"></el-table-column>
+          <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
+          <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
+          <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
+          <el-table-column label="家庭户号" width="200" prop="family_number" header-align="center" align="center"></el-table-column>
           <el-table-column label="参保情况" width="125" header-align="center" align="center" prop="insured_state"></el-table-column>
           <el-table-column label="人员属性" width="350" header-align="center" align="center" prop="attribute"></el-table-column>
           <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
@@ -164,10 +164,13 @@
         </el-table>
         <el-pagination
           background
-          layout="total, prev, pager, next"
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-sizes="limit_list"
+          :page-size.sync="search_form.limit"
           :total='data.data_count'
           :current-page.sync='search_form.page'
-          @current-change='list_search(search_form.page)'>
+          @size-change="search('list', search_form.page)"
+          @current-change="search('list', search_form.page)">
         </el-pagination>
         </div>
     </div>
@@ -224,6 +227,7 @@ import {authentication, update_town, update_village, reset, search, download, up
             'family_number': '', 
             'pay_type_operator': '', 
             'birthday': [], 
+            'limit': 10, 
           }, 
           default_search_form: {}, 
           data: {}, 
@@ -234,18 +238,16 @@ import {authentication, update_town, update_village, reset, search, download, up
           show_type: 'list', 
           authority: 'insured_data', 
           clean_request_field_list: ['attribute'], 
+          limit_list: [10, 20, 50, 100],  
         }
       }, 
       created () {
         authentication(this, 'attribute_dict|insured_state|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|pay_type_operator_dict|pay_type_operator_label', false, ['town', 'attribute'])
       }, 
       methods: {
-        list_search: function(page) {
+        search: function(show_type, page=0) {
           this.search_form.page = page
-          search(this, 'insured_data/list', 'list')
-        },
-        statistic_search: function() {
-          search(this, 'insured_data/statistic', 'statistic')
+          search(this, `insured_data/${show_type}`, show_type)
         }, 
         download: function() {
           download(this, `insured_data/${this.show_type}/download`)

@@ -5,7 +5,7 @@
                 <el-menu-item class="logo_name" @click="router_to('/main')"><el-avatar src="static/logo.svg" class='logo' index="1"></el-avatar>潜山市医疗保障统计系统</el-menu-item>
                 <el-submenu index="2">
                     <template slot="title"><el-avatar src="static/pic.png" class='logo' shape="square"></el-avatar>{{user_data.name}}</template>
-                    <el-menu-item index="2-1">个人中心</el-menu-item>
+                    <el-menu-item index="2-1" @click="router_to('/user')">个人中心</el-menu-item>
                     <el-menu-item index="2-2" @click="router_to('/change_password')">更改密码</el-menu-item>
                     <el-menu-item index="2-3" @click="logout">注销</el-menu-item>
                 </el-submenu>
@@ -13,7 +13,7 @@
         </div>
         <div class="main">
             <div class="aside">
-                <el-menu active-text-color="#409EFF" class="aside_menu" :collapse="is_fold">
+                <el-menu active-text-color="#409EFF" class="aside_menu">
                     <el-menu-item index="1" @click="router_to('/main')">
                         <i class="el-icon-house"></i>
                         <span slot="title">主页</span>
@@ -73,12 +73,13 @@
 <style scoped>
     .body {
         height: 100%;
+        width: 100%;
     }
     .logo {
         margin-right: 10%;
     }
     .logo_name {
-        margin-right: 78%;
+        margin-right: 75%;
         font-weight: bold;
         font-size: 1em;
     }
@@ -103,7 +104,7 @@
     .content {
         width: 85%;
         height: 95%;
-        margin: 1%;
+        margin: 0% 2%;
     }
 </style>
 

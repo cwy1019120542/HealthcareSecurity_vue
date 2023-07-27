@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="loading">
+    <div v-loading="loading" class="body">
       <el-page-header @back="router_to('/main')" content="公务员医疗补助测算"></el-page-header>
         <el-form :inline="true" :model="search_form" ref="search_form" :rules="rules">
             <el-form-item label="年份:">
@@ -29,8 +29,8 @@
                 <el-button type="info" @click="reset()" round icon="el-icon-refresh">重置</el-button>
             </el-form-item>
         </el-form>
-        <div>
-          <el-table :data="data.data" border stripe>
+        <div class="table">
+          <el-table :data="data.data" stripe border height="100%" style="width: 100%">
               <el-table-column label="序号" width="75" prop="number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="姓名" width="150" prop="name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
@@ -79,8 +79,18 @@
 </template>
 
 <style scoped>
+.el-form-item {
+  margin-right: 2%;
+}
 .el-form {
   margin: 1% 0;
+}
+.body {
+  height: 100%;
+}
+.table {
+  width: 100%;
+  height: 85%;
 }
 </style>
 
@@ -95,7 +105,7 @@ import {authentication, search, reset, download} from '../functools';
             'settle_date': [], 
             'is_valid': '是', 
             'is_refund': '否', 
-            'cure_type': ['普通住院', '外伤住院', '无他方责任意外伤害住院', '分疗程间断住院治疗', '单病种住院', '床日费用住院', '转外诊治住院', '急诊转住院', '自主就医住院', '门诊特病', '门诊慢病'], 
+            'cure_type': ['普通住院', '外伤住院', '无他方责任意外伤害住院', '分疗程间断住院治疗', '单病种住院', '床日费用住院', '转外诊治住院', '急诊转住院', '自主就医住院', '18周岁以下苯丙酮尿症及四氢生物蝶呤缺乏症', '18周岁以下苯丙酮尿症', '生育住院', '门诊特病', '门诊慢病', '门诊单病种'], 
           }, 
           default_search_form: {}, 
           data: [], 

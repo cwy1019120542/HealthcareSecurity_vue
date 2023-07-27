@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="loading">
+    <div v-loading="loading" class="body">
         <el-page-header @back="router_to('/main')" content="结算数据查询"></el-page-header>
         <el-form :inline="true" class="demo-form-inline" :model="search_form">
             <el-form-item label="年份:">
@@ -23,7 +23,12 @@
                   <el-option v-for='enumerate_attribute in enumerate_data_dict.attribute' :key="enumerate_attribute" :label="enumerate_attribute" :value="enumerate_attribute"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="乡镇:">
+            <el-collapse accordion>
+            <el-collapse-item>
+              <template slot="title">
+                更多查询
+              </template>
+              <el-form-item label="乡镇:">
                 <el-select v-model="search_form.town" placeholder="请选择" clearable multiple @change="update_village()" collapse-tags>
                   <el-option v-for='enumerate_town in enumerate_data_dict.town' :key="enumerate_town" :label="enumerate_town" :value="enumerate_town"></el-option>
                 </el-select>
@@ -86,34 +91,37 @@
                   value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="金额筛选:">
+            <el-form-item label="金额筛选:" style="margin-right: 0">
                 <el-select v-model="search_form.pay_type" placeholder="请选择" clearable>
                     <el-option v-for='enumerate_pay_type_label in enumerate_data_dict.pay_type_label' :key="enumerate_pay_type_label" :label="enumerate_pay_type_label" :value="enumerate_data_dict.pay_type_dict[enumerate_pay_type_label]"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item style="width: 7%">
+            <el-form-item style="width: 7%;margin-right: 0">
                 <el-select v-model="search_form.pay_type_operator" placeholder="请选择" clearable>
                     <el-option v-for='enumerate_pay_type_operator_label in enumerate_data_dict.pay_type_operator_label' :key="enumerate_pay_type_operator_label" :label="enumerate_pay_type_operator_label" :value="enumerate_data_dict.pay_type_operator_dict[enumerate_pay_type_operator_label]"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item style="width: 11%">
+            <el-form-item>
                 <el-input placeholder="请输入内容" v-model="search_form.pay_type_value" clearable @keyup.enter.native="search('list', 1)"><template slot="append">元</template></el-input>
             </el-form-item>
-            <el-form-item label="医疗类别快速筛选:" style="width: 33%">
+            <el-form-item label="医疗类别快速筛选:">
                   <el-checkbox-group v-model="search_form.cure_type_gather" @change="update_cure_type()">
                     <el-checkbox-button v-for="enumerate_cure_type_gather in enumerate_data_dict.cure_type_gather" :label="enumerate_cure_type_gather" :key="enumerate_cure_type_gather">{{enumerate_cure_type_gather}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="人员属性快速筛选:" style="width: 33%">
+            <el-form-item label="人员属性快速筛选:">
                   <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
                     <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="医共体:" style="width: 28%">
+            <el-form-item label="医共体:">
                   <el-checkbox-group v-model="search_form.hospital_community" @change="update_town()">
                     <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
+                </el-collapse-item>
+          </el-collapse>
+          <div class="button">
             <el-form-item>
                 <el-button type="primary" @click="search('list', 1)" icon="el-icon-search">明细查询</el-button>
             </el-form-item>
@@ -129,6 +137,7 @@
             <el-form-item>
                 <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
             </el-form-item>
+          </div>
         </el-form>
         <div v-if='show_type=="statistic"'>
             <el-card class="box-card" shadow="hover">
@@ -216,8 +225,8 @@
                 <span>{{data.data.together_pay}}</span>
             </el-card>
         </div>
-        <div v-if='show_type=="list"||show_type=="merge"'>
-            <el-table :data="data.data" stripe>
+        <div v-if='show_type=="list"||show_type=="merge"' class="table">
+            <el-table :data="data.data" stripe border height="100%" style="width: 100%">
                 <el-table-column label="序号" width="75" prop="number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="姓名" width="150" prop="name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
@@ -266,28 +275,44 @@
             </el-table>
             <el-pagination
             background
-            layout="total, prev, pager, next"
-            :total='data.data_count'
-            :current-page.sync='search_form.page'
-            @current-change="search('list', search_form.page)">
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-sizes="limit_list"
+          :page-size.sync="search_form.limit"
+          :total='data.data_count'
+          :current-page.sync='search_form.page'
+          @size-change="search('list', search_form.page)"
+          @current-change="search('list', search_form.page)">
             </el-pagination>
         </div>
     </div>
 </template>
 
 <style scoped>
-    .el-card {
+.el-form-item {
+  margin-right: 2%;
+}
+.button {
+  margin-top: 1%;
+}
+.el-card {
         width: 14%;
         text-align: center;
         display: inline-block;
         margin: 1%;
     }
-    .el-form {
-        margin: 1% 0;
-        }
-    .el-table {
-        margin: 0 1% 1% 1%;
-        }
+.el-form {
+  margin: 1% 0;
+}
+.body {
+  height: 100%;
+}
+.table {
+  width: 100%;
+  height: 62%;
+}
+.el-pagination {
+  margin-top: 1%;
+}
 </style>
     
 <script>
@@ -323,6 +348,7 @@ import {authentication, update_town, update_village, reset, search, download, up
             'is_use_account': '', 
             'is_mid_settle': '', 
             'is_valid': '是', 
+            'limit': 10, 
           }, 
           default_search_form: {}, 
           data: {}, 
@@ -334,6 +360,7 @@ import {authentication, update_town, update_village, reset, search, download, up
           show_type: 'list', 
           authority: 'settle_data', 
           clean_request_field_list: ['attribute', 'local_hospital'], 
+          limit_list: [10, 20, 50, 100], 
         }
       }, 
       created () {

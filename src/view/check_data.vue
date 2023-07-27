@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="loading">
+    <div v-loading="loading" class="body">
       <el-page-header @back="router_to('/staff')" :content="header_content"></el-page-header>
         <el-form :inline="true" :model="search_form" class='serach_form'>
             <el-form-item label="年份:">
@@ -32,7 +32,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="list_search(1)" icon="el-icon-search">查询</el-button>
+                <el-button type="primary" @click="search('list', 1)" icon="el-icon-search">查询</el-button>
             </el-form-item>
             <el-form-item>
                 <el-button type="info" @click="reset()" round icon="el-icon-refresh">重置</el-button>
@@ -44,13 +44,13 @@
                 <el-button type="danger" icon="el-icon-plus" @click="update_add_form()">新增考核事项</el-button>
             </el-form-item>
         </el-form>
-        <div>
-          <el-table :data="data.data">
+        <div class="table">
+          <el-table :data="data.data" stripe border height="100%" style="width: 100%">
           <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
           <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
           <el-table-column label="奖惩类型" width="100" prop="operate_type" header-align="center" align="center"></el-table-column>
-          <el-table-column label="考核事项" width="150" prop="check_type" header-align="center" align="center"></el-table-column>
+          <el-table-column label="考核事项" width="180" prop="check_type" header-align="center" align="center"></el-table-column>
           <el-table-column label="考核渠道" width="150" prop="check_source" header-align="center" align="center"></el-table-column>
           <el-table-column label="加分" width="100"  prop="get_point" header-align="center" align="center"></el-table-column>
           <el-table-column label="扣分" width="100"  prop="lost_point" header-align="center" align="center"></el-table-column>
@@ -70,10 +70,13 @@
         </el-table>
         <el-pagination
           background
-          layout="total, prev, pager, next"
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-sizes="limit_list"
+          :page-size.sync="search_form.limit"
           :total='data.data_count'
           :current-page.sync='search_form.page'
-          @current-change='list_search(search_form.page)'>
+          @size-change="search('list', search_form.page)"
+          @current-change="search('list', search_form.page)">
         </el-pagination>
         </div>
         <el-dialog title="新增考核事项" :visible.sync="is_dialog">
@@ -142,17 +145,21 @@
 </template>
 
 <style scoped>
-.serach_form {
+.el-form-item {
+  margin-right: 2%;
+}
+.el-form {
   margin: 1% 0;
 }
-.el-table {
-  margin: 0 1% 1% 1%;
+.body {
+  height: 100%;
 }
-.el-col-24 {
-    width: 60%;
+.table {
+  width: 100%;
+  height: 70%;
 }
-.input {
-    width: 26%;
+.el-pagination {
+  margin-top: 1%;
 }
 </style>
 
@@ -169,6 +176,7 @@ import {authentication, reset, search, download, alert, deal_error, add} from '.
             'check_source': '', 
             "check_date": [], 
             'page': 0, 
+            'limit': 10, 
           }, 
           add_form: {
             "year": '', 
@@ -194,6 +202,7 @@ import {authentication, reset, search, download, alert, deal_error, add} from '.
           label_width: '5%', 
           action: '', 
           clean_request_field_list: [], 
+          limit_list: [10, 20, 50, 100], 
           rules: {
             year: [
             { required: true, message: '请选择年份', trigger: 'blur' },
@@ -226,14 +235,14 @@ import {authentication, reset, search, download, alert, deal_error, add} from '.
         if (this.$route.query.operate_type) {
               this.search_form.operate_type = this.$route.query.operate_type
           }
-        authentication(this, 'default_year|year|operate_type|check_dict', true, ['check'], ['search_form', 'add_form'])
+        authentication(this, 'default_year|year|operate_type|check_dict', true, ['check'], ['search_form', 'add_form'], true)
         this.action = `${this.$axios.defaults.baseURL}/user/${this.user_data['id']}/check_attachment`
       }, 
       methods: {
-        list_search: function(page) {
+        search: function(show_type, page=0) {
           this.search_form.page = page
-          search(this, 'check_data/list')
-        },
+          search(this, `check_data/${show_type}`, show_type)
+        }, 
         download: function() {
           download(this, 'check_data/list/download')
         }, 

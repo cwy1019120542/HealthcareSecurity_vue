@@ -13,6 +13,7 @@ import staff from '@/view/staff'
 import check_data from '@/view/check_data'
 import civil_pay from '@/view/civil_pay'
 import open_data from '@/view/open_data'
+import user from '@/view/user'
 
 Vue.use(Router)
 
@@ -73,6 +74,11 @@ export default new Router({
           path: '/open_data', 
           component: open_data, 
           name: 'open_data', 
+        },
+        {
+          path: '/user', 
+          component: user, 
+          name: 'user', 
         },
       ]
     }, 

@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="loading">
+    <div v-loading="loading" class="body">
       <el-page-header @back="router_to('/main')" content="政务公开数据"></el-page-header>
         <el-form :inline="true" :model="search_form" ref="search_form">
             <el-form-item label="年份:">
@@ -37,8 +37,14 @@
 </template>
 
 <style scoped>
+.el-form-item {
+  margin-right: 2%;
+}
 .el-form {
   margin: 1% 0;
+}
+.body {
+  height: 100%;
 }
 </style>
 

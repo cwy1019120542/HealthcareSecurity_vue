@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="loading">
+    <div v-loading="loading" class="body">
       <el-page-header @back="router_to('/main')" content="考核数据查询"></el-page-header>
         <el-form :inline="true" :model="search_form">
             <el-form-item label="年份:">
@@ -8,13 +8,13 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="姓名:">
-                <el-input placeholder="请输入" v-model="search_form.name" clearable @keyup.enter.native="list_search(1)"></el-input>
+                <el-input placeholder="请输入" v-model="search_form.name" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="身份证号:">
-                <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="list_search(1)"></el-input>
+                <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="工号:">
-                <el-input placeholder="请输入" v-model="search_form.work_number" clearable @keyup.enter.native="list_search(1)"></el-input>
+                <el-input placeholder="请输入" v-model="search_form.work_number" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="部门:">
                 <el-select v-model="search_form.department" placeholder="请选择" clearable  multiple collapse-tags>
@@ -32,7 +32,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="list_search(1)" icon="el-icon-search">查询</el-button>
+                <el-button type="primary" @click="search('list', 1)" icon="el-icon-search">查询</el-button>
             </el-form-item>
             <el-form-item>
                 <el-button type="info" @click="reset()" round icon="el-icon-refresh">重置</el-button>
@@ -41,8 +41,8 @@
               <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
             </el-form-item>
         </el-form>
-        <div>
-          <el-table :data="data.data" stripe>
+        <div class="table">
+          <el-table :data="data.data"  stripe border height="100%" style="width: 100%">
           <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
           <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
@@ -67,31 +67,38 @@
           <el-table-column label="岗位" width="100" prop="position" header-align="center" align="center"></el-table-column>
           <el-table-column label="学历" width="100" prop="education" header-align="center" align="center"></el-table-column>
         　<el-table-column label="手机号" width="200" prop="phone_number" header-align="center" align="center"></el-table-column>
-        　<el-table-column label="调入时间" width="100" prop="enter_date" header-align="center" align="center"></el-table-column>
+        　<el-table-column label="调入时间" width="205" prop="enter_date" header-align="center" align="center"></el-table-column>
         </el-table>
         <el-pagination
           background
-          layout="total, prev, pager, next"
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-sizes="limit_list"
+          :page-size.sync="search_form.limit"
           :total='data.data_count'
           :current-page.sync='search_form.page'
-          @current-change='list_search(search_form.page)'>
+          @size-change="search('list', search_form.page)"
+          @current-change="search('list', search_form.page)">
         </el-pagination>
         </div>
     </div>
 </template>
 
 <style scoped>
-.el-card {
-        width: 14%;
-        text-align: center;
-        display: inline-block;
-        margin: 1%;
-    }
+.el-form-item {
+  margin-right: 2%;
+}
 .el-form {
   margin: 1% 0;
 }
-.el-table {
-  margin: 0 1% 1% 1%;
+.body {
+  height: 100%;
+}
+.table {
+  width: 100%;
+  height: 70%;
+}
+.el-pagination {
+  margin-top: 1%;
 }
 </style>
 
@@ -109,6 +116,7 @@ import {authentication, reset, search, download} from '../functools';
             "position": [], 
             'education': [], 
             'page': 0, 
+            'limit': 20, 
           }, 
           default_search_form: {}, 
           data: {}, 
@@ -117,16 +125,17 @@ import {authentication, reset, search, download} from '../functools';
           loading: false, 
           authority: 'check_data', 
           clean_request_field_list: [], 
+          limit_list: [10, 20, 50, 100], 
         }
       }, 
       created () {
         authentication(this, 'default_year|year|department|position|education', true)
       }, 
       methods: {
-        list_search: function(page) {
+        search: function(show_type, page=0) {
           this.search_form.page = page
-          search(this, 'staff/list')
-        },
+          search(this, `staff/${show_type}`, show_type)
+        }, 
         download: function() {
           download(this, 'staff/list/download')
         }, 

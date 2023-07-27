@@ -104,7 +104,7 @@ var add = function(self, router) {
         type: 'success'
     })
     self.is_dialog = false
-    self.list_search(1)
+    self.search('list', 1)
     }
     ).catch(error=>{
         deal_error(self, error)
@@ -244,7 +244,7 @@ var reset = function(self, is_search=false, form_name='search_form') {
         self.enumerate_data_dict.village = []
     }
     if (is_search) {
-        self.list_search(1)
+        self.search('list', 1)
     }
 }
 
