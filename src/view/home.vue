@@ -1,147 +1,117 @@
 <template>
-  <div class="main">
-    <div class="top">
-      <el-menu
-          mode="horizontal"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b">
-            <el-menu-item class="left_float" @click="router_to('/main')">潜山市医疗保障统计系统</el-menu-item>
-            <el-menu-item class="right_float" @click="logout">注销</el-menu-item>
-            <el-menu-item class="right_float" @click="router_to('/change_password')">{{user_data.name}}</el-menu-item>
-            <el-menu-item class="right_float" @click="router_to('/change_password')">{{user_data.phone_number}}</el-menu-item>
-            <el-menu-item class="right_float" v-if='user_data.village' @click="router_to('/change_password')">{{user_data.village}}</el-menu-item>
-            <el-menu-item class="right_float" v-if="user_data.town" @click="router_to('/change_password')">{{user_data.town}}</el-menu-item>
-            <el-menu-item class="right_float" @click="router_to('/change_password')">{{user_data.identity}}</el-menu-item>
-        </el-menu>
+    <div class="body">
+        <div class="top">
+            <el-menu mode="horizontal" text-color="#409EFF" active-text-color="#ffd04b">
+                <el-menu-item class="logo_name" @click="router_to('/main')"><el-avatar src="static/logo.svg" class='logo' index="1"></el-avatar>潜山市医疗保障统计系统</el-menu-item>
+                <el-submenu index="2">
+                    <template slot="title"><el-avatar src="static/pic.png" class='logo' shape="square"></el-avatar>{{user_data.name}}</template>
+                    <el-menu-item index="2-1">个人中心</el-menu-item>
+                    <el-menu-item index="2-2" @click="router_to('/change_password')">更改密码</el-menu-item>
+                    <el-menu-item index="2-3" @click="logout">注销</el-menu-item>
+                </el-submenu>
+            </el-menu>
+        </div>
+        <div class="main">
+            <div class="aside">
+                <el-menu active-text-color="#409EFF" class="aside_menu" :collapse="is_fold">
+                    <el-menu-item index="1" @click="router_to('/main')">
+                        <i class="el-icon-house"></i>
+                        <span slot="title">主页</span>
+                    </el-menu-item>
+                    <el-submenu index="2"><template slot="title"><i class="el-icon-star-off"></i><span>参保数据</span></template>
+                    <el-menu-item-group>
+                        <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="2-1" @click="router_to('/insured_data')" >查询</el-menu-item>
+                        <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="2-2" @click="router_to('/insured_rate')" >本地居民参保进度</el-menu-item>
+                        <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="2-3" @click="router_to('/special_insured_rate')" >特殊人群参保进度</el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="3">
+                    <template slot="title">
+                        <i class="el-icon-money"></i>
+                        <span>结算数据</span>
+                    </template>
+                    <el-menu-item-group>
+                        <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/settle_data')" index="3-１">查询</el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="4">
+                <template slot="title">
+                    <i class="el-icon-notebook-2"></i>
+                    <span>考核数据</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item class="aside_option" v-if="is_in('check_data')" @click="router_to('/staff')" index="4-１">查询</el-menu-item>
+                </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="5">
+                <template slot="title">
+                    <i class="el-icon-pie-chart"></i>
+                    <span>支出测算</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/civil_pay')" index="5-１">公务员医疗补助</el-menu-item>
+                </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="6">
+                <template slot="title">
+                    <i class="el-icon-sold-out"></i>
+                    <span>数据导出</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/open_data')" index="6-１">政务公开数据</el-menu-item>
+                </el-menu-item-group>
+                </el-submenu>
+                </el-menu>
+            </div>
+            <div class="content">
+                <router-view></router-view>
+            </div>
+        </div>
     </div>
-    <div class="aside">
-        <el-menu
-          default-active="2"
-          class="el-menu-vertical-demo"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b">
-          <el-submenu index="1">
-          <template slot="title">
-            <i class="el-icon-s-management"></i>
-            <span>参保数据</span>
-          </template>
-          <el-menu-item-group>
-            <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="1-1" @click="router_to('/insured_data')" >查询</el-menu-item>
-            <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="1-2" @click="router_to('/insured_rate')" >本地居民参保进度</el-menu-item>
-            <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="1-3" @click="router_to('/special_insured_rate')" >特殊人群参保进度</el-menu-item>
-          </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="2">
-          <template slot="title">
-            <i class="el-icon-s-claim"></i>
-            <span>结算数据</span>
-          </template>
-          <el-menu-item-group>
-            <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/settle_data')" index="2-１">查询</el-menu-item>
-          </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="3">
-          <template slot="title">
-            <i class="el-icon-s-order"></i>
-            <span>考核数据</span>
-          </template>
-          <el-menu-item-group>
-            <el-menu-item class="aside_option" v-if="is_in('check_data')" @click="router_to('/staff')" index="3-１">查询</el-menu-item>
-          </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="4">
-          <template slot="title">
-            <i class="el-icon-s-data"></i>
-            <span>支出测算</span>
-          </template>
-          <el-menu-item-group>
-            <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/civil_pay')" index="4-１">公务员医疗补助</el-menu-item>
-          </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="5">
-          <template slot="title">
-            <i class="el-icon-download"></i>
-            <span>数据导出</span>
-          </template>
-          <el-menu-item-group>
-            <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/open_data')" index="5-１">政务公开数据</el-menu-item>
-          </el-menu-item-group>
-          </el-submenu>
-        </el-menu>
-    </div>
-    <div class="container">
-      <router-view></router-view>
-    </div>
-  </div>
 </template>
 
 <style scoped>
-  .el-menu {
-    border-bottom: none;
-  }
-  .main {
-    height: 100%;
-    width: 100%;
-  }
-  .top {
-    height: 8%;
-    width: 100%;
-    background-color: rgb(84, 92, 100);
-  }
-  .aside {
-    height: 90%;
-    width: 12%;
-    background-color: rgb(84, 92, 100);
-    float: left;
-  }
-  .container {
-    width: 86%;
-    height: 88%;
-    float: right;
-    margin: 1%;
-    overflow: auto;
-  }
-  .el-menu--horizontal>.el-submenu .el-submenu__title {
-    height: 100%;
-  }
-  .el-menu--horizontal, .el-menu-item, .el-submenu, .el-submenu__title {
-    height: 100%;
-    line-height: 70px;
-  }
-  .right_float, .left_float
-  {
-    border:0ch;
-    vertical-align: middle;
-  }
-  .left_float {
-    float: left;
-    padding: 0px;
-    width: 12%;
-    text-align: center;
-    font-size: 17px;
-  }
-  .right_float {
-    float: right;
-  }
-  .aside_option {
-    width: 100%;
-    min-width: none;
-  }
-  .el-submenu .el-menu-item {
-    min-width: 0;
-  }
-  .el-menu-vertical-demo {
-    border: none;
-  }
+    .body {
+        height: 100%;
+    }
+    .logo {
+        margin-right: 10%;
+    }
+    .logo_name {
+        margin-right: 78%;
+        font-weight: bold;
+        font-size: 1em;
+    }
+    .aside {
+        width: 10%;
+        overflow: auto;
+        height: 100%;
+    }
+    .aside_option {
+        min-width: 10%;
+    }
+    .aside_menu {
+        border-right: none;
+    }
+    .top {
+        height: 8%;
+    }
+    .main {
+        height: 90%;
+        display: flex;
+    }
+    .content {
+        width: 85%;
+        height: 95%;
+        margin: 1%;
+    }
 </style>
 
 <script>
 export default{
   data() {
     return {
-      user_data: {}
+      user_data: {},
     }
   }, 
   created() {
@@ -185,9 +155,7 @@ export default{
     logout: function() {
       localStorage.removeItem('user_data')
       this.$router.push('/login')
-    }
-
+    }, 
   }
 }
 </script>
-

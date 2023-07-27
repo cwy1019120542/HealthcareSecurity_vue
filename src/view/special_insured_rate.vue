@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="loading">
+    <div v-loading="loading" class="body">
       <el-page-header @back="router_to('/main')" content="特殊人群参保进度"></el-page-header>
         <el-form :inline="true" :model="search_form">
             <el-form-item label="年份:">
@@ -21,14 +21,14 @@
                 <el-button type="primary" @click="search()" icon="el-icon-search">查询</el-button>
             </el-form-item>
             <el-form-item>
-                <el-button type="warning" @click="download()" icon="el-icon-download">下载未参保人员名单</el-button>
-            </el-form-item>
-            <el-form-item>
                 <el-button type="info" @click="reset()" round icon="el-icon-refresh">重置</el-button>
             </el-form-item>
+            <el-form-item>
+              <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
+            </el-form-item>
         </el-form>
-        <div>
-          <el-table :data="data.data" border stripe>
+        <div class="table">
+          <el-table :data="data.data" stripe border height="100%" style="width: 100%">
           <el-table-column label="序号" width="80" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
           <el-table-column label="任务数" width="100" prop="target" header-align="center" align="center"></el-table-column>
@@ -52,14 +52,18 @@
 </template>
 
 <style scoped>
-.el-card {
-        width: 14%;
-        text-align: center;
-        display: inline-block;
-        margin: 1%;
-    }
+.el-form-item {
+  margin-right: 2%;
+}
 .el-form {
   margin: 1% 0;
+}
+.body {
+  height: 100%;
+}
+.table {
+  width: 100%;
+  height: 85%;
 }
 </style>
 
@@ -92,7 +96,7 @@ import {authentication, search, reset, update_attribute, download} from '../func
           search(this, 'special_insured_rate')
         },
         download: function() {
-          download(this, 'insured_data/list/download')
+          download(this, 'special_insured_rate/download')
         },  
         router_to: function(url) {
           this.$router.push(url)

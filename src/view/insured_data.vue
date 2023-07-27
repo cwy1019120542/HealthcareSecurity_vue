@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="loading">
+    <div v-loading="loading" class="body">
       <el-page-header @back="router_to('/main')" content="参保数据查询"></el-page-header>
         <el-form :inline="true" :model="search_form">
             <el-form-item label="年份:">
@@ -13,9 +13,9 @@
             <el-form-item label="身份证号:" class='id_number_form'>
                 <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
-            <el-form-item label="参加公务员医疗补助:">
-                <el-select v-model="search_form.is_civil" placeholder="请选择"  clearable>
-                  <el-option value="是"></el-option>
+            <el-form-item label="参保情况:">
+                <el-select v-model="search_form.insured_state" placeholder="请选择" clearable  multiple collapse-tags>
+                  <el-option v-for='enumerate_insured_state in enumerate_data_dict.insured_state' :key="enumerate_insured_state" :value="enumerate_insured_state"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="人员属性:">
@@ -23,6 +23,11 @@
                   <el-option v-for='enumerate_attribute in enumerate_data_dict.attribute' :key="enumerate_attribute" :value="enumerate_attribute"></el-option>
                 </el-select>
             </el-form-item>
+            <el-collapse accordion>
+            <el-collapse-item>
+              <template slot="title">
+                更多查询
+              </template>
             <el-form-item label="乡镇:">
                 <el-select v-model="search_form.town" placeholder="请选择" :disabled='town_disabled' :clearable='!town_disabled' :multiple='!town_disabled' :collapse-tags='!town_disabled' @change="update_village()">
                   <el-option v-for='enumerate_town in enumerate_data_dict.town' :key="enumerate_town" :value="enumerate_town"></el-option>
@@ -33,28 +38,18 @@
                   <el-option v-for='enumerate_village in enumerate_data_dict.village' :key="enumerate_village" :value="enumerate_village"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="参保情况:">
-                <el-select v-model="search_form.insured_state" placeholder="请选择" clearable  multiple collapse-tags>
-                  <el-option v-for='enumerate_insured_state in enumerate_data_dict.insured_state' :key="enumerate_insured_state" :value="enumerate_insured_state"></el-option>
-                </el-select>
+            <el-form-item label="家庭户号:">
+                <el-input placeholder="请输入" v-model="search_form.family_number" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
-            <el-form-item label="共济账户支付:">
-                <el-select v-model="search_form.is_account_pay" placeholder="请选择"  clearable>
-                  <el-option value="是"></el-option>
-                </el-select>
+            <el-form-item label="个人自付:" style="margin-right: 0">
             </el-form-item>
-            <el-form-item label="个人自付:">
-            </el-form-item>
-            <el-form-item style="width: 7%">
+            <el-form-item style="width: 7%;margin-right: 0">
                 <el-select v-model="search_form.pay_type_operator" placeholder="请选择" clearable>
                     <el-option v-for='enumerate_pay_type_operator_label in enumerate_data_dict.pay_type_operator_label' :key="enumerate_pay_type_operator_label" :label="enumerate_pay_type_operator_label" :value="enumerate_data_dict.pay_type_operator_dict[enumerate_pay_type_operator_label]"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item style="width: 11%">
+            <el-form-item>
                 <el-input placeholder="请输入" v-model="search_form.own_expense" clearable @keyup.enter.native="list_search(1)"><template slot="append">元</template></el-input>
-            </el-form-item>
-            <el-form-item label="户号:">
-                <el-input placeholder="请输入" v-model="search_form.family_number" clearable @keyup.enter.native="list_search(1)"></el-input>
             </el-form-item>
             <el-form-item label="缴费日期:">
                 <el-date-picker
@@ -74,7 +69,17 @@
                     value-format="yyyy-MM-dd">
                 </el-date-picker>
             </el-form-item>
-            <el-form-item label="人员属性快速筛选:" style="width: 29%">
+            <el-form-item label="参加公务员医疗补助:">
+                <el-select v-model="search_form.is_civil" placeholder="请选择"  clearable>
+                  <el-option value="是"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="共济账户支付:">
+                <el-select v-model="search_form.is_account_pay" placeholder="请选择"  clearable>
+                  <el-option value="是"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="人员属性快速筛选:">
                   <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
                     <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
                   </el-checkbox-group>
@@ -84,6 +89,9 @@
                     <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
+            </el-collapse-item>
+          </el-collapse>
+          <div class="button">
             <el-form-item>
                 <el-button type="primary" @click="list_search(1)" icon="el-icon-search">明细查询</el-button>
             </el-form-item>
@@ -96,6 +104,8 @@
             <el-form-item>
               <el-button type="warning" icon="el-icon-download" circle @click='download()'></el-button>
             </el-form-item>
+          </div>
+
         </el-form>
         <div v-if='show_type=="statistic"'>
             <el-card class="box-card" shadow="hover">
@@ -135,11 +145,11 @@
                 <span>{{data.data.perk}}</span>
             </el-card>
         </div>
-        <div v-if='show_type=="list"'>
-          <el-table :data="data.data" stripe>
-          <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
-          <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
-          <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
+        <div v-if='show_type=="list"' class="table">
+          <el-table :data="data.data" stripe border height="100%" style="width: 100%">
+          <el-table-column label="序号" width="100" prop="number" header-align="center" align="center" fixed></el-table-column>
+          <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center" fixed></el-table-column>
+          <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center" fixed></el-table-column>
           <el-table-column label="户号" width="200" prop="family_number" header-align="center" align="center"></el-table-column>
           <el-table-column label="参保情况" width="125" header-align="center" align="center" prop="insured_state"></el-table-column>
           <el-table-column label="人员属性" width="350" header-align="center" align="center" prop="attribute"></el-table-column>
@@ -164,6 +174,12 @@
 </template>
 
 <style scoped>
+.el-form-item {
+  margin-right: 2%;
+}
+.button {
+  margin-top: 1%;
+}
 .el-card {
         width: 14%;
         text-align: center;
@@ -173,8 +189,15 @@
 .el-form {
   margin: 1% 0;
 }
-.el-table {
-  margin: 0 1% 1% 1%;
+.body {
+  height: 100%;
+}
+.table {
+  width: 100%;
+  height: 62%;
+}
+.el-pagination {
+  margin-top: 1%;
 }
 </style>
 
