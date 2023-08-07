@@ -123,23 +123,6 @@ export default{
     else {
       this.user_data = user_data
     }
-    this.$axios.get(`/notify_data`).then((res)=>{
-      for (let data of res.data.data) {
-        this.$notify({
-          title: data.title,
-          message: data.content,
-          duration: 0, 
-          type: 'warning', 
-          offset: 80, 
-        });
-      }
-    }).catch(error=>{
-      this.$message({ 
-      showClose: true, 
-      message: '获取通知出错', 
-      type: 'error'
-  })
-    })
   }, 
   methods: {
     is_in: function(value) {
