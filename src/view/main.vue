@@ -51,7 +51,7 @@
         width: 25%;
         text-align: center;
         display: inline-block;
-        margin: 1%;
+        margin: 3%;
     }
     .el-carousel {
         height: 50%;
