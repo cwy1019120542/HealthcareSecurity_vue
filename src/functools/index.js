@@ -204,6 +204,7 @@ var authentication = function(self, enumerate_field, is_search=false, enumerate_
         const data = res['data']['data'];
         self.enumerate_data_dict = data
         self.default_search_form.year = self.enumerate_data_dict.default_year
+        self.default_search_form.compare_year = (self.enumerate_data_dict.default_year - 1).toString()
         for (let enumerate_func of enumerate_func_list) {
             clean_enumerate_func_dict[enumerate_func](self)
         }
@@ -237,7 +238,7 @@ var update_village = function(self) {
   }
 
 var reset = function(self, is_search=false, form_name='search_form') {
-    for (let key in self[`default_${form_name}`]) {
+    for (let key in self[form_name]) {
           self[form_name][key] = self[`default_${form_name}`][key]
         }
     if ('village' in self[form_name]) {

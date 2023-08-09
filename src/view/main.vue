@@ -7,7 +7,8 @@
         </el-carousel>
         <div class="bottom">
             <div class="data">
-                <el-card class="box-card" shadow="hover">
+                <div class='flex_data'>
+                    <el-card class="box-card" shadow="hover">
                 <div slot="header" class="clearfix">
                     <span>居民参保数据更新至</span>
                 </div>
@@ -25,12 +26,15 @@
                 </div>
                     <span>{{work_insured_data}}</span>
                 </el-card>
-                <el-card class="box-card" shadow="hover">
+                </div>
+                <div class='flex_data'>
+                    <el-card class="box-card" shadow="hover">
                 <div slot="header" class="clearfix">
                     <span>特殊人群身份更新至</span>
                 </div>
                     <span>{{special_insured_date}}</span>
                 </el-card>
+                </div>
             </div>
             <div class="notify">
                 <el-collapse accordion>
@@ -50,8 +54,7 @@
     .el-card {
         width: 25%;
         text-align: center;
-        display: inline-block;
-        margin: 3%;
+        margin: 3% 4%;
     }
     .el-carousel {
         height: 50%;
@@ -75,8 +78,13 @@
         height: 45%;
     }
     .data {
-        width: 55%;
-        height: 45%;
+        width: 50%;
+        height: 100%;
+        border: solid 1px #e6e6e6;
+        margin-right: 5%;
+    }
+    .flex_data {
+        display: flex;
     }
 
 </style>

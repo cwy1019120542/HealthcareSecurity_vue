@@ -8,7 +8,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="身份证号:" class='id_number_form' prop="id_number">
-                <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="list_search(1)"></el-input>
+                <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="search()"></el-input>
             </el-form-item>
            <el-form-item label="结算日期:">
                 <el-date-picker
