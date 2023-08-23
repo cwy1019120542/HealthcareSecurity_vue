@@ -8,7 +8,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="姓名:">
-                <el-input placeholder="请输入" v-model="search_form.name" clearable @keyup.enter.native="search('list', 1)"></el-input>
+                <el-input placeholder="请输入（支持模糊查询）" v-model="search_form.name" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="身份证号:" class='id_number_form'>
                 <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="search('list', 1)"></el-input>

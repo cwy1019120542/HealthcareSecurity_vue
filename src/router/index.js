@@ -15,6 +15,7 @@ import civil_pay from '@/view/civil_pay'
 import open_data from '@/view/open_data'
 import user from '@/view/user'
 import settle_rate from '@/view/settle_rate'
+import chronic_illness from '@/view/chronic_illness'
 
 Vue.use(Router)
 
@@ -85,6 +86,11 @@ export default new Router({
           path: '/settle_rate', 
           component: settle_rate, 
           name: 'settle_rate', 
+        },
+        {
+          path: '/chronic_illness', 
+          component: chronic_illness, 
+          name: 'chronic_illness', 
         },
       ]
     }, 

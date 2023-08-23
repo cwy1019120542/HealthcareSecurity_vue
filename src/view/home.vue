@@ -38,30 +38,39 @@
                     </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="4">
+                    <template slot="title">
+                        <i class="el-icon-timer"></i>
+                        <span>慢特病数据</span>
+                    </template>
+                    <el-menu-item-group>
+                        <el-menu-item class="aside_option" v-if="is_in('chronic_illness')" @click="router_to('/chronic_illness')" index="4-１">查询</el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="5">
                 <template slot="title">
                     <i class="el-icon-notebook-2"></i>
                     <span>考核数据</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item class="aside_option" v-if="is_in('check_data')" @click="router_to('/staff')" index="4-１">查询</el-menu-item>
+                    <el-menu-item class="aside_option" v-if="is_in('check_data')" @click="router_to('/staff')" index="5-１">查询</el-menu-item>
                 </el-menu-item-group>
                 </el-submenu>
-                <el-submenu index="5">
+                <el-submenu index="6">
                 <template slot="title">
                     <i class="el-icon-pie-chart"></i>
                     <span>支出测算</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/civil_pay')" index="5-１">公务员医疗补助</el-menu-item>
+                    <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/civil_pay')" index="6-１">公务员医疗补助</el-menu-item>
                 </el-menu-item-group>
                 </el-submenu>
-                <el-submenu index="6">
+                <el-submenu index="7">
                 <template slot="title">
                     <i class="el-icon-sold-out"></i>
                     <span>数据导出</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/open_data')" index="6-１">政务公开数据</el-menu-item>
+                    <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/open_data')" index="7-１">政务公开数据</el-menu-item>
                 </el-menu-item-group>
                 </el-submenu>
                 </el-menu>

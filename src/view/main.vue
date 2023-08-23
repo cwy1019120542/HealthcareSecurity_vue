@@ -24,7 +24,7 @@
                 <div slot="header" class="clearfix">
                     <span>职工参保数据更新至</span>
                 </div>
-                    <span>{{work_insured_data}}</span>
+                    <span>{{work_insured_date}}</span>
                 </el-card>
                 </div>
                 <div class='flex_data'>
@@ -34,11 +34,17 @@
                 </div>
                     <span>{{special_insured_date}}</span>
                 </el-card>
+                <el-card class="box-card" shadow="hover">
+                <div slot="header" class="clearfix">
+                    <span>慢特病数据更新至</span>
+                </div>
+                    <span>{{operate_date}}</span>
+                </el-card>
                 </div>
             </div>
             <div class="notify">
                 <el-collapse accordion>
-                <el-collapse-item  v-for='notify_data in notify_data_list' :key="notify_data.title">
+                <el-collapse-item  v-for='notify_data in notify_data_list' :key="notify_data.id">
                     <template slot="title">
                     <i class="header-icon el-icon-bell"></i>{{notify_data.operate_date}} : {{notify_data.title}}
                     </template>
@@ -97,8 +103,9 @@ export default {
             pay_date: '', 
             settle_date: '', 
             notify_data_list: [], 
-            work_insured_data: '', 
+            work_insured_date: '', 
             special_insured_date: '', 
+            operate_date: '', 
             loading: false, 
         }
     }, 
@@ -108,8 +115,9 @@ export default {
         this.notify_data_list=res.data.data
         this.pay_date = res.data.pay_date
         this.settle_date = res.data.settle_date
-        this.work_insured_data = res.data.work_insured_data
+        this.work_insured_date = res.data.work_insured_date
         this.special_insured_date = res.data.special_insured_date
+        this.operate_date = res.data.operate_date
         this.loading = false
         }).catch(error=>{
         deal_error(this, error)

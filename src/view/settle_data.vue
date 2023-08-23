@@ -8,7 +8,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="姓名:">
-                <el-input placeholder="请输入" v-model="search_form.name" clearable @keyup.enter.native="search('list', 1)"></el-input>
+                <el-input placeholder="请输入（支持模糊查询）" v-model="search_form.name" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="身份证号:">
                 <el-input placeholder="请输入" v-model="search_form.id_number" clearable @keyup.enter.native="search('list', 1)"></el-input>
@@ -38,10 +38,8 @@
                   <el-option v-for='enumerate_village in enumerate_data_dict.village' :key="enumerate_village" :label="enumerate_village" :value="enumerate_village"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="医院等级:">
-                <el-select v-model="search_form.hospital_level" multiple placeholder="请选择" clearable collapse-tags>
-                    <el-option v-for="enumerate_hospital_level in enumerate_data_dict.hospital_level" :key="enumerate_hospital_level" :value="enumerate_hospital_level"></el-option>
-                </el-select>
+            <el-form-item label="病种名称:">
+                <el-input placeholder="请输入（支持模糊查询）" v-model="search_form.illness_name" clearable @keyup.enter.native="search('list', 1)"></el-input>
             </el-form-item>
             <el-form-item label="医疗类别:">
                 <el-select v-model="search_form.cure_type" multiple placeholder="请选择" clearable collapse-tags>
@@ -59,8 +57,8 @@
                     <el-option v-for="enumerate_hospital_place in enumerate_data_dict.hospital_place" :key="enumerate_hospital_place" :value="enumerate_hospital_place"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="医疗机构编码:" style="width: 22%">
-                <el-input placeholder="请输入" v-model="search_form.hospital_id" clearable @keyup.enter.native="search('list', 1)"  @change="update_local_hospital_id()"></el-input>
+            <el-form-item label="医药机构名称:" style="width: 22%">
+                <el-input placeholder="请输入（支持模糊查询）" v-model="search_form.hospital_name" clearable @keyup.enter.native="search('list', 1)"  @change="update_local_hospital_id()"></el-input>
             </el-form-item>
             <el-form-item label="是否冲销:" style="width: 22%">
                 <el-select v-model="search_form.is_refund" placeholder="请选择"  clearable>
@@ -79,7 +77,7 @@
                 :options="local_hospital_list"
                 :props="props"
                 collapse-tags
-                 @change="update_hospital_id()"
+                 @change="update_hospital_name()"
                 clearable></el-cascader>
             </el-form-item>
             <el-form-item label="结算日期:" style="width: 28%">
@@ -327,7 +325,7 @@ import {authentication, update_town, update_village, reset, search, download, up
             "person_type": [], 
             "hospital_place": [], 
             "is_centre": '', 
-            "hospital_level": [], 
+            "illness_name": '', 
             "evidence_type": [], 
             "cure_type": [], 
             "settle_date": [], 
@@ -341,7 +339,8 @@ import {authentication, update_town, update_village, reset, search, download, up
             'page': 0, 
             'cure_type_gather': [], 
             'attribute_gather': [],
-            'hospital_id': '',
+            'hospital_name': '',
+            'hospital_id': [],
             'local_hospital_id': [],  
             'is_refund': '否', 
             'overyear_refund': '', 
@@ -364,11 +363,11 @@ import {authentication, update_town, update_village, reset, search, download, up
         }
       }, 
       created () {
-        authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|hospital_level|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict|cure_type_dict|overyear_refund|hospital_name_id_dict|local_hospital_dict', false, ['town', 'attribute', 'local_hospital'])
+        authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict|cure_type_dict|overyear_refund|hospital_name_id_dict|local_hospital_dict', false, ['town', 'attribute', 'local_hospital'])
       }, 
       methods: {
-        update_hospital_id: function(){
-            this.search_form.hospital_id = ''
+        update_hospital_name: function(){
+            this.search_form.hospital_name = ''
         }, 
         update_local_hospital_id: function() {
             this.search_form.local_hospital_id = []
