@@ -79,6 +79,11 @@
                   <el-option value="是"></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="性别:">
+                <el-select v-model="search_form.sex" placeholder="请选择" clearable  multiple collapse-tags>
+                  <el-option v-for='enumerate_sex in enumerate_data_dict.sex' :key="enumerate_sex" :value="enumerate_sex"></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="人员属性快速筛选:">
                   <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
                     <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
@@ -150,11 +155,12 @@
           <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
           <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
+          <el-table-column label="性别" width="125" prop="sex" header-align="center" align="center"></el-table-column>
           <el-table-column label="家庭户号" width="200" prop="family_number" header-align="center" align="center"></el-table-column>
           <el-table-column label="参保情况" width="125" header-align="center" align="center" prop="insured_state"></el-table-column>
           <el-table-column label="人员属性" width="350" header-align="center" align="center" prop="attribute"></el-table-column>
           <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
-          <el-table-column label="村" width="125" prop="village" header-align="center" align="center"></el-table-column>
+          <el-table-column label="村居" width="125" prop="village" header-align="center" align="center"></el-table-column>
           <el-table-column label="自付金额" width="100" prop="own_expense" header-align="center" align="center"></el-table-column>
           <el-table-column label="支付日期" width="175" prop="pay_date" header-align="center" align="center"></el-table-column>
           <el-table-column label="参加公务员医疗补助" width="175" prop="is_civil" header-align="center" align="center"></el-table-column>
@@ -221,6 +227,7 @@ import {authentication, update_town, update_village, reset, search, download, up
             "village": [], 
             "is_civil": '', 
             "is_account_pay": '', 
+            'sex': [], 
             'page': 0, 
             'hospital_community': [], 
             'attribute_gather': [], 
@@ -242,7 +249,7 @@ import {authentication, update_town, update_village, reset, search, download, up
         }
       }, 
       created () {
-        authentication(this, 'attribute_dict|insured_state|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|pay_type_operator_dict|pay_type_operator_label', false, ['town', 'attribute'])
+        authentication(this, 'attribute_dict|insured_state|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|pay_type_operator_dict|pay_type_operator_label|sex', false, ['town', 'attribute'])
       }, 
       methods: {
         search: function(show_type, page=0) {
