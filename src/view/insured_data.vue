@@ -51,6 +51,11 @@
             <el-form-item>
                 <el-input placeholder="请输入" v-model="search_form.own_expense" clearable @keyup.enter.native="search('list', 1)"><template slot="append">元</template></el-input>
             </el-form-item>
+            <el-form-item label="性别:">
+                <el-select v-model="search_form.sex" placeholder="请选择" clearable  multiple collapse-tags>
+                  <el-option v-for='enumerate_sex in enumerate_data_dict.sex' :key="enumerate_sex" :value="enumerate_sex"></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="缴费日期:">
                 <el-date-picker
                   v-model="search_form.pay_date"
@@ -77,11 +82,6 @@
             <el-form-item label="共济账户支付:">
                 <el-select v-model="search_form.is_account_pay" placeholder="请选择"  clearable>
                   <el-option value="是"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="性别:">
-                <el-select v-model="search_form.sex" placeholder="请选择" clearable  multiple collapse-tags>
-                  <el-option v-for='enumerate_sex in enumerate_data_dict.sex' :key="enumerate_sex" :value="enumerate_sex"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="人员属性快速筛选:">
@@ -155,18 +155,18 @@
           <el-table-column label="序号" width="100" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="姓名" width="100" prop="name" header-align="center" align="center"></el-table-column>
           <el-table-column label="身份证号" width="200" prop="id_number" header-align="center" align="center"></el-table-column>
-          <el-table-column label="性别" width="125" prop="sex" header-align="center" align="center"></el-table-column>
-          <el-table-column label="家庭户号" width="200" prop="family_number" header-align="center" align="center"></el-table-column>
+          <el-table-column label="性别" width="100" prop="sex" header-align="center" align="center"></el-table-column>
           <el-table-column label="参保情况" width="125" header-align="center" align="center" prop="insured_state"></el-table-column>
-          <el-table-column label="人员属性" width="350" header-align="center" align="center" prop="attribute"></el-table-column>
           <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
           <el-table-column label="村居" width="125" prop="village" header-align="center" align="center"></el-table-column>
           <el-table-column label="自付金额" width="100" prop="own_expense" header-align="center" align="center"></el-table-column>
           <el-table-column label="支付日期" width="175" prop="pay_date" header-align="center" align="center"></el-table-column>
           <el-table-column label="参加公务员医疗补助" width="175" prop="is_civil" header-align="center" align="center"></el-table-column>
+          <el-table-column label="家庭户号" width="200" prop="family_number" header-align="center" align="center"></el-table-column>
           <el-table-column label="共济账户支付" width="150" prop="is_account_pay" header-align="center" align="center"></el-table-column>
+          <el-table-column label="人员属性" width="400" header-align="center" align="center" prop="attribute"></el-table-column>
           <el-table-column label="备注" width="350" prop="remark" header-align="center" align="center"></el-table-column>
-          <el-table-column label="手机号" width="200" header-align="center" align="center" prop="phone_number"></el-table-column>
+          <el-table-column label="手机号" width="350" header-align="center" align="center" prop="phone_number"></el-table-column>
         </el-table>
         <el-pagination
           background

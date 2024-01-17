@@ -60,15 +60,15 @@
             <el-form-item label="医药机构名称:" style="width: 22%">
                 <el-input placeholder="请输入（支持模糊查询）" v-model="search_form.hospital_name" clearable @keyup.enter.native="search('list', 1)"  @change="update_local_hospital_id()"></el-input>
             </el-form-item>
+            <el-form-item label="就诊凭证类型:" style="width: 22%">
+                <el-select v-model="search_form.evidence_type" placeholder="请选择" clearable>
+                    <el-option v-for="enumerate_evidence_type in enumerate_data_dict.evidence_type" :key="enumerate_evidence_type" :value="enumerate_evidence_type"></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="是否冲销:" style="width: 22%">
                 <el-select v-model="search_form.is_refund" placeholder="请选择"  clearable>
                   <el-option value="是"></el-option>
                   <el-option value="否"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="跨年冲销:" style="width: 22%">
-                <el-select v-model="search_form.overyear_refund" placeholder="请选择" clearable @change="update_refund()">
-                    <el-option v-for="enumerate_overyear_refund in enumerate_data_dict.overyear_refund" :key="enumerate_overyear_refund" :value="enumerate_overyear_refund"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="本地医疗机构:" style="width: 22%">
@@ -230,7 +230,6 @@
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="笔数" width="75" prop="data_count" header-align="center" align="center" v-if="show_type=='merge'"></el-table-column>
                 <el-table-column label="人员类别" width="100" prop="person_type" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
-                <el-table-column label="人员属性" width="350" prop="attribute" header-align="center" align="center"></el-table-column>
                 <el-table-column label="医药机构地点类别" width="150" prop="hospital_place" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="定点医药机构编号" width="150" prop="hospital_id" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="定点医药机构名称" width="500" prop="hospital_name" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
@@ -261,10 +260,22 @@
                 <el-table-column label="统筹基金支付比例" width="150" prop="overall_percent" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="中心报销" width="125" prop="is_centre" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="经办人员" width="125" prop="operator" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="入院科室" width="125" prop="in_department" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="出院科室" width="125" prop="out_department" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="入院床位" width="125" prop="in_bed" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="病区床位" width="125" prop="illness_bed" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="出院床位" width="125" prop="out_bed" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="入院诊断" width="125" prop="in_diagnose" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="主诊医师代码" width="150" prop="doctor_id" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="主诊医师" width="150" prop="doctor_name" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="住院主诊断代码" width="125" prop="out_diagnose_id" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="住院主诊断" width="125" prop="out_diagnose" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="住院号" width="200" prop="in_id" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="人员属性" width="400" prop="attribute" header-align="center" align="center"></el-table-column>
                 <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
-                <el-table-column label="村" width="125" prop="village" header-align="center" align="center"></el-table-column>
+                <el-table-column label="村居" width="125" prop="village" header-align="center" align="center"></el-table-column>
                 <el-table-column label="备注" width="350" prop="remark" header-align="center" align="center"></el-table-column>
-                <el-table-column label="手机号" width="200" header-align="center" align="center" prop="phone_number"></el-table-column>
+                <el-table-column label="手机号" width="350" header-align="center" align="center" prop="phone_number"></el-table-column>
                 <el-table-column label="是否使用账户" width="125" prop="is_use_account" header-align="center" align="center"></el-table-column>
                 <el-table-column label="是否中途结算" width="125" prop="is_mid_settle" header-align="center" align="center"></el-table-column>
                 <el-table-column label="是否有效" width="100" prop="is_valid" header-align="center" align="center"></el-table-column>
@@ -363,7 +374,7 @@ import {authentication, update_town, update_village, reset, search, download, up
         }
       }, 
       created () {
-        authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict|cure_type_dict|overyear_refund|hospital_name_id_dict|local_hospital_dict', false, ['town', 'attribute', 'local_hospital'])
+        authentication(this, 'attribute_dict|default_year|town_village_dict|year|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type|cure_type|hospital_place|cure_type_gather|pay_type_label|pay_type_operator_label|pay_type_dict|pay_type_operator_dict|cure_type_dict|overyear_refund|hospital_name_id_dict|local_hospital_dict|evidence_type', false, ['town', 'attribute', 'local_hospital'])
       }, 
       methods: {
         update_hospital_name: function(){
