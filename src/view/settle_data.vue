@@ -260,16 +260,16 @@
                 <el-table-column label="统筹基金支付比例" width="150" prop="overall_percent" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="中心报销" width="125" prop="is_centre" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="经办人员" width="125" prop="operator" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
-                <el-table-column label="入院科室" width="125" prop="in_department" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
-                <el-table-column label="出院科室" width="125" prop="out_department" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="入院科室" width="200" prop="in_department" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="出院科室" width="200" prop="out_department" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="入院床位" width="125" prop="in_bed" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="病区床位" width="125" prop="illness_bed" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="出院床位" width="125" prop="out_bed" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
-                <el-table-column label="入院诊断" width="125" prop="in_diagnose" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="入院诊断" width="200" prop="in_diagnose" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="主诊医师代码" width="150" prop="doctor_id" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="主诊医师" width="150" prop="doctor_name" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="住院主诊断代码" width="125" prop="out_diagnose_id" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
-                <el-table-column label="住院主诊断" width="125" prop="out_diagnose" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
+                <el-table-column label="住院主诊断" width="200" prop="out_diagnose" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="住院号" width="200" prop="in_id" header-align="center" align="center" v-if="show_type=='list'"></el-table-column>
                 <el-table-column label="人员属性" width="400" prop="attribute" header-align="center" align="center"></el-table-column>
                 <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
