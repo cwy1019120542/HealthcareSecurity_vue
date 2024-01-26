@@ -105,6 +105,8 @@ import {authentication, search, reset, download} from '../functools';
             'settle_date': [], 
             'is_valid': '是', 
             'is_refund': '否', 
+            'pay_type_operator': '__ge__', 
+            'end_date': '2022-07-01', 
             'cure_type': ['普通住院', '外伤住院', '无他方责任意外伤害住院', '分疗程间断住院治疗', '单病种住院', '床日费用住院', '转外诊治住院', '急诊转住院', '自主就医住院', '18周岁以下苯丙酮尿症及四氢生物蝶呤缺乏症', '18周岁以下苯丙酮尿症', '门诊特病', '门诊慢病', '门诊单病种'], 
           }, 
           default_search_form: {}, 
