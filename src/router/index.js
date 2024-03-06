@@ -16,6 +16,7 @@ import open_data from '@/view/open_data'
 import user from '@/view/user'
 import settle_rate from '@/view/settle_rate'
 import chronic_illness from '@/view/chronic_illness'
+import evidence_rate from '@/view/evidence_rate'
 
 Vue.use(Router)
 
@@ -92,6 +93,11 @@ export default new Router({
           component: chronic_illness, 
           name: 'chronic_illness', 
         },
+        {
+          path: '/evidence_rate', 
+          component: evidence_rate, 
+          name: 'evidence_rate', 
+        }, 
       ]
     }, 
     {

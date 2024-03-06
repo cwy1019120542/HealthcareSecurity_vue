@@ -36,6 +36,9 @@
                     <el-menu-item-group>
                         <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/settle_rate')" index="3-2">直接结算率</el-menu-item>
                     </el-menu-item-group>
+                    <el-menu-item-group>
+                        <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/evidence_rate')" index="3-3">医保码结算率</el-menu-item>
+                    </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="4">
                     <template slot="title">
