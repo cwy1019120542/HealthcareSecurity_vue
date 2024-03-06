@@ -82,20 +82,20 @@
           </div>            
         </el-form>
         <div class="table">
-          <el-table :data="data.data" stripe border height="100%" style="width: 100%" :span-method="merge_column">
+          <el-table :data="data.data" stripe border height="100%" style="width: 100%">
           <el-table-column label="序号" width="150" prop="number" header-align="center" align="center"></el-table-column>
           <el-table-column label="定点医药机构名称" width="400" prop="hospital_name" header-align="center" align="center"></el-table-column>
-          <el-table-column label="2022" header-align="center" align="center">
+          <el-table-column :label="search_form.compare_year" header-align="center" align="center">
           <el-table-column label="总结算人次" width="150" prop="compare_year_sum_count" header-align="center" align="center"></el-table-column>
           <el-table-column label="医保码结算人次" width="150" header-align="center" align="center" prop="compare_year_evidence_count"></el-table-column>
           <el-table-column label="医保码结算率" width="150" header-align="center" align="center" prop="compare_year_evidence_rate"></el-table-column>
           </el-table-column>
-          <el-table-column label="2023" header-align="center" align="center">
+          <el-table-column :label="search_form.year" header-align="center" align="center">
           <el-table-column label="总结算人次" width="150" header-align="center" align="center" prop="year_sum_count"></el-table-column>
           <el-table-column label="医保码结算人次" width="150" header-align="center" align="center" prop="year_evidence_count"></el-table-column>
           <el-table-column label="医保码结算率" width="150" header-align="center" align="center" prop="year_evidence_rate"></el-table-column>
           </el-table-column>
-          <el-table-column label="增长率" width="150" header-align="center" align="center" prop="increase_evidence_rate"></el-table-column>
+          <el-table-column label="增长率" width="180" header-align="center" align="center" prop="increase_evidence_rate"></el-table-column>
         </el-table>
         </div>
     </div>
@@ -158,6 +158,9 @@ import {authentication, search, reset, download, update_cure_type} from '../func
         search: function() {
           search(this, 'evidence_rate')
         },
+        update_hospital_name: function(){
+            this.search_form.hospital_name = ''
+        }, 
         router_to: function(url) {
           this.$router.push(url)
         }, 
