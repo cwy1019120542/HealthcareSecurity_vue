@@ -127,6 +127,11 @@
                 <el-table-column label="序号" width="75" prop="number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="姓名" width="150" prop="name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
+                <el-table-column label="慢性病证" width="100" header-align="center" align="center">
+                  <template slot-scope="scope">
+                    <el-link type="primary" icon="el-icon-download" @click="download_card({'id_number': scope.row.id_number, 'town': scope.row.town, 'village': scope.row.village})">下载</el-link>
+                  </template>
+                </el-table-column>
                 <el-table-column label="病种名称" width="350" prop="illness_name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="病种编号" width="125" prop="illness_number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="开始日期" width="175" prop="start_date" header-align="center" align="center"></el-table-column>
@@ -252,6 +257,9 @@ import {authentication, update_town, update_village, reset, search, download, up
         }, 
         update_attribute: function() {
           update_attribute(this)
+        }, 
+        download_card: function(download_params) {
+          download(this, 'chronic_illness/card', download_params)
         }, 
       }
 }

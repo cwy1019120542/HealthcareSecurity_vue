@@ -111,14 +111,14 @@ var add = function(self, router) {
     })
 }
 
-var download = function(self, router, attachment_id=null) {
+var download = function(self, router, download_params=null) {
   self.loading = true
   var params_dict = {}
-  if (!attachment_id) {
+  if (!download_params) {
     params_dict = get_params(self)
   }
   else {
-    params_dict = {'params': {'attachment_id': attachment_id}}
+    params_dict = {'params': download_params}
   }
   params_dict['responseType'] = 'blob'
   self.$axios.get(`/user/${self.user_data['id']}/${router}`, params_dict).then((res)=>{

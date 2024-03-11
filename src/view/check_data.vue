@@ -325,7 +325,7 @@ import {authentication, reset, search, download, alert, deal_error, add} from '.
           })
         }, 
         download_attachment: function(attachment_id) {
-          download(this, 'check_attachment', attachment_id)
+          download(this, 'check_attachment', {'attachment_id': attachment_id})
         }, 
     }, 
  }
