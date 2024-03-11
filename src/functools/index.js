@@ -241,7 +241,7 @@ var reset = function(self, is_search=false, form_name='search_form') {
     for (let key in self[form_name]) {
           self[form_name][key] = self[`default_${form_name}`][key]
         }
-    if ('village' in self[form_name]) {
+    if ('village' in self[form_name] && !self.town_disabled) {
         self.enumerate_data_dict.village = []
     }
     if (is_search) {

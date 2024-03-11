@@ -27,7 +27,7 @@
                 更多查询
               </template>
               <el-form-item label="乡镇:" style="width: 18%">
-                <el-select v-model="search_form.town" placeholder="请选择" clearable multiple @change="update_village()" collapse-tags>
+                <el-select v-model="search_form.town" placeholder="请选择" @change="update_village()" :disabled='town_disabled' :clearable='!town_disabled' :multiple='!town_disabled' :collapse-tags='!town_disabled' >
                   <el-option v-for='enumerate_town in enumerate_data_dict.town' :key="enumerate_town" :label="enumerate_town" :value="enumerate_town"></el-option>
                 </el-select>
             </el-form-item>
@@ -230,6 +230,7 @@ import {authentication, update_town, update_village, reset, search, download, up
           authority: 'chronic_illness', 
           clean_request_field_list: ['attribute'], 
           limit_list: [10, 20, 50, 100], 
+          town_disabled: false, 
         }
       }, 
       created () {
