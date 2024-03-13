@@ -129,7 +129,7 @@
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="慢性病证" width="100" header-align="center" align="center">
                   <template slot-scope="scope">
-                    <el-link type="primary" icon="el-icon-download" @click="download_card({'id_number': scope.row.id_number, 'town': scope.row.town, 'village': scope.row.village})">下载</el-link>
+                    <el-link type="primary" icon="el-icon-view" @click="create_card({'id_number': scope.row.id_number, 'town': scope.row.town})">查看</el-link>
                   </template>
                 </el-table-column>
                 <el-table-column label="病种名称" width="350" prop="illness_name" header-align="center" align="center"></el-table-column>
@@ -163,11 +163,55 @@
           @size-change="search('list', search_form.page)"
           @current-change="search('list', search_form.page)">
             </el-pagination>
+            <el-dialog
+              :visible.sync="dialogVisible"
+              width="75%">
+              <div class='card'>
+              <div class='card_title'>
+                <p>个&emsp;人&emsp;慢&emsp;特&emsp;病&emsp;信&emsp;息&emsp;证</p>
+              </div>
+              <div class='card_content'>
+                <p><span class='card_field_name'>&emsp;&emsp;&emsp;&emsp;姓&emsp;&emsp;&emsp;&emsp;&emsp;名:&emsp;&emsp;</span><span>{{card_data.name}}</span></p>
+                <p><span class='card_field_name'>&emsp;&emsp;&emsp;&emsp;性&emsp;&emsp;&emsp;&emsp;&emsp;别:&emsp;&emsp;</span><span>{{card_data.sex}}</span></p>
+                <p><span class='card_field_name'>&emsp;&emsp;&emsp;&emsp;身&emsp;份&emsp;证&emsp;号:&emsp;&emsp;</span><span>{{card_data.id_number}}</span></p>
+                <p><span class='card_field_name'>&emsp;&emsp;&emsp;&emsp;病种及审批时间:</span><span>&emsp;&emsp;{{card_data.illness_data}}</span></p>
+                <p><span class='card_field_name'>&emsp;&emsp;&emsp;&emsp;地&emsp;&emsp;&emsp;&emsp;&emsp;址:&emsp;&emsp;</span><span>{{card_data.address}}</span></p>
+              </div>
+              <div class="card_end">
+                <p style="line-height: 4;">{{card_data.department}}</p>
+                <p>{{card_data.now_date}}</p>
+              </div>
+            </div>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="download_card()">下 载</el-button>
+              </span>
+            </el-dialog>
         </div>
     </div>
 </template>
 
 <style scoped>
+.card {
+  width: 100%;
+}
+.card_title {
+  text-align: center;
+  width: 100%;
+  font-size: 4em;
+  font-weight: bold;
+}
+.card_field_name {
+  font-weight: bold;
+}
+.card_content p {
+  line-height: 2;
+  font-size: 2em;
+}
+.card_end {
+  text-align: right;
+  font-size: 2em;
+}
 .el-form-item {
   margin-right: 2%;
 }
@@ -196,7 +240,7 @@
 </style>
     
 <script>
-import {authentication, update_town, update_village, reset, search, download, update_attribute} from '../functools';
+import {authentication, update_town, update_village, reset, search, download, update_attribute, create_pdf, deal_error} from '../functools';
  export default {
       data() {
         return {
@@ -223,6 +267,7 @@ import {authentication, update_town, update_village, reset, search, download, up
           }, 
           default_search_form: {}, 
           data: {}, 
+          card_data: {}, 
           enumerate_data_dict: {}, 
           user_data: {}, 
           loading: false, 
@@ -231,6 +276,7 @@ import {authentication, update_town, update_village, reset, search, download, up
           clean_request_field_list: ['attribute'], 
           limit_list: [10, 20, 50, 100], 
           town_disabled: false, 
+          dialogVisible: false, 
         }
       }, 
       created () {
@@ -259,9 +305,39 @@ import {authentication, update_town, update_village, reset, search, download, up
         update_attribute: function() {
           update_attribute(this)
         }, 
-        download_card: function(download_params) {
-          download(this, 'chronic_illness/card', download_params)
+        create_card: function(params) {
+          this.loading = true
+          this.$axios.get(`/user/${this.user_data['id']}/chronic_illness/list`, {'params': params}).then((res)=>{
+            var illness_data_dict = {}
+            var illness_data_list = []
+            for (let person_data of res.data.data) {
+              this.card_data.name = person_data.name
+              this.card_data.sex = person_data.sex
+              this.card_data.id_number = person_data.id_number
+              illness_data_dict[person_data.illness_name] = person_data.start_date
+              this.card_data.address = `${person_data.town}${person_data.village}`
+              if (person_data.town != '开发区') {
+                this.card_data.department = `潜山市${person_data.town}人民政府`
+              }
+              else {
+                this.card_data.department = '潜山市开发区管委会'
+              }
+            }
+            for (var illness_name in illness_data_dict) {
+              illness_data_list.push(`${illness_name}(${illness_data_dict[illness_name]})`)
+            }
+            this.card_data.illness_data = illness_data_list.join('、')
+            this.card_data.now_date = new Date().toLocaleDateString()
+            this.loading = false
+            this.dialogVisible = true
+          }).catch(error=>{
+              deal_error(this, error)
+          })
         }, 
+        download_card: function() {
+          create_pdf(this, `${this.card_data.name}(${this.card_data.id_number})${this.card_data.address}`, document.querySelector('.card'), this.card_data.department)
+          this.dialogVisible = false
+        }
       }
 }
 </script>
