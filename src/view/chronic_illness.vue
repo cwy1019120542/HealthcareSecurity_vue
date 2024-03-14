@@ -150,7 +150,7 @@
                 <el-table-column label="人员属性" width="350" prop="attribute" header-align="center" align="center"></el-table-column>
                 <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
                 <el-table-column label="村居" width="125" prop="village" header-align="center" align="center"></el-table-column>
-                <el-table-column label="手机号" width="200" prop="phone_number" header-align="center" align="center"></el-table-column>
+                <el-table-column label="手机号" width="350" prop="phone_number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="家庭户号" width="200" prop="family_number" header-align="center" align="center"></el-table-column>
             </el-table>
             <el-pagination
@@ -163,28 +163,27 @@
           @size-change="search('list', search_form.page)"
           @current-change="search('list', search_form.page)">
             </el-pagination>
-            <el-dialog
-              :visible.sync="dialogVisible"
-              width="75%">
+            <el-dialog :visible.sync="dialogVisible" top=2% close-on-press-escape	close-on-click-modal>
               <div class='card'>
               <div class='card_title'>
                 <p>个&emsp;人&emsp;慢&emsp;特&emsp;病&emsp;信&emsp;息&emsp;证</p>
               </div>
               <div class='card_content'>
-                <p><span class='card_field_name'>&emsp;&emsp;&emsp;&emsp;姓&emsp;&emsp;&emsp;&emsp;&emsp;名:&emsp;&emsp;</span><span>{{card_data.name}}</span></p>
-                <p><span class='card_field_name'>&emsp;&emsp;&emsp;&emsp;性&emsp;&emsp;&emsp;&emsp;&emsp;别:&emsp;&emsp;</span><span>{{card_data.sex}}</span></p>
-                <p><span class='card_field_name'>&emsp;&emsp;&emsp;&emsp;身&emsp;份&emsp;证&emsp;号:&emsp;&emsp;</span><span>{{card_data.id_number}}</span></p>
-                <p><span class='card_field_name'>&emsp;&emsp;&emsp;&emsp;病种及审批时间:</span><span>&emsp;&emsp;{{card_data.illness_data}}</span></p>
-                <p><span class='card_field_name'>&emsp;&emsp;&emsp;&emsp;地&emsp;&emsp;&emsp;&emsp;&emsp;址:&emsp;&emsp;</span><span>{{card_data.address}}</span></p>
+                <p><span class='card_field_name'>姓&emsp;&emsp;&emsp;&emsp;&emsp;名:&emsp;&emsp;</span><span>{{card_data.name}}</span></p>
+                <p><span class='card_field_name'>性&emsp;&emsp;&emsp;&emsp;&emsp;别:&emsp;&emsp;</span><span>{{card_data.sex}}</span></p>
+                <p><span class='card_field_name'>身&emsp;份&emsp;证&emsp;号:&emsp;&emsp;</span><span>{{card_data.id_number}}</span></p>
+                <p><span class='card_field_name'>病种及审批时间:</span><span>&emsp;&emsp;{{card_data.illness_data}}</span></p>
+                <p><span class='card_field_name'>地&emsp;&emsp;&emsp;&emsp;&emsp;址:&emsp;&emsp;</span><span>{{card_data.address}}</span></p>
               </div>
               <div class="card_end">
-                <p style="line-height: 4;">{{card_data.department}}</p>
-                <p>{{card_data.now_date}}</p>
+                <p style="line-height: 4;margin-bottom: 0;">{{card_data.department}}</p>
+                <p style="margin: 0;">{{card_data.now_date}}</p>
               </div>
             </div>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="download_card()">下 载</el-button>
+                <el-button type="success" @click="print_card()">打 印</el-button>
               </span>
             </el-dialog>
         </div>
@@ -193,12 +192,13 @@
 
 <style scoped>
 .card {
-  width: 100%;
+  /* width: 100%; */
+  padding: 2% 10% 0 10%;
 }
 .card_title {
   text-align: center;
   width: 100%;
-  font-size: 4em;
+  font-size: 2.5em;
   font-weight: bold;
 }
 .card_field_name {
@@ -206,11 +206,11 @@
 }
 .card_content p {
   line-height: 2;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 .card_end {
   text-align: right;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 .el-form-item {
   margin-right: 2%;
@@ -240,7 +240,7 @@
 </style>
     
 <script>
-import {authentication, update_town, update_village, reset, search, download, update_attribute, create_pdf, deal_error} from '../functools';
+import {authentication, update_town, update_village, reset, search, download, update_attribute, download_pdf, deal_error, print_pdf} from '../functools';
  export default {
       data() {
         return {
@@ -335,7 +335,16 @@ import {authentication, update_town, update_village, reset, search, download, up
           })
         }, 
         download_card: function() {
-          create_pdf(this, `${this.card_data.name}(${this.card_data.id_number})${this.card_data.address}`, document.querySelector('.card'), this.card_data.department)
+          download_pdf(document.querySelector('.card'), this.card_data.department, `${this.card_data.name}(${this.card_data.id_number})${this.card_data.address}`)
+          this.$message({ 
+            showClose: true, 
+            message: '下载成功', 
+            type: 'success'
+        })
+          this.dialogVisible = false
+        }, 
+        print_card: function() {
+          print_pdf(document.querySelector('.card'), this.card_data.department)
           this.dialogVisible = false
         }
       }
