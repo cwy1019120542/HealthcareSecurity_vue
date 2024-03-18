@@ -297,7 +297,7 @@ var create_pdf = function(canvas, html, watermark_text) {
     pdf.setTextColor(200);
     pdf.setFontSize(45);
     pdf.setGState(pdf.GState({ opacity: 0.5}))
-    pdf.text(25, 80, watermark_text);
+    pdf.text(25, 77, watermark_text);
     return pdf
 }
 

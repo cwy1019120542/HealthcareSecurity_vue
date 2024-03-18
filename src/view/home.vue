@@ -18,62 +18,50 @@
                         <i class="el-icon-house"></i>
                         <span slot="title">主页</span>
                     </el-menu-item>
-                    <el-submenu index="2"><template slot="title"><i class="el-icon-star-off"></i><span>参保数据</span></template>
+                    <el-submenu index="2" v-if="is_in('insured_data')"><template slot="title"><i class="el-icon-star-off"></i><span>参保数据</span></template>
                     <el-menu-item-group>
-                        <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="2-1" @click="router_to('/insured_data')" >查询</el-menu-item>
-                        <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="2-2" @click="router_to('/insured_rate')" >本地居民参保进度</el-menu-item>
-                        <el-menu-item class="aside_option" v-if="is_in('insured_data')" index="2-3" @click="router_to('/special_insured_rate')" >特殊人群参保进度</el-menu-item>
+                        <el-menu-item class="aside_option" index="2-1" @click="router_to('/insured_data')" >查询</el-menu-item>
+                        <el-menu-item class="aside_option" index="2-2" @click="router_to('/insured_rate')" >本地居民参保进度</el-menu-item>
+                        <el-menu-item class="aside_option" index="2-3" @click="router_to('/special_insured_rate')" >特殊人群参保进度</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
-                <el-submenu index="3">
+                <el-submenu index="3" v-if="is_in('settle_data')">
                     <template slot="title">
                         <i class="el-icon-money"></i>
                         <span>结算数据</span>
                     </template>
                     <el-menu-item-group>
-                        <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/settle_data')" index="3-１">查询</el-menu-item>
+                        <el-menu-item class="aside_option" @click="router_to('/settle_data')" index="3-１">查询</el-menu-item>
                     </el-menu-item-group>
                     <el-menu-item-group>
-                        <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/settle_rate')" index="3-2">直接结算率</el-menu-item>
+                        <el-menu-item class="aside_option" @click="router_to('/settle_rate')" index="3-2">直接结算率</el-menu-item>
                     </el-menu-item-group>
                     <el-menu-item-group>
-                        <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/evidence_rate')" index="3-3">医保码结算率</el-menu-item>
+                        <el-menu-item class="aside_option" @click="router_to('/evidence_rate')" index="3-3">医保码结算率</el-menu-item>
+                    </el-menu-item-group>
+                    <el-menu-item-group>
+                        <el-menu-item class="aside_option" @click="router_to('/civil_pay')" index="3-4">公务员医疗补助测算</el-menu-item>
+                    </el-menu-item-group>
+                    <el-menu-item-group>
+                        <el-menu-item class="aside_option" @click="router_to('/open_data')" index="3-5">政务公开数据导出</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
-                <el-submenu index="4">
+                <el-submenu index="4" v-if="is_in('chronic_illness')">
                     <template slot="title">
                         <i class="el-icon-timer"></i>
                         <span>慢特病数据</span>
                     </template>
                     <el-menu-item-group>
-                        <el-menu-item class="aside_option" v-if="is_in('chronic_illness')" @click="router_to('/chronic_illness')" index="4-１">查询</el-menu-item>
+                        <el-menu-item class="aside_option" @click="router_to('/chronic_illness')" index="4-１">查询</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
-                <el-submenu index="5">
+                <el-submenu index="5" v-if="is_in('check_data')">
                 <template slot="title">
                     <i class="el-icon-notebook-2"></i>
                     <span>考核数据</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item class="aside_option" v-if="is_in('check_data')" @click="router_to('/staff')" index="5-１">查询</el-menu-item>
-                </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="6">
-                <template slot="title">
-                    <i class="el-icon-pie-chart"></i>
-                    <span>支出测算</span>
-                </template>
-                <el-menu-item-group>
-                    <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/civil_pay')" index="6-１">公务员医疗补助</el-menu-item>
-                </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="7">
-                <template slot="title">
-                    <i class="el-icon-sold-out"></i>
-                    <span>数据导出</span>
-                </template>
-                <el-menu-item-group>
-                    <el-menu-item class="aside_option" v-if="is_in('settle_data')" @click="router_to('/open_data')" index="7-１">政务公开数据</el-menu-item>
+                    <el-menu-item class="aside_option" @click="router_to('/staff')" index="5-１">查询</el-menu-item>
                 </el-menu-item-group>
                 </el-submenu>
                 </el-menu>
