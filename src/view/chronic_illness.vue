@@ -49,14 +49,6 @@
                     <el-option v-for="enumerate_apply_source in enumerate_data_dict.apply_source" :key="enumerate_apply_source" :value="enumerate_apply_source"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="医药机构名称:">
-                <el-input placeholder="请输入（支持模糊查询）" v-model="search_form.hospital_name" clearable @keyup.enter.native="search('list', 1)"></el-input>
-            </el-form-item>
-            <el-form-item label="医药机构地点:">
-                <el-select v-model="search_form.hospital_place" multiple placeholder="请选择" clearable collapse-tags>
-                    <el-option v-for="enumerate_hospital_place in enumerate_data_dict.hospital_place" :key="enumerate_hospital_place" :value="enumerate_hospital_place"></el-option>
-                </el-select>
-            </el-form-item>
             <el-form-item label="是否有效:">
                 <el-select v-model="search_form.is_valid" placeholder="请选择"  clearable>
                   <el-option value="是"></el-option>
@@ -84,11 +76,6 @@
             <el-form-item label="人员属性快速筛选:">
                   <el-checkbox-group v-model="search_form.attribute_gather" @change="update_attribute()">
                     <el-checkbox-button v-for="enumerate_attribute_gather in enumerate_data_dict.attribute_gather" :label="enumerate_attribute_gather" :key="enumerate_attribute_gather">{{enumerate_attribute_gather}}</el-checkbox-button>
-                  </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="医共体:">
-                  <el-checkbox-group v-model="search_form.hospital_community" size="medium" @change="update_town()">
-                    <el-checkbox-button v-for="enumerate_hospital_community in enumerate_data_dict.hospital_community" :label="enumerate_hospital_community" :key="enumerate_hospital_community">{{enumerate_hospital_community}}</el-checkbox-button>
                   </el-checkbox-group>
             </el-form-item>
                 </el-collapse-item>
@@ -136,9 +123,6 @@
                 <el-table-column label="病种编号" width="125" prop="illness_number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="开始日期" width="175" prop="start_date" header-align="center" align="center"></el-table-column>
                 <el-table-column label="结束日期" width="175" prop="end_date" header-align="center" align="center"></el-table-column>
-                <el-table-column label="定点医药机构编号" width="150" prop="hospital_id" header-align="center" align="center"></el-table-column>
-                <el-table-column label="定点医药机构名称" width="500" prop="hospital_name" header-align="center" align="center"></el-table-column>
-                <el-table-column label="医药机构地点类别" width="150" prop="hospital_place" header-align="center" align="center"></el-table-column>
                 <el-table-column label="人员类别" width="100" prop="person_type_simple" header-align="center" align="center"></el-table-column>
                 <el-table-column label="病种类型" width="175" prop="illness_type" header-align="center" align="center"></el-table-column>
                 <el-table-column label="鉴定日期" width="175" prop="identify_date" header-align="center" align="center"></el-table-column>
