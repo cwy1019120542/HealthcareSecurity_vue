@@ -158,7 +158,7 @@
                 <p><span class='card_field_name'>身&emsp;份&emsp;证&emsp;号:&emsp;&emsp;</span><span>{{card_data.id_number}}</span></p>
                 <p><span class='card_field_name'>病种及审批时间:</span><span>&emsp;&emsp;{{card_data.illness_data}}</span></p>
                 <p><span class='card_field_name'>地&emsp;&emsp;&emsp;&emsp;&emsp;址:&emsp;&emsp;</span><span>{{card_data.address}}</span></p>
-                <p>温馨提示：１.慢特病信息根据申请及医保政策动态调整，实际情况以医保信息系统为准。２.就医无需携带此证，凭医保电子凭证、社会保障卡及有效身份证件即可享受医保待遇。</p>
+                <p class="tip">温馨提示：１.慢特病信息根据申请及医保政策动态调整，实际情况以医保信息系统为准。２.就医无需携带此证，凭医保电子凭证、社会保障卡及有效身份证件即可享受医保待遇。</p>
               </div>
               <div class="card_end">
                 <p style="line-height: 4;margin-bottom: 0;">{{card_data.department}}</p>
@@ -176,6 +176,9 @@
 </template>
 
 <style scoped>
+.tip {
+  font-family: 'Courier New', Courier, monospace;
+}
 .card {
   /* width: 100%; */
   padding: 2% 10% 0 10%;
