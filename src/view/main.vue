@@ -112,6 +112,7 @@ export default {
     created() {
     this.loading = true
     this.$axios.get(`/notify_data`).then((res)=>{
+        localStorage.setItem('notify_data', JSON.stringify(res.data))
         this.notify_data_list=res.data.data
         this.pay_date = res.data.pay_date
         this.settle_date = res.data.settle_date

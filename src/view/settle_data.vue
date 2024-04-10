@@ -1,6 +1,6 @@
 <template>
     <div v-loading="loading" class="body">
-        <el-page-header @back="router_to('/main')" content="结算数据查询"></el-page-header>
+        <el-page-header @back="router_to('/main')" :content="header_content"></el-page-header>
         <el-form :inline="true" class="demo-form-inline" :model="search_form">
             <el-form-item label="年份:">
                 <el-select v-model="search_form.year" placeholder="请选择">
@@ -372,6 +372,7 @@ import {authentication, update_town, update_village, reset, search, download, up
           clean_request_field_list: ['attribute', 'local_hospital'], 
           limit_list: [10, 20, 50, 100], 
           town_disabled: false, 
+          'header_content': `结算数据查询（更新至${JSON.parse(localStorage.getItem('notify_data'))['settle_date']}）`, 
         }
       }, 
       created () {

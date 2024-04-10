@@ -1,6 +1,6 @@
 <template>
     <div v-loading="loading" class="body">
-      <el-page-header @back="router_to('/main')" content="参保数据查询"></el-page-header>
+      <el-page-header @back="router_to('/main')" :content="header_content"></el-page-header>
         <el-form :inline="true" :model="search_form">
             <el-form-item label="年份:">
                 <el-select v-model="search_form.year" placeholder="请选择">
@@ -246,6 +246,7 @@ import {authentication, update_town, update_village, reset, search, download, up
           authority: 'insured_data', 
           clean_request_field_list: ['attribute'], 
           limit_list: [10, 20, 50, 100],  
+          'header_content': `参保数据查询（更新至${JSON.parse(localStorage.getItem('notify_data'))['pay_date']}）`, 
         }
       }, 
       created () {

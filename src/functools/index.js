@@ -60,7 +60,7 @@ var clean_request_field_dict = {
             const params_hospital_id_list = []
             for (let hospital_id_list of self.search_form.local_hospital_id) {
                 for (let hospital_id of hospital_id_list) {
-                    if (!params_hospital_id_list.includes(hospital_id)) {
+                    if (!params_hospital_id_list.includes(hospital_id) && hospital_id) {
                         params_hospital_id_list.push(hospital_id)
                     }
                 }
@@ -180,7 +180,10 @@ var clean_enumerate_func_dict = {
     'local_hospital': function(self) {
         for (let hospital in self.enumerate_data_dict.local_hospital_dict) {
             const children_hospital_list = self.enumerate_data_dict.local_hospital_dict[hospital]
-            const hospital_dict = {value: self.enumerate_data_dict.hospital_name_id_dict[hospital], label: hospital}
+            const hospital_dict = {value: null, label: hospital}
+            if (hospital in self.enumerate_data_dict.hospital_name_id_dict) {
+                hospital_dict['value'] = self.enumerate_data_dict.hospital_name_id_dict[hospital]
+            }
             if (children_hospital_list.length) {
                 hospital_dict['children'] = []
                 for (let children_hospital of children_hospital_list) {

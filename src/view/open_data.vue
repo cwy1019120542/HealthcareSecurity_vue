@@ -1,6 +1,6 @@
 <template>
     <div v-loading="loading" class="body">
-      <el-page-header @back="router_to('/main')" content="政务公开数据"></el-page-header>
+      <el-page-header @back="router_to('/main')" :content="header_content"></el-page-header>
         <el-form :inline="true" :model="search_form" ref="search_form">
             <el-form-item label="年份:">
                 <el-select v-model="search_form.year" placeholder="请选择">
@@ -68,6 +68,7 @@ import {authentication, reset, download} from '../functools';
           loading: false, 
           authority: 'settle_data', 
           clean_request_field_list: [], 
+          'header_content': `政务公开数据（更新至${JSON.parse(localStorage.getItem('notify_data'))['settle_date']}）`, 
         }
       }, 
       created () {

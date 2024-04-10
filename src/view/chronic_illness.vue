@@ -1,6 +1,6 @@
 <template>
     <div v-loading="loading" class="body">
-        <el-page-header @back="router_to('/main')" content="慢特病数据查询"></el-page-header>
+        <el-page-header @back="router_to('/main')" :content='header_content'></el-page-header>
         <el-form :inline="true" class="demo-form-inline" :model="search_form">
             <el-form-item label="姓名:">
                 <el-input placeholder="请输入（支持模糊查询）" v-model="search_form.name" clearable @keyup.enter.native="search('list', 1)"></el-input>
@@ -158,6 +158,7 @@
                 <p><span class='card_field_name'>身&emsp;份&emsp;证&emsp;号:&emsp;&emsp;</span><span>{{card_data.id_number}}</span></p>
                 <p><span class='card_field_name'>病种及审批时间:</span><span>&emsp;&emsp;{{card_data.illness_data}}</span></p>
                 <p><span class='card_field_name'>地&emsp;&emsp;&emsp;&emsp;&emsp;址:&emsp;&emsp;</span><span>{{card_data.address}}</span></p>
+                <p>温馨提示：１.慢特病信息根据申请及医保政策动态调整，实际情况以医保信息系统为准。２.就医无需携带此证，凭医保电子凭证、社会保障卡及有效身份证件即可享受医保待遇。</p>
               </div>
               <div class="card_end">
                 <p style="line-height: 4;margin-bottom: 0;">{{card_data.department}}</p>
@@ -261,6 +262,7 @@ import {authentication, update_town, update_village, reset, search, download, up
           limit_list: [10, 20, 50, 100], 
           town_disabled: false, 
           dialogVisible: false, 
+          header_content: `慢特病数据查询（更新至${JSON.parse(localStorage.getItem('notify_data'))['operate_date']}）`, 
         }
       }, 
       created () {

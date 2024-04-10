@@ -43,7 +43,7 @@
                         <el-menu-item class="aside_option" @click="router_to('/civil_pay')" index="3-4">公务员医疗补助测算</el-menu-item>
                     </el-menu-item-group>
                     <el-menu-item-group>
-                        <el-menu-item class="aside_option" @click="router_to('/open_data')" index="3-5">政务公开数据导出</el-menu-item>
+                        <el-menu-item class="aside_option" @click="router_to('/open_data')" index="3-5">政务公开数据</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="4" v-if="is_in('chronic_illness')">
