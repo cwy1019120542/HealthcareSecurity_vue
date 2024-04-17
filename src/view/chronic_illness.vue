@@ -36,37 +36,14 @@
                   <el-option v-for='enumerate_village in enumerate_data_dict.village' :key="enumerate_village" :label="enumerate_village" :value="enumerate_village"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="家庭户号:">
-                <el-input placeholder="请输入" v-model="search_form.family_number" clearable @keyup.enter.native="search('list', 1)"></el-input>
-            </el-form-item>
             <el-form-item label="病种类别:">
                 <el-select v-model="search_form.illness_type" multiple placeholder="请选择" clearable collapse-tags>
                     <el-option v-for="enumerate_illness_type in enumerate_data_dict.illness_type" :key="enumerate_illness_type" :value="enumerate_illness_type"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="申报来源:">
-                <el-select v-model="search_form.apply_source" multiple placeholder="请选择" clearable collapse-tags>
-                    <el-option v-for="enumerate_apply_source in enumerate_data_dict.apply_source" :key="enumerate_apply_source" :value="enumerate_apply_source"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="是否有效:">
-                <el-select v-model="search_form.is_valid" placeholder="请选择"  clearable>
-                  <el-option value="是"></el-option>
-                  <el-option value="否"></el-option>
-                </el-select>
-            </el-form-item>
             <el-form-item label="经办日期:">
               <el-date-picker
                     v-model="search_form.operate_date"
-                    type="daterange"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    value-format="yyyy-MM-dd">
-                </el-date-picker>
-            </el-form-item>
-            <el-form-item label="出生日期:">
-              <el-date-picker
-                    v-model="search_form.birthday"
                     type="daterange"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
@@ -125,17 +102,11 @@
                 <el-table-column label="结束日期" width="175" prop="end_date" header-align="center" align="center"></el-table-column>
                 <el-table-column label="人员类别" width="100" prop="person_type_simple" header-align="center" align="center"></el-table-column>
                 <el-table-column label="病种类型" width="175" prop="illness_type" header-align="center" align="center"></el-table-column>
-                <el-table-column label="鉴定日期" width="175" prop="identify_date" header-align="center" align="center"></el-table-column>
-                <el-table-column label="申请日期" width="175" prop="apply_date" header-align="center" align="center"></el-table-column>
-                <el-table-column label="经办人" width="175" prop="operator" header-align="center" align="center"></el-table-column>
                 <el-table-column label="经办日期" width="175" prop="operate_date" header-align="center" align="center"></el-table-column>
-                <el-table-column label="是否有效" width="125" prop="is_valid" header-align="center" align="center"></el-table-column>
-                <el-table-column label="申报来源" width="175" prop="apply_source" header-align="center" align="center"></el-table-column>
                 <el-table-column label="人员属性" width="350" prop="attribute" header-align="center" align="center"></el-table-column>
                 <el-table-column label="乡镇" width="100" prop="town" header-align="center" align="center"></el-table-column>
                 <el-table-column label="村居" width="125" prop="village" header-align="center" align="center"></el-table-column>
                 <el-table-column label="手机号" width="350" prop="phone_number" header-align="center" align="center"></el-table-column>
-                <el-table-column label="家庭户号" width="200" prop="family_number" header-align="center" align="center"></el-table-column>
             </el-table>
             <el-pagination
             background
@@ -236,7 +207,6 @@ import {authentication, update_town, update_village, reset, search, download, up
             'name': '', 
             'id_number': '', 
             "person_type_simple": [], 
-            "hospital_place": [],  
             "illness_name": '', 
             "illness_type": [], 
             "operate_date": [], 
@@ -249,9 +219,6 @@ import {authentication, update_town, update_village, reset, search, download, up
             'is_valid': '是', 
             'limit': 10, 
             'birthday': [], 
-            'apply_source': [], 
-            'family_number': '', 
-            'hospital_name': '', 
           }, 
           default_search_form: {}, 
           data: {}, 
@@ -269,7 +236,7 @@ import {authentication, update_town, update_village, reset, search, download, up
         }
       }, 
       created () {
-        authentication(this, 'attribute_dict|town_village_dict|town|village|attribute_gather|hospital_community|hospital_community_dict|attribute_gather_dict|person_type_simple|hospital_place|apply_source|illness_type', false, ['town', 'attribute'])
+        authentication(this, 'attribute_dict|town_village_dict|town|village|attribute_gather|attribute_gather_dict|person_type_simple|illness_type', false, ['town', 'attribute'])
       }, 
       methods: {
         search: function(show_type, page=0) {
@@ -303,7 +270,14 @@ import {authentication, update_town, update_village, reset, search, download, up
               this.card_data.name = person_data.name
               this.card_data.sex = person_data.sex
               this.card_data.id_number = person_data.id_number
-              illness_data_dict[person_data.illness_name] = person_data.start_date
+              var now_date = new Date()
+              this.card_data.now_date = now_date.toLocaleDateString()
+              if ((!(person_data.illness_name in illness_data_dict) || (person_data.illness_name in illness_data_dict && Date.parse(person_data.start_date)>Date.parse(illness_data_dict[person_data.illness_name]))) && (Date.parse(person_data.end_date)>=now_date)) {
+                  illness_data_dict[person_data.illness_name] = person_data.start_date
+              }
+              if (person_data.village == '其他') {
+                person_data.village = ''
+              }
               this.card_data.address = `${person_data.town}${person_data.village}`
               if (person_data.town != '开发区') {
                 this.card_data.department = `潜山市${person_data.town}人民政府`
@@ -316,7 +290,13 @@ import {authentication, update_town, update_village, reset, search, download, up
               illness_data_list.push(`${illness_name}(${illness_data_dict[illness_name]})`)
             }
             this.card_data.illness_data = illness_data_list.join('、')
-            this.card_data.now_date = new Date().toLocaleDateString()
+            // this.card_data.name = '***'
+            // this.card_data.sex = '*'
+            // this.card_data.id_number = '******************'
+            // this.card_data.address = '******'
+            // this.card_data.illness_data = '***(xx-xx-xx)'
+            // this.card_data.department = '潜山市XXX人民政府'
+            // this.card_data.now_date = 'xx-xx-xx'
             this.loading = false
             this.dialogVisible = true
           }).catch(error=>{
