@@ -91,7 +91,7 @@
                 <el-table-column label="序号" width="75" prop="number" header-align="center" align="center"></el-table-column>
                 <el-table-column label="姓名" width="150" prop="name" header-align="center" align="center"></el-table-column>
                 <el-table-column label="身份证号" width="175" prop="id_number" header-align="center" align="center"></el-table-column>
-                <el-table-column label="慢性病证" width="100" header-align="center" align="center">
+                <el-table-column label="慢特病证" width="100" header-align="center" align="center">
                   <template slot-scope="scope">
                     <el-link type="primary" icon="el-icon-view" @click="create_card({'id_number': scope.row.id_number, 'town': scope.row.town})">查看</el-link>
                   </template>
@@ -121,7 +121,7 @@
             <el-dialog :visible.sync="dialogVisible" top=2% close-on-press-escape	close-on-click-modal>
               <div class='card'>
               <div class='card_title'>
-                <p>个&emsp;人&emsp;慢&emsp;特&emsp;病&emsp;信&emsp;息&emsp;证</p>
+                <p>慢&emsp;特&emsp;病&emsp;证</p>
               </div>
               <div class='card_content'>
                 <p><span class='card_field_name'>姓&emsp;&emsp;&emsp;&emsp;&emsp;名:&emsp;&emsp;</span><span>{{card_data.name}}</span></p>
@@ -295,7 +295,7 @@ import {authentication, update_town, update_village, reset, search, download, up
             // this.card_data.id_number = '******************'
             // this.card_data.address = '******'
             // this.card_data.illness_data = '***(xx-xx-xx)'
-            // this.card_data.department = '潜山市XXX人民政府'
+            // this.card_data.department = 'XXXXXXXXXX'
             // this.card_data.now_date = 'xx-xx-xx'
             this.loading = false
             this.dialogVisible = true
