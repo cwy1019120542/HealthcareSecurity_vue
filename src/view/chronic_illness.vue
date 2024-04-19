@@ -172,7 +172,7 @@
   font-size: 1.5em;
 }
 .el-form-item {
-  margin-right: 2%;
+  margin-right: 1%;
 }
 .button {
   margin-top: 1%;
